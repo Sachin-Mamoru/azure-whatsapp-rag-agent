@@ -1,0 +1,12 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-dotenv==1.0.1
+requests==2.32.3
+redis==5.0.8
+langdetect==1.0.9
+duckduckgo-search==6.3.7
+langchain==0.2.14
+langchain-openai==0.1.20
+langchain-community==0.2.12
+faiss-cpu==1.8.0.post1
+pypdf==5.0.1
