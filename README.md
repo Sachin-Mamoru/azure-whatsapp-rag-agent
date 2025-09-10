@@ -465,14 +465,14 @@ Make it executable: `chmod +x deploy.sh`
 
 ## 📋 Summary for New Developers
 
-This WhatsApp RAG Agent is a production-ready multilingual chatbot that:
+This WhatsApp RAG Agent is a production-ready multilingual AI agent that:
 
 ### ✅ **What It Does**
-- Responds to WhatsApp messages in English, Sinhala, and Tamil
-- Searches your PDF documents first for safety-related questions
-- Falls back to web search (SerpAPI + DuckDuckGo) for other queries
-- Remembers user language preferences and conversation context
-- Automatically detects and switches languages based on user input
+- **Intelligent Responses**: Uses autonomous AI agent with multiple tools (RAG, Web Search, Memory, i18n)
+- **Multilingual**: Responds in English, Sinhala, and Tamil with auto-detection
+- **Knowledge Integration**: Searches your PDF documents first, then web search for broader queries
+- **Conversation Memory**: Remembers user language preferences and conversation context
+- **Cost-Effective**: Auto-scales to zero when idle (~$24/month minimum cost)
 
 ### 🛠️ **What You Need to Get Started**
 1. **Azure subscription** (for hosting)
@@ -631,547 +631,453 @@ az monitor metrics list --resource $APP_RESOURCE_ID --metric "Requests"
 
 ---
 
-## 💰 Cost Analysis & Resource Planning
+## 🤖 AI Agent Architecture Deep Dive
 
-Understanding the costs associated with running this WhatsApp RAG Agent is crucial for budgeting and optimization.
+This WhatsApp RAG Agent is a sophisticated multi-tool AI agent with autonomous decision-making capabilities. Here's how it works under the hood:
 
-### Azure Resources Cost Breakdown
+### Agent Components Overview
 
-#### 1. **Azure Container Apps** (Primary Compute)
-```
-Consumption Plan (Pay-per-use):
-- vCPU-s: $0.000024 per second per vCPU
-- Memory: $0.000002667 per second per GB  
-- Current config: 0.5 vCPU, 1GB memory
-
-Real usage examples (based on actual deployment):
-- POC/Testing (auto-scales to 0): $0.00/month ✅
-- Light usage (1-2 hours/day): $2.50-5.00/month  
-- Medium usage (8 hours/day): $8.00-12.00/month
-- Heavy usage (24/7): $22.00-25.00/month
-
-Scale-to-zero benefit: $0 when no messages are being processed
-```
-
-#### 2. **Azure Container Registry** (Image Storage)
-```
-Basic SKU: $5.00/month
-- 10GB storage included
-- Unlimited image pulls
-- 2,000 registry operations/month included
-
-Additional costs:
-- Extra storage: $0.10/GB/month
-- Operations beyond limit: $0.10/10,000 operations
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                    WhatsApp Orchestrator                    │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌──────┐│
+│  │ RAG System  │  │ Web Search  │  │ Memory Mgmt │  │ i18n ││
+│  │   Tools     │  │    Tools    │  │    Tools    │  │Tools ││
+│  └─────────────┘  └─────────────┘  └─────────────┘  └──────┘│
+├─────────────────────────────────────────────────────────────┤
+│           OpenAI API (LLM + Embeddings)                    │
+├─────────────────────────────────────────────────────────────┤
+│     FAISS Vector DB    │    Redis Memory    │   External APIs│
+└─────────────────────────────────────────────────────────────┘
 ```
 
-#### 3. **Azure Redis Cache** (Session Storage)
-```
-Basic SKU:
-- C0 (250MB): $16.32/month
-- C1 (1GB): $30.95/month
-- C2 (2.5GB): $61.90/month
+### 1. Message Processing Pipeline
 
-Standard SKU (Recommended for production):
-- C1 (1GB): $61.90/month (includes high availability)
-- C2 (2.5GB): $123.80/month
-```
+#### Core Orchestrator (`agent/orchestrator.py`)
 
-#### 4. **Azure Resource Group** (Management)
-```
-Cost: $0 (Free)
-- Logical container for resources
-- No additional charges
-```
-
-### External API Costs
-
-#### 1. **OpenAI API** (AI Processing)
-```
-GPT-4o-mini:
-- Input: $0.15 per 1M tokens
-- Output: $0.60 per 1M tokens
-
-Text Embeddings 3 Large:
-- $0.13 per 1M tokens
-
-Monthly estimates (1000 messages):
-- Simple responses: ~$5-10/month
-- Complex RAG queries: ~$15-25/month
-- PDF processing (one-time): ~$2-5 per 100 pages
-```
-
-#### 2. **SerpAPI** (Web Search)
-```
-Free Plan: 100 searches/month
-Starter Plan: $25/month for 5,000 searches
-Pro Plan: $75/month for 15,000 searches
-
-Alternative: DuckDuckGo (free fallback included)
-```
-
-#### 3. **WhatsApp Cloud API** (Messaging)
-```
-Free Tier: 1,000 conversations/month
-Pay-as-you-go: $0.005-0.009 per conversation
-(Conversation = 24-hour session with a user)
-
-Business-initiated messages: $0.0055-0.0135 each
-```
-
-### Total Monthly Cost Estimates
-
-#### **POC/Development Environment (Current Setup)**
-```
-✅ VERIFIED WITH ACTUAL DEPLOYED RESOURCES:
-
-Azure Container Apps (auto-scale to 0):  $0.00  ← Scales down when idle
-Azure Container Registry (Basic):        $5.00  ← Confirmed: Basic SKU  
-Azure Redis (Basic C0 - 250MB):         $16.32  ← Confirmed: C0 capacity
-Azure Log Analytics (Basic):             $2.31  ← Minimal logging
-OpenAI API (light usage - 100 messages): $3.00  ← Estimated based on usage
-SerpAPI (free tier - 100 searches):      $0.00  ← Free tier available
-WhatsApp (free tier - 1000 conversations): $0.00  ← Free tier sufficient
-─────────────────────────────────────────────────
-Total: ~$26.63/month
-
-⚠️  IMPORTANT: When not actively testing, your Container App scales to 0 replicas.
-   This means you only pay ~$23.63/month for the "always-on" resources.
-   The Container App only costs money when processing messages.
-```
-
-#### **Small Production (100 users, 500 messages/month)**
-```
-Azure Container Apps (2-4 hrs/day):      $3.00
-Azure Container Registry (Basic):        $5.00
-Azure Redis (Basic C1 - 1GB):           $30.95
-Azure Log Analytics (Basic):             $2.31
-OpenAI API (moderate usage):            $15.00
-SerpAPI (Starter plan):                 $25.00
-WhatsApp (within free tier):             $0.00
-─────────────────────────────────────────────────
-Total: ~$81.26/month
-```
-
-#### **Medium Production (500 users, 2500 messages/month)**
-```
-Azure Container Apps (8-12 hrs/day):    $8.00
-Azure Container Registry (Basic):        $5.00
-Azure Redis (Standard C1 - 1GB):        $61.90
-Azure Log Analytics (Standard):          $5.00
-OpenAI API (heavy usage):               $45.00
-SerpAPI (Pro plan):                     $75.00
-WhatsApp (paid conversations):          $12.50
-─────────────────────────────────────────────────
-Total: ~$212.40/month
-OpenAI API (heavy usage):            $50.00
-SerpAPI (Pro plan):                  $75.00
-WhatsApp (paid conversations):       $15.00
-────────────────────────────────────────────
-Total: ~$281/month
-```
-
-#### **Large Production (2000+ users, 10000+ messages/month)**
-```
-Azure Container Apps (24/7):         $18.00
-Azure Container Registry (Basic):     $5.00
-Azure Redis (Premium P1):           $381.30
-OpenAI API (enterprise usage):      $200.00
-SerpAPI (Custom plan):              $150.00
-WhatsApp (business messaging):       $50.00
-────────────────────────────────────────────
-Total: ~$804/month
-```
-
-### Real-World Cost Verification
-
-Based on the actual deployed resources, here's what you can expect:
-
-#### Quick Cost Check Script
-
-```bash
-# Run the automated cost verification script
-./scripts/check-costs.sh
-
-# This script will:
-# - Find your WhatsApp RAG resource group
-# - Check actual resource SKUs and pricing tiers  
-# - Calculate your real monthly costs
-# - Show optional usage-based cost analysis
-```
-
-#### Manual Cost Verification
-```bash
-# Check your actual resource group and resources
-az group list --output table
-export RG="your-resource-group-name"  # Replace with your actual RG name
-
-# Verify what you're actually paying for:
-echo "=== AZURE CONTAINER REGISTRY ==="
-az acr show -n $(az acr list -g $RG --query "[0].name" -o tsv) -g $RG \
-  --query "{name:name, sku:sku.name, monthlyCost:'~$5.00'}" --output table
-
-echo "=== REDIS CACHE ==="
-az redis show -n $(az redis list -g $RG --query "[0].name" -o tsv) -g $RG \
-  --query "{name:name, sku:sku.name, capacity:sku.capacity, monthlyCost:'C0=~$16.32, C1=~$30.95'}" --output table
-
-echo "=== CONTAINER APPS ==="
-echo "Container Apps (Consumption): Scales to 0 = $0.00 when idle"
-az containerapp show -n $(az containerapp list -g $RG --query "[0].name" -o tsv) -g $RG \
-  --query "properties.provisioningState" --output tsv
-
-# Your actual minimum monthly cost (when container scales to 0):
-echo "=== MINIMUM MONTHLY COST ==="
-echo "ACR Basic: $5.00"
-echo "Redis C0:  $16.32"
-echo "Log Analytics: ~$2.31"
-echo "Total minimum: ~$23.63/month"
-```
-
-#### Check Your Live Costs
-
-```bash
-# Get your actual spending (requires Azure Cost Management)
-az consumption usage list \
-  --start-date $(date -v-7d +%Y-%m-%d) \
-  --end-date $(date +%Y-%m-%d) \
-  --resource-group $RG \
-  --query "[].{Resource:instanceName, DailyCost:pretaxCost, Currency:currency}" \
-  --output table
-```
-
-### Cost Optimization Strategies
-
-#### 1. **Auto-Scaling Optimization**
-```bash
-# Configure minimal scaling
-az containerapp update -g $RG -n $APP \
-  --min-replicas 0 \
-  --max-replicas 5
-```
-
-#### 2. **Smart Caching**
-- Use Redis to cache frequent queries
-- Implement response caching for common questions
-- Cache vector embeddings to reduce OpenAI calls
-
-#### 3. **Alternative AI Models**
-```bash
-# Use cheaper models for simple queries
-MODEL_NAME=gpt-3.5-turbo  # vs gpt-4o-mini
-EMBEDDING_MODEL=text-embedding-ada-002  # vs text-embedding-3-large
-```
-
-#### 4. **Search Strategy**
-- Use free DuckDuckGo search when possible
-- Implement smart routing to SerpAPI only for complex queries
-- Cache search results to avoid duplicate API calls
-
-#### 5. **WhatsApp Optimization**
-- Use template messages for common responses
-- Implement message threading to reduce conversation count
-- Use business-initiated messages sparingly
-
-### Monitoring Costs
-
-#### Verify Your Current Resource Costs
-
-```bash
-# Check your resource group name
-az group list --output table
-
-# List all resources and their pricing tiers
-export RG="rg-whatsapp-agent"  # Replace with your resource group name
-az resource list -g $RG --output table
-
-# Verify specific resource configurations and costs
-# Container Registry pricing tier
-az acr show -n $(az acr list -g $RG --query "[0].name" -o tsv) -g $RG \
-  --query "{name:name, sku:sku.name, tier:sku.tier}" --output table
-
-# Redis cache pricing tier  
-az redis show -n $(az redis list -g $RG --query "[0].name" -o tsv) -g $RG \
-  --query "{name:name, sku:sku.name, family:sku.family, capacity:sku.capacity}" --output table
-
-# Container app status (should scale to 0 when not in use)
-az containerapp show -n $(az containerapp list -g $RG --query "[0].name" -o tsv) -g $RG \
-  --query "properties.provisioningState" --output tsv
-```
-
-#### Azure Cost Management
-
-```bash
-# Set up budget alerts
-az consumption budget create \
-  --resource-group $RG \
-  --budget-name "whatsapp-bot-budget" \
-  --amount 100 \
-  --time-grain Monthly
-
-# Monitor spending
-az consumption usage list \
-  --top 10 \
-  --include-additional-properties \
-  --include-meter-details
-
-# Get cost analysis for the last 30 days
-az consumption usage list \
-  --start-date $(date -v-30d +%Y-%m-%d) \
-  --end-date $(date +%Y-%m-%d) \
-  --resource-group $RG
-```
-
-#### API Usage Monitoring
-```bash
-# OpenAI usage tracking
-curl https://api.openai.com/v1/usage \
-  -H "Authorization: Bearer $OPENAI_API_KEY"
-
-# SerpAPI usage check
-curl "https://serpapi.com/account?api_key=$SERPAPI_KEY"
-```
-
-### Production Readiness Checklist
-
-#### Cost Controls
-- [ ] Set up Azure budget alerts
-- [ ] Configure auto-scaling limits
-- [ ] Monitor API usage dashboards
-- [ ] Implement response caching
-- [ ] Set up cost anomaly detection
-
-#### Performance vs Cost
-- [ ] Choose appropriate Redis tier
-- [ ] Optimize container resource allocation
-- [ ] Implement smart API routing
-- [ ] Use content delivery for static responses
-- [ ] Consider regional deployment for latency
-
-The total cost can range from $28/month for development to $800+/month for enterprise usage. The pay-per-use model of Azure Container Apps makes it very cost-effective for variable workloads.
-
----
-
-## Deployment Best Practices
-
-#### Security Considerations
-```bash
-# Use managed identity for ACR access
-az containerapp identity assign -g $RG -n $APP --system-assigned
-
-# Rotate secrets regularly
-az containerapp secret set -g $RG -n $APP \
-  --secrets openai-key=$NEW_OPENAI_KEY
-
-# Enable HTTPS only
-az containerapp ingress update -g $RG -n $APP \
-  --transport https
-```
-
-#### High Availability Setup
-```bash
-# Deploy across multiple regions
-az containerapp create -g $RG-east -n $APP --location eastus
-az containerapp create -g $RG-west -n $APP --location westus
-
-# Use Azure Front Door for load balancing
-az network front-door create \
-  --resource-group $RG \
-  --name whatsapp-bot-fd
-```
-
-#### Backup and Disaster Recovery
-```bash
-# Backup Redis data
-az redis export -g $RG -n $REDIS \
-  --container $STORAGE_CONTAINER \
-  --prefix backup-$(date +%Y%m%d)
-
-# Export container app configuration
-az containerapp show -g $RG -n $APP > app-config-backup.json
-```
-
-#### CI/CD Pipeline Integration
-```yaml
-# .github/workflows/deploy.yml
-name: Deploy WhatsApp Agent
-on:
-  push:
-    branches: [main]
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build and Deploy
-        run: |
-          docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_LOGIN_SERVER }}/whatsapp-agent:${{ github.sha }} .
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/whatsapp-agent:${{ github.sha }}
-          az containerapp update --image ${{ secrets.ACR_LOGIN_SERVER }}/whatsapp-agent:${{ github.sha }}
-```
-
-
-## Why OpenAI API is Required Despite LangChain + FAISS
-
-### Understanding the RAG Pipeline Components
-
-Many developers wonder why OpenAI API is needed when we already have LangChain + FAISS. Here's the breakdown:
-
-#### **LangChain + FAISS** (Information Retrieval)
-```
-PDFs → Text Extraction → Chunking → Vector Embeddings → FAISS Index
-                                        ↓
-User Query → Query Embedding → FAISS Search → Relevant Document Chunks
-```
-
-**What it does:**
-- Converts PDF text into searchable vector embeddings
-- Finds relevant document sections based on semantic similarity
-- Returns raw text chunks that match the user's question
-
-**What it CANNOT do:**
-- Generate human-like responses
-- Understand context and nuance
-- Synthesize information from multiple sources
-- Handle multilingual conversations
-- Provide coherent, conversational answers
-
-#### **OpenAI API** (Language Generation & Understanding)
-
-**Two Critical Functions:**
-
-1. **Embeddings Generation** (`text-embedding-3-large`)
-   ```python
-   # Convert text to vectors for FAISS storage
-   embeddings = openai.embeddings.create(
-       input="User question or PDF chunk",
-       model="text-embedding-3-large"
-   )
-   ```
-
-2. **Language Generation** (`gpt-4o-mini`)
-   ```python
-   # Generate human-like responses
-   response = openai.chat.completions.create(
-       model="gpt-4o-mini",
-       messages=[
-           {"role": "system", "content": "You are a safety assistant..."},
-           {"role": "user", "content": f"Based on this context: {retrieved_docs}, answer: {user_question}"}
-       ]
-   )
-   ```
-
-### Complete RAG Workflow
-
-```
-1. PDF Processing (Startup):
-   PDF → LangChain → Text Chunks → OpenAI Embeddings → FAISS Index
-
-2. User Query Processing:
-   User Message → OpenAI Embeddings → FAISS Search → Retrieved Chunks
-                                                          ↓
-   Retrieved Chunks + User Question → OpenAI GPT → Final Response
-```
-
-### Example to Illustrate the Difference
-
-#### **User Question:** "What should I do if there's a chemical spill in the workplace?"
-
-#### **FAISS Retrieval Output (Raw Text):**
-```
-Chunk 1: "Chemical spills must be contained immediately. Use absorbent materials..."
-Chunk 2: "Emergency procedures include evacuation of personnel from affected area..."
-Chunk 3: "PPE requirements: chemical-resistant gloves, eye protection, respirator..."
-```
-
-#### **OpenAI Generated Response (Final Output):**
-```
-If there's a chemical spill in your workplace, follow these immediate steps:
-
-1. **Safety First**: Evacuate all personnel from the affected area immediately
-2. **Contain the Spill**: Use appropriate absorbent materials to prevent spreading
-3. **Personal Protection**: Wear chemical-resistant gloves, eye protection, and respirator
-4. **Alert Others**: Notify emergency response team and management
-5. **Documentation**: Report the incident and clean-up procedures used
-
-Remember, never attempt to clean large spills without proper training and equipment.
-```
-
-### Why Both are Essential
-
-| Component | Purpose | Cannot Do Without |
-|-----------|---------|-------------------|
-| **FAISS** | Find relevant information | Generate coherent responses |
-| **OpenAI Embeddings** | Convert text to searchable vectors | Create human-readable text |
-| **OpenAI GPT** | Generate conversational responses | Search through documents |
-
-### Alternative Approaches (and their limitations)
-
-#### **Option 1: Use Only FAISS (No Generation)**
 ```python
-# This would only return raw document chunks
-search_results = faiss_index.search(query_embedding, k=5)
-return search_results  # Raw, unprocessed text chunks
+class WhatsAppOrchestrator:
+    def __init__(self):
+        self.redis_client = redis.from_url(Config.REDIS_URL)
+        self.memory = ConversationMemory(self.redis_client)     # Session management
+        self.rag_system = RAGSystem()                           # PDF knowledge base
+        self.web_search = WebSearchTool()                       # Web search capabilities
+        self.lang_detector = LanguageDetector()                 # Language intelligence
 ```
-**Problems:**
-- No conversational interface
-- No synthesis of multiple sources
-- No multilingual support
-- Poor user experience
 
-#### **Option 2: Use Local Language Models**
-```python
-# Using Ollama, Llama, or other local models
-from transformers import AutoModelForCausalLM
-model = AutoModelForCausalLM.from_pretrained("llama-7b")
+**Message Flow:**
+
+```text
+WhatsApp Message → Language Detection → Command Analysis → Tool Selection → Response Generation
 ```
-**Trade-offs:**
-- **Pros**: No API costs, data privacy
-- **Cons**: Requires powerful hardware, slower inference, lower quality responses
 
-#### **Option 3: Use Alternative APIs**
+#### Step-by-Step Processing:
+
+1. **Session Retrieval**
 ```python
-# Using Anthropic Claude, Google Gemini, etc.
-import anthropic
-client = anthropic.Anthropic(api_key="...")
+session = self.memory.get_session(phone_number)  # Get user context from Redis
 ```
-**Considerations:**
-- Different pricing models
-- Varying quality and capabilities
-- API availability and reliability
 
-### Cost Optimization Without Losing Functionality
-
-#### **Smart Model Selection:**
+2. **Language Command Detection**
 ```python
-# Use cheaper models for simple queries
-if is_simple_query(user_message):
-    model = "gpt-3.5-turbo"  # $0.001/1K tokens
+language_commands = [
+    "change language", "language", "menu", "भाषाव", "மொழி"
+]
+if any(cmd in message_lower for cmd in language_commands):
+    return get_menu_text()  # Show language selection menu
+```
+
+3. **Language Selection Processing**
+```python
+if message.strip() in ["1", "2", "3"]:
+    language_map = {"1": "si", "2": "en", "3": "ta"}
+    session["language"] = language_map[message.strip()]
+    self.memory.update_session(phone_number, session)
+```
+
+4. **Intelligent Language Detection**
+```python
+detected_lang = self.lang_detector.detect_language(message)
+if detected_lang != user_language and len(message) > 10:
+    session["language"] = detected_lang  # Auto-switch language
+```
+
+5. **Tool Selection Logic**
+```python
+# Primary: RAG System (PDF knowledge)
+rag_response = await self.rag_system.query(message, user_language)
+
+if rag_response and rag_response.get("confidence", 0) > 0.7:
+    response = rag_response["answer"]  # Use PDF knowledge
 else:
-    model = "gpt-4o-mini"    # $0.15/1K tokens
+    # Secondary: Web Search
+    web_response = await self.web_search.search(message, user_language)
+    if web_response:
+        response = web_response
+    else:
+        response = get_response_text("no_answer", user_language)
 ```
 
-#### **Response Caching:**
+### 2. RAG System Tool (`agent/rag.py`)
+
+#### Vector Database Management
+
 ```python
-# Cache common responses
-if user_question in cached_responses:
-    return cached_responses[user_question]
+class RAGSystem:
+    def __init__(self):
+        self.embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+        self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.1)
+        self.vectorstore = None  # FAISS vector database
 ```
 
-#### **Embedding Reuse:**
+#### PDF Processing Pipeline:
+
+1. **Document Loading**
 ```python
-# Generate embeddings once, reuse for similar queries
-if similar_query_exists(user_question):
-    return cached_embedding
+def load_documents(self):
+    pdf_files = glob.glob(os.path.join(Config.TRAINING_ROOT, "*.pdf"))
+    for pdf_file in pdf_files:
+        loader = PyPDFLoader(pdf_file)
+        docs = loader.load()  # Extract text from PDFs
 ```
 
-### The Bottom Line
+2. **Text Chunking**
+```python
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,      # Each chunk ~1000 characters
+    chunk_overlap=200,    # 200 char overlap for context continuity
+    length_function=len
+)
+splits = text_splitter.split_documents(documents)
+```
 
-**LangChain + FAISS** = Information Retrieval Engine
-**OpenAI API** = Intelligence and Language Generation
+3. **Vector Embedding Creation**
+```python
+# Convert text chunks to vectors using OpenAI embeddings
+self.vectorstore = FAISS.from_documents(splits, self.embeddings)
+self.vectorstore.save_local(Config.RAG_VECTOR_DIR)  # Persist to disk
+```
 
-You need both because:
-1. **FAISS finds** the right information
-2. **OpenAI understands** and generates human responses
-3. **Together** they create a conversational AI that can access your specific knowledge base
+#### Query Processing:
 
-Without OpenAI (or similar LLM), you'd have a search engine, not a conversational assistant.
+```python
+async def query(self, question: str, language: str) -> Dict[str, Any]:
+    # 1. Convert question to vector
+    query_embedding = self.embeddings.embed_query(question)
+    
+    # 2. Find similar document chunks
+    docs = self.vectorstore.similarity_search_with_score(question, k=4)
+    
+    # 3. Generate answer using retrieved context
+    prompt = f"""Based on this context: {retrieved_docs}
+    Answer the question: {question}
+    Language: {language}"""
+    
+    response = self.llm.invoke(prompt)
+    return {"answer": response.content, "confidence": confidence_score}
+```
+
+### 3. Web Search Tool (`agent/tools.py`)
+
+#### Dual Search Strategy
+
+```python
+class WebSearchTool:
+    def __init__(self):
+        self.llm = ChatOpenAI(model=Config.MODEL_NAME, temperature=0.1)
+        self.serpapi_key = os.getenv('SERPAPI_KEY')
+        self.has_serpapi = bool(self.serpapi_key)
+```
+
+#### Search Execution Logic:
+
+1. **Primary: SerpAPI (Paid)**
+```python
+async def serpapi_search(self, query: str, language: str):
+    params = {
+        'q': query,
+        'api_key': self.serpapi_key,
+        'engine': 'google',
+        'num': 5,
+        'hl': language if language == 'en' else 'en'
+    }
+    search = GoogleSearch(params)
+    results = await loop.run_in_executor(None, search.get_dict)
+```
+
+2. **Fallback: DuckDuckGo (Free)**
+```python
+async def web_search(self, query: str, language: str):
+    # Add language context
+    lang_prefixes = {"si": "සිංහල", "ta": "தமிழ்", "en": ""}
+    search_query = f"{lang_prefixes[language]} {query}" if language != "en" else query
+    
+    results = await loop.run_in_executor(None, 
+        lambda: list(DDGS().text(search_query, max_results=5)))
+```
+
+#### Result Summarization:
+
+```python
+async def summarize_results(self, results: list, query: str, language: str):
+    context = "\n\n".join([
+        f"Title: {result['title']}\nContent: {result['body']}"
+        for result in results[:3]
+    ])
+    
+    lang_instructions = {
+        "si": "කරුණාකර සිංහලෙන් පිළිතුරු දෙන්න.",
+        "ta": "தயவுசெய்து தமிழில் பதிலளிக்கவும்.",
+        "en": "Please respond in English."
+    }
+    
+    prompt = f"""Based on these search results: {context}
+    Answer: {query}
+    {lang_instructions[language]}"""
+    
+    return self.llm.invoke(prompt).content
+```
+
+### 4. Memory Management Tool (`agent/memory.py`)
+
+#### Session Storage System
+
+```python
+class ConversationMemory:
+    def __init__(self, redis_client):
+        self.redis = redis_client
+        self.session_prefix = "session:"      # User sessions
+        self.conversation_prefix = "conv:"    # Message history
+        self.session_timeout = 3600 * 24     # 24-hour expiry
+```
+
+#### User Context Management:
+
+```python
+def get_session(self, phone_number: str) -> Dict[str, Any]:
+    session_key = f"session:{phone_number}"
+    session_data = self.redis.get(session_key)
+    
+    if session_data:
+        return json.loads(session_data)  # Existing user
+    else:
+        # New user - create session
+        new_session = {
+            "phone_number": phone_number,
+            "language": None,                    # Will be set on first interaction
+            "created_at": datetime.now().isoformat(),
+            "message_count": 0
+        }
+        return new_session
+```
+
+#### Conversation History:
+
+```python
+def add_message(self, phone_number: str, role: str, content: str):
+    conv_key = f"conv:{phone_number}"
+    message = {
+        "role": role,           # "user" or "assistant"
+        "content": content,
+        "timestamp": datetime.now().isoformat()
+    }
+    
+    # Store in Redis list (FIFO queue)
+    self.redis.lpush(conv_key, json.dumps(message))
+    self.redis.expire(conv_key, self.session_timeout)
+```
+
+### 5. Language Intelligence Tool (`agent/i18n.py`)
+
+#### Automatic Language Detection
+
+```python
+class LanguageDetector:
+    def detect_language(self, text: str) -> str:
+        # Unicode script detection
+        if self._contains_sinhala_script(text):
+            return "si"
+        elif self._contains_tamil_script(text):
+            return "ta"
+        else:
+            return "en"  # Default to English
+    
+    def _contains_sinhala_script(self, text: str) -> bool:
+        sinhala_range = range(0x0D80, 0x0DFF + 1)  # Unicode range for Sinhala
+        return any(ord(char) in sinhala_range for char in text)
+```
+
+#### Dynamic Response Generation
+
+```python
+RESPONSES = {
+    "language_selected": {
+        "en": "Great! I'll respond in English. How can I help you?",
+        "si": "හොඳයි! මම සිංහලෙන් පිළිතුරු දෙන්නම්. මම ඔබට කෙසේ උදව් කළ හැකිද?",
+        "ta": "சிறப்பு! நான் தமிழில் பதிலளிப்பேன். நான் உங்களுக்கு எப்படி உதவ முடியும்?"
+    }
+}
+
+def get_response_text(key: str, language: str) -> str:
+    return RESPONSES.get(key, {}).get(language, RESPONSES[key]["en"])
+```
+
+### 6. Agent Decision-Making Logic
+
+#### Tool Selection Algorithm
+
+```python
+# Decision tree for tool selection
+if is_language_command(message):
+    return language_menu()
+elif is_language_selection(message):
+    return set_user_language(message)
+else:
+    # Content query - choose best tool
+    if pdf_knowledge_available():
+        rag_result = rag_system.query(message)
+        if rag_result.confidence > 0.7:
+            return rag_result.answer
+    
+    # RAG insufficient - try web search
+    if web_search_needed(message):
+        web_result = web_search.search(message)
+        if web_result:
+            return web_result
+    
+    # No good results
+    return fallback_response()
+```
+
+#### Confidence Scoring
+
+```python
+# RAG confidence based on document similarity
+def calculate_confidence(similarity_scores):
+    if not similarity_scores:
+        return 0.0
+    
+    # Use highest similarity score as base confidence
+    max_score = max(similarity_scores)
+    
+    # Apply thresholds
+    if max_score > 0.8:
+        return 0.9      # High confidence
+    elif max_score > 0.6:
+        return 0.7      # Medium confidence
+    else:
+        return 0.4      # Low confidence - trigger web search
+```
+
+### 7. Real-World Example Flow
+
+#### User Query: "මෙම රසායනික ද්‍රව්‍යයක් වැගිරුණොත් මොකද කරන්න ඕනේ?" (Sinhala: "What to do if this chemical spills?")
+
+**Step 1: Language Detection**
+```python
+detected_lang = lang_detector.detect_language("මෙම රසායනික...")  # Returns "si"
+session["language"] = "si"  # Set Sinhala as user language
+```
+
+**Step 2: RAG System Query**
+```python
+# Convert Sinhala query to vector embedding
+query_vector = embeddings.embed_query("මෙම රසායනික ද්‍රව්‍යයක් වැගිරුණොත්...")
+
+# Search FAISS index for similar content
+docs = vectorstore.similarity_search_with_score("chemical spill procedure", k=4)
+# Returns: [
+#   ("Chemical spills must be contained immediately...", 0.85),
+#   ("Emergency procedures include evacuation...", 0.82),
+#   ("PPE requirements: chemical-resistant gloves...", 0.78)
+# ]
+```
+
+**Step 3: Response Generation**
+```python
+retrieved_context = """
+Chemical spills must be contained immediately. Use absorbent materials...
+Emergency procedures include evacuation of personnel from affected area...
+PPE requirements: chemical-resistant gloves, eye protection, respirator...
+"""
+
+prompt = f"""Based on this safety information: {retrieved_context}
+Answer in Sinhala: {user_question}
+Provide clear, actionable safety steps."""
+
+response = llm.invoke(prompt)
+# Returns detailed Sinhala response with safety procedures
+```
+
+**Step 4: Memory Storage**
+```python
+memory.add_message(phone_number, "user", "මෙම රසායනික ද්‍රව්‍යයක් වැගිරුණොත්...")
+memory.add_message(phone_number, "assistant", generated_response)
+```
+
+### 8. Agent Autonomy Features
+
+#### Autonomous Language Switching
+```python
+# Agent detects language change and adapts automatically
+if detected_lang != current_lang and len(message) > 10:
+    session["language"] = detected_lang
+    # Continue in new language without explicit user command
+```
+
+#### Smart Tool Routing
+```python
+# Agent chooses tools based on content analysis
+web_keywords = ["weather", "news", "current", "today", "price"]
+if any(keyword in message.lower() for keyword in web_keywords):
+    # Route to web search for current information
+    return await web_search.search(message, language)
+else:
+    # Route to RAG for safety/knowledge queries
+    return await rag_system.query(message, language)
+```
+
+#### Proactive Error Handling
+```python
+# Agent handles API failures gracefully
+try:
+    serpapi_results = await self.serpapi_search(query, language)
+except RateLimitError:
+    # Automatically fallback to free alternative
+    print("SerpAPI rate limit - falling back to DuckDuckGo")
+    return await self.web_search(query, language)
+```
+
+### 9. Performance Optimizations
+
+#### Async Tool Execution
+```python
+# All tool operations are asynchronous for better performance
+async def process_message(self, phone_number: str, message: str):
+    # Non-blocking operations
+    rag_response = await self.rag_system.query(message, language)
+    web_response = await self.web_search.search(message, language)
+```
+
+#### Caching Strategy
+```python
+# Vector embeddings cached in FAISS
+# User sessions cached in Redis with 24h TTL
+# Search results could be cached (implementation dependent)
+```
+
+### 10. Agent vs Traditional Chatbot
+
+| Feature | Traditional Chatbot | This AI Agent |
+|---------|-------------------|---------------|
+| **Responses** | Pre-scripted responses | Dynamic generation with context |
+| **Knowledge** | Static FAQ database | RAG + Real-time web search |
+| **Tools** | Single response system | Multiple tools (RAG, Web, Memory, i18n) |
+| **Decision Making** | Rule-based if/else | LLM-powered intelligent routing |
+| **Memory** | Session-less | Persistent conversation memory |
+| **Language** | Fixed language | Auto-detection + switching |
+| **Autonomy** | Manual triggers | Self-directed tool selection |
+| **Learning** | No adaptation | Context-aware improvements |
+
+This agent represents a sophisticated implementation of tool-using AI that combines multiple specialized systems into a cohesive, intelligent assistant capable of handling complex, multilingual safety consultations with autonomous decision-making capabilities.
