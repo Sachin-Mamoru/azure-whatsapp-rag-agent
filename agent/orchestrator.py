@@ -1,5 +1,6 @@
 import redis
 import json
+import asyncio
 from typing import Optional, Dict, Any
 from agent.memory import ConversationMemory
 from agent.rag import RAGSystem
@@ -20,9 +21,28 @@ class WhatsAppOrchestrator:
         try:
             # Get user session data
             session = self.memory.get_session(phone_number)
+            message_lower = message.strip().lower()
             
-            # Check if user is selecting language
-            if message.strip() in ["1", "2", "3"] and not session.get("language"):
+            # Check for language change commands first (more comprehensive list)
+            language_commands = [
+                # English commands
+                "change language", "language", "menu", "/language", "/lang", "switch language",
+                "i want to change the language", "i want to change language", "want to change language",
+                "change the language", "switch to", "language menu", "select language",
+                # Sinhala commands  
+                "භාෂාව වෙනස් කරන්න", "භාෂාව", "ලැයිස්තුව", "භාෂාව වෙනස් කරන්න",
+                "භාෂාවක් තෝරන්න", "භාෂා මෙනුව",
+                # Tamil commands
+                "மொழியை மாற்று", "மொழி", "பட்டியல்", "மொழியை மாற்றுங்கள்",
+                "மொழியைத் தேர்ந்தெடுக்கவும்", "மொழி மெனு"
+            ]
+            
+            # Check if user wants to change language (more flexible matching)
+            if any(cmd in message_lower for cmd in language_commands):
+                return get_menu_text()
+            
+            # Check if user is selecting language (numbers or specific responses)
+            if message.strip() in ["1", "2", "3"]:
                 language_map = {"1": "si", "2": "en", "3": "ta"}
                 selected_language = language_map.get(message.strip())
                 
@@ -40,9 +60,13 @@ class WhatsAppOrchestrator:
             # Detect if message is in a different language and update if needed
             detected_lang = self.lang_detector.detect_language(message)
             if detected_lang in ["si", "en", "ta"] and detected_lang != user_language:
-                session["language"] = detected_lang
-                user_language = detected_lang
-                self.memory.update_session(phone_number, session)
+                # Only switch if we're confident about the detection
+                if len(message) > 10:  # Only for longer messages to avoid false positives
+                    session["language"] = detected_lang
+                    user_language = detected_lang
+                    self.memory.update_session(phone_number, session)
+                    # Acknowledge the language change
+                    await asyncio.sleep(0.1)  # Small delay to ensure session is updated
             
             # Add message to conversation history
             self.memory.add_message(phone_number, "user", message)
@@ -55,7 +79,15 @@ class WhatsAppOrchestrator:
             else:
                 # Fall back to web search
                 web_response = await self.web_search.search(message, user_language)
-                response = web_response if web_response else get_response_text("no_answer", user_language)
+                if web_response:
+                    response = web_response
+                else:
+                    # Check if it's likely a question that needs web search
+                    web_keywords = ["weather", "news", "current", "today", "time", "price", "stock"]
+                    if any(keyword in message.lower() for keyword in web_keywords):
+                        response = get_response_text("web_search_limited", user_language)
+                    else:
+                        response = get_response_text("no_answer", user_language)
             
             # Add response to conversation history
             self.memory.add_message(phone_number, "assistant", response)

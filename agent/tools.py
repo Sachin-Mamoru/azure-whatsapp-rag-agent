@@ -1,5 +1,7 @@
 import asyncio
+import os
 from typing import Optional
+from serpapi import GoogleSearch
 from duckduckgo_search import DDGS
 from langchain_openai import ChatOpenAI
 from config import Config
@@ -11,12 +13,17 @@ class WebSearchTool:
             openai_api_key=Config.OPENAI_API_KEY,
             temperature=0.1
         )
+        self.serpapi_key = os.getenv('SERPAPI_KEY')
+        self.has_serpapi = bool(self.serpapi_key)
     
     async def search(self, query: str, language: str = "en") -> Optional[str]:
         """Perform web search and summarize results"""
         try:
-            # Perform search
-            search_results = await self.web_search(query, language)
+            # Try SerpAPI first if available, otherwise use DuckDuckGo
+            if self.has_serpapi:
+                search_results = await self.serpapi_search(query, language)
+            else:
+                search_results = await self.web_search(query, language)
             
             if not search_results:
                 return None
@@ -29,8 +36,43 @@ class WebSearchTool:
             print(f"Error in web search: {e}")
             return None
     
+    async def serpapi_search(self, query: str, language: str) -> list:
+        """Perform search using SerpAPI (Google Search)"""
+        try:
+            params = {
+                'q': query,
+                'api_key': self.serpapi_key,
+                'engine': 'google',
+                'num': 5,
+                'hl': language if language == 'en' else 'en',
+                'safe': 'active'
+            }
+            
+            # Use asyncio to run the synchronous SerpAPI search
+            loop = asyncio.get_event_loop()
+            search = GoogleSearch(params)
+            results = await loop.run_in_executor(None, search.get_dict)
+            
+            # Convert SerpAPI results to DuckDuckGo format for compatibility
+            organic_results = results.get('organic_results', [])
+            formatted_results = []
+            
+            for result in organic_results:
+                formatted_results.append({
+                    'title': result.get('title', ''),
+                    'body': result.get('snippet', ''),
+                    'href': result.get('link', '')
+                })
+            
+            return formatted_results
+            
+        except Exception as e:
+            print(f"Error in SerpAPI search: {e}")
+            # Fallback to DuckDuckGo
+            return await self.web_search(query, language)
+
     async def web_search(self, query: str, language: str) -> list:
-        """Perform DuckDuckGo search"""
+        """Perform DuckDuckGo search (fallback)"""
         try:
             # Add language context to search
             lang_prefixes = {
@@ -54,6 +96,9 @@ class WebSearchTool:
             
         except Exception as e:
             print(f"Error in DuckDuckGo search: {e}")
+            # Check if it's a rate limit error
+            if "ratelimit" in str(e).lower() or "202" in str(e):
+                print("DuckDuckGo rate limit detected")
             return []
     
     async def summarize_results(self, results: list, query: str, language: str) -> str:
