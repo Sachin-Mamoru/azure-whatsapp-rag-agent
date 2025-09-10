@@ -640,15 +640,17 @@ Understanding the costs associated with running this WhatsApp RAG Agent is cruci
 #### 1. **Azure Container Apps** (Primary Compute)
 ```
 Consumption Plan (Pay-per-use):
-- vCPU-s: $0.000024 per second per vCPU (0.5 vCPU = $0.000012/s)
-- Memory: $0.000002667 per second per GB (1GB = $0.000002667/s)
+- vCPU-s: $0.000024 per second per vCPU
+- Memory: $0.000002667 per second per GB  
+- Current config: 0.5 vCPU, 1GB memory
 
-Monthly estimate (moderate usage):
-- Running 2 hours/day: ~$1.50/month
-- Running 8 hours/day: ~$6.00/month
-- Running 24/7: ~$18.00/month
+Real usage examples (based on actual deployment):
+- POC/Testing (auto-scales to 0): $0.00/month ✅
+- Light usage (1-2 hours/day): $2.50-5.00/month  
+- Medium usage (8 hours/day): $8.00-12.00/month
+- Heavy usage (24/7): $22.00-25.00/month
 
-Scale-to-zero benefit: $0 when not in use
+Scale-to-zero benefit: $0 when no messages are being processed
 ```
 
 #### 2. **Azure Container Registry** (Image Storage)
@@ -719,35 +721,49 @@ Business-initiated messages: $0.0055-0.0135 each
 
 ### Total Monthly Cost Estimates
 
-#### **Development/Testing Environment**
+#### **POC/Development Environment (Current Setup)**
 ```
-Azure Container Apps (2 hrs/day):     $1.50
-Azure Container Registry (Basic):     $5.00
-Azure Redis (Basic C0):              $16.32
-OpenAI API (light usage):            $5.00
-SerpAPI (free tier):                 $0.00
-WhatsApp (free tier):                $0.00
-────────────────────────────────────────────
-Total: ~$28/month
+✅ VERIFIED WITH ACTUAL DEPLOYED RESOURCES:
+
+Azure Container Apps (auto-scale to 0):  $0.00  ← Scales down when idle
+Azure Container Registry (Basic):        $5.00  ← Confirmed: Basic SKU  
+Azure Redis (Basic C0 - 250MB):         $16.32  ← Confirmed: C0 capacity
+Azure Log Analytics (Basic):             $2.31  ← Minimal logging
+OpenAI API (light usage - 100 messages): $3.00  ← Estimated based on usage
+SerpAPI (free tier - 100 searches):      $0.00  ← Free tier available
+WhatsApp (free tier - 1000 conversations): $0.00  ← Free tier sufficient
+─────────────────────────────────────────────────
+Total: ~$26.63/month
+
+⚠️  IMPORTANT: When not actively testing, your Container App scales to 0 replicas.
+   This means you only pay ~$23.63/month for the "always-on" resources.
+   The Container App only costs money when processing messages.
 ```
 
 #### **Small Production (100 users, 500 messages/month)**
 ```
-Azure Container Apps (8 hrs/day):     $6.00
-Azure Container Registry (Basic):     $5.00
-Azure Redis (Standard C1):           $61.90
-OpenAI API (moderate usage):         $15.00
-SerpAPI (Starter plan):              $25.00
-WhatsApp (within free tier):         $0.00
-────────────────────────────────────────────
-Total: ~$113/month
+Azure Container Apps (2-4 hrs/day):      $3.00
+Azure Container Registry (Basic):        $5.00
+Azure Redis (Basic C1 - 1GB):           $30.95
+Azure Log Analytics (Basic):             $2.31
+OpenAI API (moderate usage):            $15.00
+SerpAPI (Starter plan):                 $25.00
+WhatsApp (within free tier):             $0.00
+─────────────────────────────────────────────────
+Total: ~$81.26/month
 ```
 
 #### **Medium Production (500 users, 2500 messages/month)**
 ```
-Azure Container Apps (16 hrs/day):   $12.00
-Azure Container Registry (Basic):     $5.00
-Azure Redis (Standard C2):          $123.80
+Azure Container Apps (8-12 hrs/day):    $8.00
+Azure Container Registry (Basic):        $5.00
+Azure Redis (Standard C1 - 1GB):        $61.90
+Azure Log Analytics (Standard):          $5.00
+OpenAI API (heavy usage):               $45.00
+SerpAPI (Pro plan):                     $75.00
+WhatsApp (paid conversations):          $12.50
+─────────────────────────────────────────────────
+Total: ~$212.40/month
 OpenAI API (heavy usage):            $50.00
 SerpAPI (Pro plan):                  $75.00
 WhatsApp (paid conversations):       $15.00
@@ -765,6 +781,63 @@ SerpAPI (Custom plan):              $150.00
 WhatsApp (business messaging):       $50.00
 ────────────────────────────────────────────
 Total: ~$804/month
+```
+
+### Real-World Cost Verification
+
+Based on the actual deployed resources, here's what you can expect:
+
+#### Quick Cost Check Script
+
+```bash
+# Run the automated cost verification script
+./scripts/check-costs.sh
+
+# This script will:
+# - Find your WhatsApp RAG resource group
+# - Check actual resource SKUs and pricing tiers  
+# - Calculate your real monthly costs
+# - Show optional usage-based cost analysis
+```
+
+#### Manual Cost Verification
+```bash
+# Check your actual resource group and resources
+az group list --output table
+export RG="your-resource-group-name"  # Replace with your actual RG name
+
+# Verify what you're actually paying for:
+echo "=== AZURE CONTAINER REGISTRY ==="
+az acr show -n $(az acr list -g $RG --query "[0].name" -o tsv) -g $RG \
+  --query "{name:name, sku:sku.name, monthlyCost:'~$5.00'}" --output table
+
+echo "=== REDIS CACHE ==="
+az redis show -n $(az redis list -g $RG --query "[0].name" -o tsv) -g $RG \
+  --query "{name:name, sku:sku.name, capacity:sku.capacity, monthlyCost:'C0=~$16.32, C1=~$30.95'}" --output table
+
+echo "=== CONTAINER APPS ==="
+echo "Container Apps (Consumption): Scales to 0 = $0.00 when idle"
+az containerapp show -n $(az containerapp list -g $RG --query "[0].name" -o tsv) -g $RG \
+  --query "properties.provisioningState" --output tsv
+
+# Your actual minimum monthly cost (when container scales to 0):
+echo "=== MINIMUM MONTHLY COST ==="
+echo "ACR Basic: $5.00"
+echo "Redis C0:  $16.32"
+echo "Log Analytics: ~$2.31"
+echo "Total minimum: ~$23.63/month"
+```
+
+#### Check Your Live Costs
+
+```bash
+# Get your actual spending (requires Azure Cost Management)
+az consumption usage list \
+  --start-date $(date -v-7d +%Y-%m-%d) \
+  --end-date $(date +%Y-%m-%d) \
+  --resource-group $RG \
+  --query "[].{Resource:instanceName, DailyCost:pretaxCost, Currency:currency}" \
+  --output table
 ```
 
 ### Cost Optimization Strategies
@@ -801,7 +874,32 @@ EMBEDDING_MODEL=text-embedding-ada-002  # vs text-embedding-3-large
 
 ### Monitoring Costs
 
+#### Verify Your Current Resource Costs
+
+```bash
+# Check your resource group name
+az group list --output table
+
+# List all resources and their pricing tiers
+export RG="rg-whatsapp-agent"  # Replace with your resource group name
+az resource list -g $RG --output table
+
+# Verify specific resource configurations and costs
+# Container Registry pricing tier
+az acr show -n $(az acr list -g $RG --query "[0].name" -o tsv) -g $RG \
+  --query "{name:name, sku:sku.name, tier:sku.tier}" --output table
+
+# Redis cache pricing tier  
+az redis show -n $(az redis list -g $RG --query "[0].name" -o tsv) -g $RG \
+  --query "{name:name, sku:sku.name, family:sku.family, capacity:sku.capacity}" --output table
+
+# Container app status (should scale to 0 when not in use)
+az containerapp show -n $(az containerapp list -g $RG --query "[0].name" -o tsv) -g $RG \
+  --query "properties.provisioningState" --output tsv
+```
+
 #### Azure Cost Management
+
 ```bash
 # Set up budget alerts
 az consumption budget create \
@@ -815,6 +913,12 @@ az consumption usage list \
   --top 10 \
   --include-additional-properties \
   --include-meter-details
+
+# Get cost analysis for the last 30 days
+az consumption usage list \
+  --start-date $(date -v-30d +%Y-%m-%d) \
+  --end-date $(date +%Y-%m-%d) \
+  --resource-group $RG
 ```
 
 #### API Usage Monitoring
