@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import PlainTextResponse
+from fastapi.middleware.cors import CORSMiddleware
 import json
 import requests
 from agent.orchestrator import WhatsAppOrchestrator
@@ -17,6 +18,13 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="WhatsApp RAG Agent", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://sachin-mamoru.github.io"],
+    allow_methods=["POST", "GET"],
+    allow_headers=["X-Admin-Token", "Content-Type"],
+)
 
 # Initialize the orchestrator
 orchestrator = WhatsAppOrchestrator()
