@@ -19,6 +19,7 @@ source .env
 RG=rg-whatsapp-agent
 ACR=acrwhatsapprag32324
 APP=whatsapp-agent
+IMG_TAG=$(date +%Y%m%d%H%M%S)
 
 # Check if Azure CLI is logged in
 if ! az account show &> /dev/null; then
@@ -34,7 +35,7 @@ if ! $USE_ACR_BUILD && ! docker info &> /dev/null; then
 fi
 
 echo "📦 Building image via Azure Container Registry Tasks (no local Docker needed)..."
-az acr build --registry $ACR --image $APP:latest --platform linux/amd64 . 2>&1
+az acr build --registry $ACR --image $APP:$IMG_TAG --platform linux/amd64 . 2>&1
 
 echo "� Storing Google credentials as Azure secret..."
 GOOGLE_CREDS_B64=$(base64 < credentials.json | tr -d '\n')
@@ -51,7 +52,7 @@ echo "🔄 Deploying container app..."
 # Check if app already exists
 if az containerapp show --name $APP --resource-group $RG &>/dev/null; then
   az containerapp update --name $APP --resource-group $RG \
-    --image $ACR.azurecr.io/$APP:latest \
+    --image $ACR.azurecr.io/$APP:$IMG_TAG \
     --set-env-vars \
       GOOGLE_SHEETS_CREDENTIALS_JSON=secretref:google-credentials-json \
       REDIS_URL=secretref:redis-url \
@@ -71,7 +72,7 @@ if az containerapp show --name $APP --resource-group $RG &>/dev/null; then
 else
   az containerapp create --name $APP --resource-group $RG \
     --environment env-whatsapp-agent \
-    --image $ACR.azurecr.io/$APP:latest \
+    --image $ACR.azurecr.io/$APP:$IMG_TAG \
     --registry-server $ACR.azurecr.io \
     --registry-username $(az acr credential show -n $ACR --query username -o tsv) \
     --registry-password $(az acr credential show -n $ACR --query "passwords[0].value" -o tsv) \
