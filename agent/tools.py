@@ -1,7 +1,7 @@
 import asyncio
 import os
+import aiohttp
 from typing import Optional
-from serpapi import GoogleSearch
 from duckduckgo_search import DDGS
 from langchain_openai import ChatOpenAI
 from config import Config
@@ -13,62 +13,48 @@ class WebSearchTool:
             openai_api_key=Config.OPENAI_API_KEY,
             temperature=0.1
         )
-        self.serpapi_key = os.getenv('SERPAPI_KEY')
-        self.has_serpapi = bool(self.serpapi_key)
-    
+        self.serper_key = os.getenv('SERPER_API_KEY')
+        self.has_serper = bool(self.serper_key)
+
     async def search(self, query: str, language: str = "en") -> Optional[str]:
         """Perform web search and summarize results"""
         try:
-            # Try SerpAPI first if available, otherwise use DuckDuckGo
-            if self.has_serpapi:
-                search_results = await self.serpapi_search(query, language)
+            if self.has_serper:
+                search_results = await self.serper_search(query, language)
             else:
                 search_results = await self.web_search(query, language)
-            
+
             if not search_results:
                 return None
-            
-            # Summarize results using LLM
+
             summary = await self.summarize_results(search_results, query, language)
             return summary
-            
+
         except Exception as e:
             print(f"Error in web search: {e}")
             return None
-    
-    async def serpapi_search(self, query: str, language: str) -> list:
-        """Perform search using SerpAPI (Google Search)"""
+
+    async def serper_search(self, query: str, language: str) -> list:
+        """Perform search using Serper.dev (Google Search)"""
         try:
-            params = {
-                'q': query,
-                'api_key': self.serpapi_key,
-                'engine': 'google',
-                'num': 5,
-                'hl': language if language == 'en' else 'en',
-                'safe': 'active'
+            url = "https://google.serper.dev/search"
+            headers = {
+                "X-API-KEY": self.serper_key,
+                "Content-Type": "application/json"
             }
-            
-            # Use asyncio to run the synchronous SerpAPI search
-            loop = asyncio.get_event_loop()
-            search = GoogleSearch(params)
-            results = await loop.run_in_executor(None, search.get_dict)
-            
-            # Convert SerpAPI results to DuckDuckGo format for compatibility
-            organic_results = results.get('organic_results', [])
-            formatted_results = []
-            
-            for result in organic_results:
-                formatted_results.append({
-                    'title': result.get('title', ''),
-                    'body': result.get('snippet', ''),
-                    'href': result.get('link', '')
-                })
-            
-            return formatted_results
-            
+            payload = {"q": query, "num": 5}
+
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, json=payload, headers=headers, timeout=aiohttp.ClientTimeout(total=10)) as resp:
+                    data = await resp.json()
+
+            organic = data.get("organic", [])
+            return [
+                {"title": r.get("title", ""), "body": r.get("snippet", ""), "href": r.get("link", "")}
+                for r in organic
+            ]
         except Exception as e:
-            print(f"Error in SerpAPI search: {e}")
-            # Fallback to DuckDuckGo
+            print(f"Error in Serper search: {e}")
             return await self.web_search(query, language)
 
     async def web_search(self, query: str, language: str) -> list:
