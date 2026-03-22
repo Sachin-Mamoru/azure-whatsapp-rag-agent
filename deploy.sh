@@ -42,10 +42,16 @@ az acr login --name $ACR
 echo "⬆️  Pushing image to ACR..."
 docker push $ACR.azurecr.io/$APP:latest
 
+echo "� Storing Google credentials as Azure secret..."
+GOOGLE_CREDS_B64=$(base64 < credentials.json | tr -d '\n')
+az containerapp secret set --name $APP --resource-group $RG \
+  --secrets "google-credentials-json=$GOOGLE_CREDS_B64" 2>/dev/null || true
+
 echo "🔄 Updating container app..."
 az containerapp update --name $APP --resource-group $RG \
   --image $ACR.azurecr.io/$APP:latest \
   --set-env-vars \
+    GOOGLE_SHEETS_CREDENTIALS_JSON=secretref:google-credentials-json \
     WHATSAPP_VERIFY_TOKEN="$WHATSAPP_VERIFY_TOKEN" \
     WHATSAPP_TOKEN="$WHATSAPP_TOKEN" \
     WHATSAPP_PHONE_NUMBER_ID="$WHATSAPP_PHONE_NUMBER_ID" \

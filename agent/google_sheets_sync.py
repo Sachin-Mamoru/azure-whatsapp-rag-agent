@@ -138,16 +138,25 @@ def sync_from_google_sheets() -> int:
         )
         return 0
 
-    if not os.path.exists(creds_file):
-        print(f"[sheets_sync] credentials file not found: {creds_file}")
+    scopes = [
+        "https://www.googleapis.com/auth/spreadsheets.readonly",
+        "https://www.googleapis.com/auth/drive.readonly",
+    ]
+
+    # Support credentials from env var (base64-encoded JSON) for containerised deployments
+    creds_json_b64 = os.environ.get("GOOGLE_SHEETS_CREDENTIALS_JSON", "")
+    if creds_json_b64:
+        import base64
+        creds_json = base64.b64decode(creds_json_b64).decode("utf-8")
+        creds_info = json.loads(creds_json)
+        creds = Credentials.from_service_account_info(creds_info, scopes=scopes)
+    elif creds_file and os.path.exists(creds_file):
+        creds = Credentials.from_service_account_file(creds_file, scopes=scopes)
+    else:
+        print(f"[sheets_sync] No credentials available (file: {creds_file}, env var: not set).")
         return 0
 
     try:
-        scopes = [
-            "https://www.googleapis.com/auth/spreadsheets.readonly",
-            "https://www.googleapis.com/auth/drive.readonly",
-        ]
-        creds = Credentials.from_service_account_file(creds_file, scopes=scopes)
         gc = gspread.authorize(creds)
         sh = gc.open_by_key(spreadsheet_id)
         worksheet = sh.get_worksheet(0)  # first sheet = Form Responses 1
