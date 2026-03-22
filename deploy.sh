@@ -44,7 +44,22 @@ docker push $ACR.azurecr.io/$APP:latest
 
 echo "🔄 Updating container app..."
 az containerapp update --name $APP --resource-group $RG \
-  --image $ACR.azurecr.io/$APP:latest
+  --image $ACR.azurecr.io/$APP:latest \
+  --set-env-vars \
+    WHATSAPP_VERIFY_TOKEN="$WHATSAPP_VERIFY_TOKEN" \
+    WHATSAPP_TOKEN="$WHATSAPP_TOKEN" \
+    WHATSAPP_PHONE_NUMBER_ID="$WHATSAPP_PHONE_NUMBER_ID" \
+    OPENAI_API_KEY="$OPENAI_API_KEY" \
+    MODEL_NAME="$MODEL_NAME" \
+    EMBEDDING_MODEL="$EMBEDDING_MODEL" \
+    REDIS_URL="$REDIS_URL" \
+    REGISTRATION_FORM_URL="$REGISTRATION_FORM_URL" \
+    GOOGLE_SHEETS_SPREADSHEET_ID="$GOOGLE_SHEETS_SPREADSHEET_ID" \
+    EARLY_WARNING_DATA_URL="$EARLY_WARNING_DATA_URL" \
+    SHEETS_SYNC_INTERVAL_MINUTES="${SHEETS_SYNC_INTERVAL_MINUTES:-30}" \
+    ALERT_CHECK_INTERVAL_MINUTES="${ALERT_CHECK_INTERVAL_MINUTES:-60}" \
+    ADMIN_SECRET="$ADMIN_SECRET"
+
 
 echo "✅ Deployment complete!"
 echo ""

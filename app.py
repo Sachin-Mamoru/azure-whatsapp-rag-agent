@@ -1,11 +1,22 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import PlainTextResponse
 import json
 import requests
 from agent.orchestrator import WhatsAppOrchestrator
+from agent.scheduler import start_scheduler, stop_scheduler, trigger_alert_now, trigger_sheets_sync_now
 from config import Config
 
-app = FastAPI(title="WhatsApp RAG Agent")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Start background scheduler on boot, shut it down on exit."""
+    start_scheduler()
+    yield
+    stop_scheduler()
+
+
+app = FastAPI(title="WhatsApp RAG Agent", lifespan=lifespan)
 
 # Initialize the orchestrator
 orchestrator = WhatsAppOrchestrator()
@@ -81,6 +92,46 @@ async def send_whatsapp_message(phone_number: str, message: str):
     except Exception as e:
         print(f"Error sending WhatsApp message: {e}")
         return None
+
+
+# ── Admin / internal endpoints ─────────────────────────────────────────────
+@app.post("/admin/trigger-alerts")
+async def admin_trigger_alerts(request: Request):
+    """
+    Manually trigger one alert cycle (crawl + send).
+    Requires the internal admin token via X-Admin-Token header.
+    """
+    _require_admin_token(request)
+    stats = await trigger_alert_now()
+    return {"status": "ok", "stats": stats}
+
+
+@app.post("/admin/sync-registrations")
+async def admin_sync_registrations(request: Request):
+    """Manually pull the latest registrations from Google Sheets."""
+    _require_admin_token(request)
+    count = await trigger_sheets_sync_now()
+    return {"status": "ok", "synced": count}
+
+
+@app.get("/admin/registrations/count")
+async def admin_registration_count(request: Request):
+    """Return the number of registered subscribers."""
+    _require_admin_token(request)
+    from agent.registration import count_registrations
+    return {"count": count_registrations()}
+
+
+def _require_admin_token(request: Request):
+    """Simple admin auth guard using ADMIN_SECRET env var."""
+    import os
+    secret = os.getenv("ADMIN_SECRET", "")
+    if not secret:
+        return  # if not set, allow freely (dev mode)
+    token = request.headers.get("X-Admin-Token", "")
+    if token != secret:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
 
 if __name__ == "__main__":
     import uvicorn

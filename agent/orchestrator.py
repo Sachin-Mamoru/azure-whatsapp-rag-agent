@@ -5,7 +5,7 @@ from typing import Optional, Dict, Any
 from agent.memory import ConversationMemory
 from agent.rag import RAGSystem
 from agent.tools import WebSearchTool
-from agent.i18n import LanguageDetector, get_menu_text, get_response_text
+from agent.i18n import LanguageDetector, get_menu_text, get_response_text, get_registration_prompt
 from config import Config
 
 class WhatsAppOrchestrator:
@@ -15,7 +15,17 @@ class WhatsAppOrchestrator:
         self.rag_system = RAGSystem()
         self.web_search = WebSearchTool()
         self.lang_detector = LanguageDetector()
-        
+
+    # ── Registration commands ──────────────────────────────────────────────
+    _REGISTER_COMMANDS = [
+        "register", "sign up", "signup", "subscribe", "alert", "alerts",
+        "early warning", "ලියාපදිංචි", "ලියාපදිංචි වන්න", "අනතුරු ඇඟවීම",
+        "பதிவு", "பதிவு செய்", "எச்சரிக்கை",
+    ]
+
+    # ── STOP / unsubscribe ─────────────────────────────────────────────────
+    _STOP_COMMANDS = ["stop", "unsubscribe", "නතර", "நிறுத்து"]
+
     async def process_message(self, phone_number: str, message: str, message_id: str) -> Optional[str]:
         """Process incoming WhatsApp message and return response"""
         try:
@@ -40,8 +50,39 @@ class WhatsAppOrchestrator:
             # Check if user wants to change language (more flexible matching)
             if any(cmd in message_lower for cmd in language_commands):
                 return get_menu_text()
-            
-            # Check if user is selecting language (numbers or specific responses)
+
+            # ── Registration command ────────────────────────────────────────
+            if any(cmd in message_lower for cmd in self._REGISTER_COMMANDS):
+                lang = session.get("language", "en")
+                return get_registration_prompt(Config.REGISTRATION_FORM_URL, lang)
+
+            # ── STOP / unsubscribe command ──────────────────────────────────
+            if any(cmd in message_lower for cmd in self._STOP_COMMANDS):
+                lang = session.get("language", "en")
+                stop_msgs = {
+                    "en": "✅ You have been unsubscribed from early warning alerts. Reply *register* anytime to re-subscribe.",
+                    "si": "✅ ඔබ මුල් අනතුරු ඇඟවීම් දැනුම්දීම් වලින් ඉවත් කර ඇත. නැවත ලියාපදිංචි වීමට ඕනෑම වේලාවක *register* ලෙස පිළිතුරු දෙන්න.",
+                    "ta": "✅ ஆரம்ப எச்சரிக்கை அறிவிப்புகளிலிருந்து நீங்கள் பதிவு நீக்கப்பட்டீர்கள். மீண்டும் பதிவு செய்ய எந்த நேரத்திலும் *register* என்று பதிலளிக்கவும்.",
+                }
+                # Mark as unsubscribed in the registration DB (if they exist)
+                try:
+                    from agent.registration import upsert_registration, get_all_subscribers
+                    import sqlite3, os
+                    db_path = os.getenv("REGISTRATIONS_DB", "./data/registrations.db")
+                    if os.path.exists(db_path):
+                        import sqlite3 as _sqlite3
+                        conn = _sqlite3.connect(db_path)
+                        conn.execute(
+                            "UPDATE registrations SET consent = 0 WHERE phone_number = ?",
+                            (phone_number,)
+                        )
+                        conn.commit()
+                        conn.close()
+                except Exception as e:
+                    print(f"[orchestrator] STOP update failed: {e}")
+                return stop_msgs.get(lang, stop_msgs["en"])
+
+
             if message.strip() in ["1", "2", "3"]:
                 language_map = {"1": "si", "2": "en", "3": "ta"}
                 selected_language = language_map.get(message.strip())

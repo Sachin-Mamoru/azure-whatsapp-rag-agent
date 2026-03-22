@@ -1,0 +1,255 @@
+{
+  "last_updated": "2026-03-22T00:00:00Z",
+  "district_warnings": {
+    "Ampara": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Ampara district.",
+        "si": "අම්පාර දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "அம்பாறை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Anuradhapura": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Anuradhapura district.",
+        "si": "අනුරාධපුර දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "அனுராதபுரம் மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Badulla": {
+      "active": false,
+      "level": "none",
+      "hazard": "landslide",
+      "message": {
+        "en": "No active warnings for Badulla district.",
+        "si": "බදුල්ල දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "பதுல்லை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Batticaloa": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Batticaloa district.",
+        "si": "මඩකලපුව දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "மட்டக்களப்பு மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Colombo": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Colombo district.",
+        "si": "කොළඹ දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "கொழும்பு மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Galle": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Galle district.",
+        "si": "ගාල්ල දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "காலி மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Gampaha": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Gampaha district.",
+        "si": "ගම්පහ දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "கம்பஹா மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Hambantota": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Hambantota district.",
+        "si": "හම්බන්තොට දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "அம்பாந்தோட்டை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Jaffna": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Jaffna district.",
+        "si": "යාපනය දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "யாழ்ப்பாணம் மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Kalutara": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Kalutara district.",
+        "si": "කළුතර දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "களுத்துறை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Kandy": {
+      "active": false,
+      "level": "none",
+      "hazard": "landslide",
+      "message": {
+        "en": "No active warnings for Kandy district.",
+        "si": "මහනුවර දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "கண்டி மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Kegalle": {
+      "active": false,
+      "level": "none",
+      "hazard": "landslide",
+      "message": {
+        "en": "No active warnings for Kegalle district.",
+        "si": "කෑගල්ල දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "கேகாலை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Kilinochchi": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Kilinochchi district.",
+        "si": "කිලිනොච්චිය දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "கிளிநொச்சி மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Kurunegala": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Kurunegala district.",
+        "si": "කුරුණෑගල දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "குருணாகல் மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Mannar": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Mannar district.",
+        "si": "මන්නාරම දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "மன்னார் மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Matale": {
+      "active": false,
+      "level": "none",
+      "hazard": "landslide",
+      "message": {
+        "en": "No active warnings for Matale district.",
+        "si": "මාතලේ දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "மாத்தளை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Matara": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Matara district.",
+        "si": "මාතර දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "மாத்தறை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Monaragala": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Monaragala district.",
+        "si": "මොනරාගල දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "மொணராகலை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Mullaitivu": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Mullaitivu district.",
+        "si": "මුලතිව් දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "முல்லைத்தீவு மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Nuwara Eliya": {
+      "active": false,
+      "level": "none",
+      "hazard": "landslide",
+      "message": {
+        "en": "No active warnings for Nuwara Eliya district.",
+        "si": "නුවරඑළිය දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "நுவரெலியா மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Polonnaruwa": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Polonnaruwa district.",
+        "si": "පොළොන්නරුව දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "பொலன்னறுவை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Puttalam": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Puttalam district.",
+        "si": "පුත්තලම දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "புத்தளம் மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Ratnapura": {
+      "active": false,
+      "level": "none",
+      "hazard": "landslide",
+      "message": {
+        "en": "No active warnings for Ratnapura district.",
+        "si": "රත්නපුර දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "இரத்தினபுரி மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Trincomalee": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Trincomalee district.",
+        "si": "ත්‍රිකුණාමලය දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "திருகோணமலை மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    },
+    "Vavuniya": {
+      "active": false,
+      "level": "none",
+      "hazard": "flood",
+      "message": {
+        "en": "No active warnings for Vavuniya district.",
+        "si": "වව්නියාව දිස්ත්‍රික්කය සඳහා ක්‍රියාකාරී අනතුරු ඇඟවීම් නොමැත.",
+        "ta": "வவுனியா மாவட்டத்திற்கு செயல்பாட்டு எச்சரிக்கைகள் இல்லை."
+      }
+    }
+  }
+}

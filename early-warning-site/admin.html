@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – Early Warning Toggle</title>
+  <style>
+    :root {
+      --green:  #27ae60;
+      --red:    #e74c3c;
+      --orange: #e67e22;
+      --yellow: #f39c12;
+      --dark:   #1a252f;
+      --blue:   #2980b9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #eaf1f8;
+      color: #2c3e50;
+    }
+
+    header {
+      background: var(--dark);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1  { font-size: 1.15rem; }
+    header a   { color: #aed6f1; font-size: 0.82rem; text-decoration: none; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 48px; }
+
+    .config-box {
+      background: #fff;
+      border: 1px solid #dde;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+    .config-box h2 { font-size: 1rem; margin-bottom: 14px; color: var(--dark); }
+
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: #555; margin-bottom: 4px; }
+    input, select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+    input:focus, select:focus { outline: 2px solid var(--blue); border-color: transparent; }
+
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .row > * { flex: 1; min-width: 160px; }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 7px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn-blue   { background: var(--blue);  color: #fff; }
+    .btn-green  { background: var(--green); color: #fff; }
+    .btn-orange { background: var(--orange); color: #fff; }
+    .btn-sm     { padding: 6px 14px; font-size: 0.8rem; }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    #status-msg {
+      margin: 12px 0;
+      padding: 10px 14px;
+      border-radius: 7px;
+      font-size: 0.88rem;
+      display: none;
+    }
+    .msg-ok  { background: #d5f5e3; color: #1e8449; }
+    .msg-err { background: #fdecea; color: #c0392b; }
+
+    .districts-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .districts-header h2 { font-size: 1rem; color: var(--dark); }
+
+    table {
+      width: 100%;
+      background: #fff;
+      border-radius: 10px;
+      border-collapse: collapse;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,.07);
+    }
+    thead { background: var(--dark); color: #fff; }
+    thead th { padding: 11px 14px; text-align: left; font-size: 0.82rem; font-weight: 600; }
+    tbody tr { border-bottom: 1px solid #eee; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fbff; }
+    tbody td { padding: 9px 14px; font-size: 0.85rem; vertical-align: middle; }
+
+    .toggle-btn {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .toggle-btn.on  { background: var(--red);   color: #fff; }
+    .toggle-btn.off { background: var(--green); color: #fff; }
+    .toggle-btn:hover { opacity: .82; }
+
+    .level-select, .hazard-select {
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 0.8rem;
+      background: #fff;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-none    { background: var(--green);  color: #fff; }
+    .badge-low     { background: #8bc34a;       color: #fff; }
+    .badge-medium  { background: var(--yellow); color: #fff; }
+    .badge-high    { background: var(--orange); color: #fff; }
+    .badge-extreme { background: var(--red);    color: #fff; }
+
+    #save-bar {
+      position: sticky;
+      bottom: 0;
+      background: var(--dark);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    #save-bar span { color: #ccc; font-size: 0.85rem; }
+
+    #loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      color: #fff;
+      font-size: 1.2rem;
+    }
+    #loading-overlay.show { display: flex; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>⚙️ Early Warning Admin Panel</h1>
+  <a href="index.html">← Back to Public Site</a>
+</header>
+
+<div id="loading-overlay">⏳ Saving to GitHub…</div>
+
+<div class="container">
+
+  <!-- GitHub Settings -->
+  <div class="config-box">
+    <h2>🔑 GitHub Configuration <small style="font-weight:400;color:#888;">(saved in your browser only)</small></h2>
+    <div class="row">
+      <div>
+        <label>GitHub Owner (username or org)</label>
+        <input id="gh-owner" type="text" placeholder="e.g. your-username" />
+      </div>
+      <div>
+        <label>Repository Name</label>
+        <input id="gh-repo" type="text" placeholder="e.g. early-warning-site" />
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label>Branch</label>
+        <input id="gh-branch" type="text" placeholder="main" value="main" />
+      </div>
+      <div>
+        <label>data.json path in repo</label>
+        <input id="gh-path" type="text" placeholder="early-warning-site/data.json" value="early-warning-site/data.json" />
+      </div>
+    </div>
+    <label>Personal Access Token (PAT) – needs <code>repo</code> scope</label>
+    <input id="gh-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxx" />
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-blue" onclick="saveConfig()">💾 Save Config</button>
+      <button class="btn btn-orange" onclick="loadFromGitHub()">🔄 Load Current data.json</button>
+    </div>
+  </div>
+
+  <div id="status-msg"></div>
+
+  <!-- District table -->
+  <div class="districts-header">
+    <h2>📍 District Warning Status</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-sm btn-orange" onclick="setAll(true,'high','flood')">🔴 Activate ALL</button>
+      <button class="btn btn-sm btn-green"  onclick="setAll(false,'none','flood')">✅ Clear ALL</button>
+    </div>
+  </div>
+
+  <table id="districts-table">
+    <thead>
+      <tr>
+        <th>District</th>
+        <th>Status</th>
+        <th>Level</th>
+        <th>Hazard</th>
+        <th>Toggle</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      <tr><td colspan="5" style="text-align:center;padding:24px;color:#aaa;">
+        Load data using the button above to edit warnings.
+      </td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- Sticky save bar -->
+<div id="save-bar">
+  <span id="pending-note">No unsaved changes.</span>
+  <button class="btn btn-green" id="save-btn" onclick="saveToGitHub()" disabled>
+    🚀 Commit &amp; Save to GitHub
+  </button>
+</div>
+
+<script>
+  const LEVELS  = ['none','low','medium','high','extreme'];
+  const HAZARDS = ['flood','landslide','cyclone','drought','storm','tsunami'];
+  const LEVEL_ICONS = { none:'✅', low:'🟡', medium:'🟠', high:'🔴', extreme:'🆘' };
+
+  let currentData   = null;   // full JSON from GitHub
+  let currentSHA    = null;   // blob SHA needed for update
+  let dirty         = false;
+
+  // ── Persistence ────────────────────────────────────────────────────────────
+  const LS = {
+    save(k,v)   { localStorage.setItem('ews_' + k, v); },
+    load(k, d)  { return localStorage.getItem('ews_' + k) ?? d; },
+  };
+
+  function saveConfig() {
+    LS.save('owner',  document.getElementById('gh-owner').value.trim());
+    LS.save('repo',   document.getElementById('gh-repo').value.trim());
+    LS.save('branch', document.getElementById('gh-branch').value.trim() || 'main');
+    LS.save('path',   document.getElementById('gh-path').value.trim());
+    LS.save('token',  document.getElementById('gh-token').value.trim());
+    showMsg('Config saved to local storage.', false);
+  }
+
+  function restoreConfig() {
+    document.getElementById('gh-owner').value  = LS.load('owner',  '');
+    document.getElementById('gh-repo').value   = LS.load('repo',   '');
+    document.getElementById('gh-branch').value = LS.load('branch', 'main');
+    document.getElementById('gh-path').value   = LS.load('path',   'early-warning-site/data.json');
+    document.getElementById('gh-token').value  = LS.load('token',  '');
+  }
+
+  function cfg(key) { return LS.load(key, ''); }
+
+  // ── GitHub API ──────────────────────────────────────────────────────────────
+  function apiUrl(path) {
+    return `https://api.github.com/repos/${cfg('owner')}/${cfg('repo')}/contents/${path}`;
+  }
+
+  function headers() {
+    return {
+      'Authorization': `Bearer ${cfg('token')}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+    };
+  }
+
+  async function loadFromGitHub() {
+    const owner = cfg('owner'), repo = cfg('repo'), path = cfg('path'), token = cfg('token');
+    if (!owner || !repo || !path || !token) {
+      showMsg('Fill in and save GitHub config first.', true); return;
+    }
+    showOverlay(true);
+    try {
+      const resp = await fetch(apiUrl(path), { headers: headers() });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const meta = await resp.json();
+      currentSHA  = meta.sha;
+      const raw   = atob(meta.content.replace(/\n/g,''));
+      currentData = JSON.parse(raw);
+      renderTable();
+      dirty = false;
+      markDirty(false);
+      showMsg('✅ Loaded successfully from GitHub.', false);
+    } catch(e) {
+      showMsg('❌ Failed to load: ' + e.message, true);
+    } finally {
+      showOverlay(false);
+    }
+  }
+
+  async function saveToGitHub() {
+    if (!currentData) { showMsg('Load the data first.', true); return; }
+    const path = cfg('path'), branch = cfg('branch') || 'main';
+    currentData.last_updated = new Date().toISOString();
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
+    showOverlay(true);
+    try {
+      const body = {
+        message: `chore: update district warnings [${new Date().toISOString()}]`,
+        content,
+        sha:    currentSHA,
+        branch,
+      };
+      const resp = await fetch(apiUrl(path), {
+        method: 'PUT', headers: headers(), body: JSON.stringify(body),
+      });
+      if (!resp.ok) {
+        const err = await resp.json();
+        throw new Error(err.message || `HTTP ${resp.status}`);
+      }
+      const result = await resp.json();
+      currentSHA = result.content.sha;
+      dirty = false;
+      markDirty(false);
+      showMsg('✅ Saved to GitHub! GitHub Pages will update in ~1 min.', false);
+    } catch(e) {
+      showMsg('❌ Save failed: ' + e.message, true);
+    } finally {
+      showOverlay(false);
+    }
+  }
+
+  // ── Table Rendering ─────────────────────────────────────────────────────────
+  function renderTable() {
+    if (!currentData) return;
+    const tbody = document.getElementById('table-body');
+    const rows = Object.entries(currentData.district_warnings || {});
+
+    tbody.innerHTML = rows.map(([district, info]) => {
+      const active = info.active;
+      const level  = info.level || 'none';
+      const hazard = info.hazard || 'flood';
+      return `
+        <tr id="row-${district.replace(/ /g,'_')}">
+          <td><strong>${district}</strong></td>
+          <td><span class="badge badge-${active ? level : 'none'}">${active ? level.toUpperCase() : 'ALL CLEAR'}</span></td>
+          <td>
+            <select class="level-select" data-district="${district}" onchange="onLevelChange(this)">
+              ${LEVELS.map(l => `<option value="${l}" ${level===l?'selected':''}>${LEVEL_ICONS[l]} ${l}</option>`).join('')}
+            </select>
+          </td>
+          <td>
+            <select class="hazard-select" data-district="${district}" onchange="onHazardChange(this)">
+              ${HAZARDS.map(h => `<option value="${h}" ${hazard===h?'selected':''}>${h}</option>`).join('')}
+            </select>
+          </td>
+          <td>
+            <button class="toggle-btn ${active ? 'on' : 'off'}"
+              data-district="${district}"
+              onclick="toggleDistrict(this)">
+              ${active ? '🔴 Active' : '✅ Clear'}
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function toggleDistrict(btn) {
+    const district = btn.dataset.district;
+    const info     = currentData.district_warnings[district];
+    info.active    = !info.active;
+    // If activating and level is 'none', default to 'medium'
+    if (info.active && info.level === 'none') info.level = 'medium';
+    markDirty(true);
+    renderTable();
+  }
+
+  function onLevelChange(sel) {
+    const district = sel.dataset.district;
+    currentData.district_warnings[district].level = sel.value;
+    markDirty(true);
+    renderTable();
+  }
+
+  function onHazardChange(sel) {
+    const district = sel.dataset.district;
+    currentData.district_warnings[district].hazard = sel.value;
+    markDirty(true);
+  }
+
+  function setAll(active, level, hazard) {
+    if (!currentData) { showMsg('Load data first.', true); return; }
+    Object.keys(currentData.district_warnings).forEach(d => {
+      currentData.district_warnings[d].active = active;
+      currentData.district_warnings[d].level  = level;
+      currentData.district_warnings[d].hazard = hazard;
+    });
+    markDirty(true);
+    renderTable();
+  }
+
+  // ── UI helpers ──────────────────────────────────────────────────────────────
+  function markDirty(state) {
+    dirty = state;
+    const btn = document.getElementById('save-btn');
+    btn.disabled = !state;
+    document.getElementById('pending-note').textContent =
+      state ? '⚠️ Unsaved changes – click "Commit & Save" to publish.'
+            : 'No unsaved changes.';
+  }
+
+  function showMsg(txt, isErr) {
+    const el = document.getElementById('status-msg');
+    el.textContent = txt;
+    el.className   = isErr ? 'msg-err' : 'msg-ok';
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 6000);
+  }
+
+  function showOverlay(show) {
+    document.getElementById('loading-overlay').classList.toggle('show', show);
+  }
+
+  // ── Bootstrap ───────────────────────────────────────────────────────────────
+  restoreConfig();
+</script>
+</body>
+</html>

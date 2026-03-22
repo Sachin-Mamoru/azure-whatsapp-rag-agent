@@ -19,3 +19,25 @@ class Config:
     
     # WhatsApp API URLs
     WHATSAPP_BASE_URL = f"https://graph.facebook.com/v18.0/{WHATSAPP_PHONE_NUMBER_ID}"
+
+    # ── Registration & Alert features ──────────────────────────────────────
+    # SQLite path for subscriber registrations
+    REGISTRATIONS_DB = os.getenv("REGISTRATIONS_DB", "./data/registrations.db")
+
+    # Google Sheets (linked to Google Form responses)
+    GOOGLE_SHEETS_CREDENTIALS_FILE = os.getenv("GOOGLE_SHEETS_CREDENTIALS_FILE", "./credentials.json")
+    GOOGLE_SHEETS_SPREADSHEET_ID   = os.getenv("GOOGLE_SHEETS_SPREADSHEET_ID", "")
+
+    # GitHub Pages URL of the early warning data.json
+    # Example: https://your-username.github.io/your-repo/data.json
+    EARLY_WARNING_DATA_URL = os.getenv("EARLY_WARNING_DATA_URL", "")
+
+    # Registration Google Form URL shown to new users
+    REGISTRATION_FORM_URL = os.getenv(
+        "REGISTRATION_FORM_URL",
+        "https://forms.gle/YOUR_FORM_ID_HERE"
+    )
+
+    # Scheduler intervals (minutes)
+    SHEETS_SYNC_INTERVAL_MINUTES = int(os.getenv("SHEETS_SYNC_INTERVAL_MINUTES", "30"))
+    ALERT_CHECK_INTERVAL_MINUTES = int(os.getenv("ALERT_CHECK_INTERVAL_MINUTES", "60"))

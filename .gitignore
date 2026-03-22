@@ -120,3 +120,10 @@ Thumbs.db
 
 # Local testing
 docker-compose.override.yml
+
+# ── Registration & Alerts ─────────────────────────────────────────────────
+# Google Service Account key (never commit!)
+credentials.json
+
+# SQLite registrations database
+data/registrations.db

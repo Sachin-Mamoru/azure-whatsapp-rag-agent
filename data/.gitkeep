@@ -1,0 +1,3 @@
+# This directory holds the SQLite registrations database (registrations.db).
+# It is mounted as a Docker volume for persistence.
+# The file is auto-created at runtime – do not commit registrations.db to git.
