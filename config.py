@@ -18,7 +18,7 @@ class Config:
     TRAINING_ROOT = os.getenv("TRAINING_ROOT", "./training-files/general-hazard-awareness")
     
     # WhatsApp API URLs
-    WHATSAPP_BASE_URL = f"https://graph.facebook.com/v18.0/{WHATSAPP_PHONE_NUMBER_ID}"
+    WHATSAPP_BASE_URL = f"https://graph.facebook.com/v22.0/{WHATSAPP_PHONE_NUMBER_ID}"
 
     # ── Registration & Alert features ──────────────────────────────────────
     # SQLite path for subscriber registrations
