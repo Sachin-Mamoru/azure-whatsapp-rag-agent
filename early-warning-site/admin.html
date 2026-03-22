@@ -23,6 +23,11 @@
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .btn-green { background: #27ae60; color: #fff; }
     .btn-gray  { background: #95a5a6; color: #fff; }
+    .btn-red   { background: #e74c3c; color: #fff; }
+    .btn-blue  { background: #2980b9; color: #fff; }
+    .alert-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
+    .alert-section h2 { font-size: 0.95rem; color: #555; margin-bottom: 10px; }
+    .alert-result { margin-top: 10px; font-size: 0.82rem; padding: 10px 12px; border-radius: 7px; display: none; }
     .msg { padding: 12px; border-radius: 7px; font-size: 0.88rem; display: none; margin-bottom: 12px; }
     .ok  { background: #d5f5e3; color: #1e8449; }
     .err { background: #fdecea; color: #c0392b; }
@@ -56,6 +61,15 @@
   <div class="actions">
     <button class="btn btn-green" id="save-btn" onclick="saveChanges()" disabled>Save Changes</button>
     <button class="btn btn-gray" onclick="loadData()">Reload</button>
+  </div>
+
+  <div class="alert-section">
+    <h2>🔔 Alert Controls</h2>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-red" onclick="triggerAlerts()" id="alert-btn">🚨 Send Alerts Now</button>
+      <button class="btn btn-blue" onclick="syncSheets()" id="sync-btn">🔄 Sync Registrations</button>
+    </div>
+    <div id="alert-result" class="alert-result"></div>
   </div>
 
   <hr />
@@ -196,6 +210,54 @@
     el.className = "msg " + (isErr ? "err" : "ok");
     el.style.display = "block";
     if (!isErr) setTimeout(function() { el.style.display = "none"; }, 6000);
+  }
+
+  var BOT = {
+    url: "https://whatsapp-agent.wittysand-7a29c211.eastus.azurecontainerapps.io",
+    token: "admin_secret_change_me"
+  };
+
+  async function triggerAlerts() {
+    var btn = document.getElementById("alert-btn");
+    var res = document.getElementById("alert-result");
+    btn.disabled = true; btn.textContent = "Sending...";
+    res.style.display = "none";
+    try {
+      var r = await fetch(BOT.url + "/admin/trigger-alerts", {
+        method: "POST",
+        headers: { "X-Admin-Token": BOT.token }
+      });
+      var data = await r.json();
+      var s = data.stats || {};
+      res.textContent = "✅ Done — " + (s.warnings||0) + " warning(s), " + (s.notified||0) + " notified, " + (s.skipped||0) + " skipped, " + (s.errors||0) + " errors.";
+      res.style.background = "#d5f5e3"; res.style.color = "#1e8449";
+    } catch(e) {
+      res.textContent = "❌ Failed: " + e.message;
+      res.style.background = "#fdecea"; res.style.color = "#c0392b";
+    }
+    res.style.display = "block";
+    btn.disabled = false; btn.textContent = "🚨 Send Alerts Now";
+  }
+
+  async function syncSheets() {
+    var btn = document.getElementById("sync-btn");
+    var res = document.getElementById("alert-result");
+    btn.disabled = true; btn.textContent = "Syncing...";
+    res.style.display = "none";
+    try {
+      var r = await fetch(BOT.url + "/admin/sync-registrations", {
+        method: "POST",
+        headers: { "X-Admin-Token": BOT.token }
+      });
+      var data = await r.json();
+      res.textContent = "✅ Sync done — " + JSON.stringify(data);
+      res.style.background = "#d5f5e3"; res.style.color = "#1e8449";
+    } catch(e) {
+      res.textContent = "❌ Sync failed: " + e.message;
+      res.style.background = "#fdecea"; res.style.color = "#c0392b";
+    }
+    res.style.display = "block";
+    btn.disabled = false; btn.textContent = "🔄 Sync Registrations";
   }
 
   loadData();
