@@ -31,6 +31,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Inject ADMIN_PAT into admin.html
+        env:
+          ADMIN_PAT: ${{ secrets.ADMIN_PAT }}
+        run: |
+          sed -i "s|__ADMIN_PAT__|${ADMIN_PAT}|g" early-warning-site/admin.html
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 

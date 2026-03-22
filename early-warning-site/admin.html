@@ -31,17 +31,6 @@
 <div class="card">
   <h1>Early Warning Admin</h1>
   <p>Select a district and toggle its early warning status.</p>
-  <label>GitHub Owner</label>
-  <input id="owner" placeholder="Sachin-Mamoru" />
-  <label>Repository</label>
-  <input id="repo" placeholder="azure-whatsapp-rag-agent" />
-  <div class="row">
-    <div><label>Branch</label><input id="branch" value="main" /></div>
-    <div><label>Path</label><input id="path" value="early-warning-site/data.json" /></div>
-  </div>
-  <label>GitHub PAT Token (repo scope)</label>
-  <input id="token" type="password" placeholder="ghp_..." />
-  <button class="btn btn-blue"   onclick="saveConfig()">Save Config</button>
   <button class="btn btn-orange" onclick="loadData()">Load Districts</button>
   <hr />
   <label>District</label>
@@ -53,36 +42,26 @@
   <a href="index.html">Back to Public Site</a>
 </div>
 <script>
-  const LS = {
-    s: (k, v) => localStorage.setItem(k, v),
-    g: (k, d = '') => localStorage.getItem(k) ?? d
-  };
   let data = null, sha = null;
 
-  function saveConfig() {
-    LS.s('o', document.getElementById('owner').value.trim());
-    LS.s('r', document.getElementById('repo').value.trim());
-    LS.s('b', document.getElementById('branch').value.trim() || 'main');
-    LS.s('p', document.getElementById('path').value.trim());
-    LS.s('t', document.getElementById('token').value.trim());
-    msg('Config saved!', false);
-  }
+  // Config is hard-coded — PAT injected by GitHub Actions from repo secret
+  const CFG = {
+    owner:  'Sachin-Mamoru',
+    repo:   'azure-whatsapp-rag-agent',
+    branch: 'main',
+    path:   'early-warning-site/data.json',
+    token:  '__ADMIN_PAT__'
+  };
 
-  function restoreConfig() {
-    document.getElementById('owner').value  = LS.g('o');
-    document.getElementById('repo').value   = LS.g('r');
-    document.getElementById('branch').value = LS.g('b', 'main');
-    document.getElementById('path').value   = LS.g('p', 'early-warning-site/data.json');
-    document.getElementById('token').value  = LS.g('t');
-  }
+  function restoreConfig() { /* no-op — config is hard-coded */ }
 
   function apiUrl() {
-    return `https://api.github.com/repos/${LS.g('o')}/${LS.g('r')}/contents/${LS.g('p')}`;
+    return `https://api.github.com/repos/${CFG.owner}/${CFG.repo}/contents/${CFG.path}`;
   }
 
   function hdrs() {
     return {
-      'Authorization': `Bearer ${LS.g('t')}`,
+      'Authorization': `Bearer ${CFG.token}`,
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json'
     };
@@ -115,7 +94,7 @@
         method: 'PUT', headers: hdrs(),
         body: JSON.stringify({
           message: (active ? 'activate' : 'clear') + ' warning: ' + d,
-          content, sha, branch: LS.g('b', 'main')
+          content, sha, branch: CFG.branch
         })
       });
       if (!r.ok) { const e = await r.json(); throw new Error(e.message); }
