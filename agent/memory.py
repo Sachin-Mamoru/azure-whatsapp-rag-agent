@@ -15,6 +15,8 @@ class ConversationMemory:
         self.session_timeout = 3600 * 24  # 24 hours
 
     def _redis_ok(self) -> bool:
+        if self.redis is None:
+            return False
         try:
             self.redis.ping()
             return True
@@ -28,6 +30,8 @@ class ConversationMemory:
 
         # Try Redis first
         try:
+            if self.redis is None:
+                raise Exception("no redis client")
             session_data = self.redis.get(session_key)
             if session_data:
                 session = json.loads(session_data)
@@ -61,14 +65,15 @@ class ConversationMemory:
         ConversationMemory._local_sessions[phone_number] = session_data
 
         # Also persist to Redis (best-effort)
-        try:
-            self.redis.setex(
-                session_key,
-                self.session_timeout,
-                json.dumps(session_data)
-            )
-        except Exception as e:
-            print(f"[memory] Redis update_session error (using local cache): {e}")
+        if self.redis is not None:
+            try:
+                self.redis.setex(
+                    session_key,
+                    self.session_timeout,
+                    json.dumps(session_data)
+                )
+            except Exception as e:
+                print(f"[memory] Redis update_session error (using local cache): {e}")
     
     def add_message(self, phone_number: str, role: str, content: str):
         """Add message to conversation history"""
@@ -87,15 +92,16 @@ class ConversationMemory:
             ConversationMemory._local_conversations[phone_number] = local_conv[-20:]
 
         # Persist to Redis (best-effort)
-        try:
-            existing = self.redis.get(conv_key)
-            conversation = json.loads(existing) if existing else []
-            conversation.append(message)
-            if len(conversation) > 20:
-                conversation = conversation[-20:]
-            self.redis.setex(conv_key, self.session_timeout, json.dumps(conversation))
-        except Exception as e:
-            print(f"[memory] Redis add_message error (using local cache): {e}")
+        if self.redis is not None:
+            try:
+                existing = self.redis.get(conv_key)
+                conversation = json.loads(existing) if existing else []
+                conversation.append(message)
+                if len(conversation) > 20:
+                    conversation = conversation[-20:]
+                self.redis.setex(conv_key, self.session_timeout, json.dumps(conversation))
+            except Exception as e:
+                print(f"[memory] Redis add_message error (using local cache): {e}")
 
         # Update message count in session
         try:
@@ -109,14 +115,15 @@ class ConversationMemory:
         """Get conversation history"""
         conv_key = f"{self.conversation_prefix}{phone_number}"
 
-        try:
-            conversation_data = self.redis.get(conv_key)
-            if conversation_data:
-                conversation = json.loads(conversation_data)
-                ConversationMemory._local_conversations[phone_number] = conversation
-                return conversation[-limit:] if limit else conversation
-        except Exception as e:
-            print(f"[memory] Redis get_conversation error: {e}")
+        if self.redis is not None:
+            try:
+                conversation_data = self.redis.get(conv_key)
+                if conversation_data:
+                    conversation = json.loads(conversation_data)
+                    ConversationMemory._local_conversations[phone_number] = conversation
+                    return conversation[-limit:] if limit else conversation
+            except Exception as e:
+                print(f"[memory] Redis get_conversation error: {e}")
 
         # Fallback to local cache
         local_conv = ConversationMemory._local_conversations.get(phone_number, [])

@@ -10,7 +10,17 @@ from config import Config
 
 class WhatsAppOrchestrator:
     def __init__(self):
-        self.redis_client = redis.from_url(Config.REDIS_URL)
+        try:
+            self.redis_client = redis.from_url(
+                Config.REDIS_URL,
+                socket_connect_timeout=3,
+                socket_timeout=3,
+            )
+            self.redis_client.ping()  # validate connection at startup
+            print(f"[orchestrator] Redis connected: {Config.REDIS_URL[:30]}...")
+        except Exception as e:
+            print(f"[orchestrator] Redis unavailable ({e}), using in-memory sessions only")
+            self.redis_client = None
         self.memory = ConversationMemory(self.redis_client)
         self.rag_system = RAGSystem()
         self.web_search = WebSearchTool()
