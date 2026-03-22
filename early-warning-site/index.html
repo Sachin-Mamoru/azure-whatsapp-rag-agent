@@ -191,11 +191,8 @@
 
 <div class="legend">
   <strong>Legend:</strong>
-  <span><span class="dot" style="background:var(--green)"></span> None</span>
-  <span><span class="dot" style="background:#8bc34a"></span> Low</span>
-  <span><span class="dot" style="background:var(--yellow)"></span> Medium</span>
-  <span><span class="dot" style="background:var(--orange)"></span> High</span>
-  <span><span class="dot" style="background:var(--red)"></span> Extreme</span>
+  <span><span class="dot" style="background:var(--red)"></span> Active Warning</span>
+  <span><span class="dot" style="background:var(--green)"></span> All Clear</span>
 </div>
 
 <div id="loading">⏳ Fetching warning data…</div>
@@ -208,46 +205,22 @@
 </footer>
 
 <script>
-  const HAZARD_ICONS = {
-    flood: '🌊',
-    landslide: '⛰️',
-    cyclone: '🌀',
-    drought: '☀️',
-    storm: '⛈️',
-    tsunami: '🌊',
-    unknown: '⚠️',
-  };
-
-  const LEVEL_ORDER = { extreme: 0, high: 1, medium: 2, low: 3, none: 4 };
-
   async function loadData() {
     const resp = await fetch('data.json?_=' + Date.now());
     return resp.json();
   }
 
-  function badgeClass(level, active) {
-    if (active && level !== 'none') return 'badge-' + level;
-    return active ? 'badge-active' : 'badge-none';
-  }
-
-  function dotClass(level) {
-    return 'dot-' + (level || 'none');
-  }
-
   function render(data) {
-    const warnings = data.district_warnings || {};
+    const warnings = data.warnings || {};
     const entries = Object.entries(warnings);
 
-    // Sort: active first, then by level, then alphabetically
+    // Sort: active warnings first, then alphabetically
     entries.sort(([da, a], [db, b]) => {
-      if (a.active !== b.active) return a.active ? -1 : 1;
-      const la = LEVEL_ORDER[a.level] ?? 4;
-      const lb = LEVEL_ORDER[b.level] ?? 4;
-      if (la !== lb) return la - lb;
+      if (a !== b) return a ? -1 : 1;
       return da.localeCompare(db);
     });
 
-    const activeCount = entries.filter(([, v]) => v.active).length;
+    const activeCount = entries.filter(([, v]) => v).length;
     const safeCount   = entries.length - activeCount;
 
     // Summary cards
@@ -268,21 +241,16 @@
 
     // District cards
     const grid = document.getElementById('grid');
-    grid.innerHTML = entries.map(([district, info]) => {
-      const icon = HAZARD_ICONS[info.hazard] || '⚠️';
-      const msg  = (info.message || {}).en || '';
-      const lvl  = info.active ? info.level : 'none';
+    grid.innerHTML = entries.map(([district, active]) => {
       return `
-        <div class="card ${info.active ? 'active-warning' : ''}">
+        <div class="card ${active ? 'active-warning' : ''}">
           <div class="card-header">
             <div>
               <div class="card-district">${district}</div>
-              <div class="card-hazard">${icon} ${info.hazard}</div>
             </div>
-            <span class="status-dot ${dotClass(lvl)}"></span>
+            <span class="status-dot ${active ? 'dot-extreme' : 'dot-none'}"></span>
           </div>
-          <span class="badge badge-${badgeClass(info.level, info.active)}">${info.active ? info.level.toUpperCase() : 'ALL CLEAR'}</span>
-          <p class="card-msg" style="margin-top:8px">${msg}</p>
+          <span class="badge ${active ? 'badge-active' : 'badge-none'}">${active ? '⚠️ WARNING ACTIVE' : 'ALL CLEAR'}</span>
         </div>
       `;
     }).join('');
