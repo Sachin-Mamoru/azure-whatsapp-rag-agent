@@ -92,8 +92,10 @@ class WhatsAppOrchestrator:
                     self.memory.update_session(phone_number, session)
                     return get_response_text("language_selected", selected_language)
             
-            # If no language set, show menu
+            # If no language set, show menu only on first message; default to English after
             if not session.get("language"):
+                session["language"] = "en"
+                self.memory.update_session(phone_number, session)
                 return get_menu_text()
             
             user_language = session["language"]
