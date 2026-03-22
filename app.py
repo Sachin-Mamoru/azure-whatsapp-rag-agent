@@ -12,6 +12,23 @@ from config import Config
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Start background scheduler on boot, shut it down on exit."""
+    # Verify WhatsApp token on startup
+    try:
+        resp = requests.get(
+            f"https://graph.facebook.com/v22.0/{Config.WHATSAPP_PHONE_NUMBER_ID}",
+            params={"access_token": Config.WHATSAPP_TOKEN},
+            timeout=10
+        )
+        if resp.status_code == 200:
+            print("[startup] ✅ WhatsApp token is valid.")
+        else:
+            err = resp.json().get("error", {})
+            print(f"[startup] ❌ WhatsApp token INVALID: {err.get('message','unknown')} "
+                  f"(code {err.get('code')}). Bot will NOT be able to reply to messages. "
+                  f"Update WHATSAPP_TOKEN env var with a fresh token.")
+    except Exception as e:
+        print(f"[startup] ⚠️  Could not verify WhatsApp token: {e}")
+
     start_scheduler()
     yield
     stop_scheduler()
@@ -32,6 +49,22 @@ orchestrator = WhatsAppOrchestrator()
 @app.get("/")
 async def root():
     return {"message": "WhatsApp RAG Agent is running"}
+
+@app.get("/health/token")
+async def check_token():
+    """Check if the WhatsApp token is currently valid."""
+    try:
+        resp = requests.get(
+            f"https://graph.facebook.com/v22.0/{Config.WHATSAPP_PHONE_NUMBER_ID}",
+            params={"access_token": Config.WHATSAPP_TOKEN},
+            timeout=10
+        )
+        if resp.status_code == 200:
+            return {"token_valid": True, "phone_number_id": Config.WHATSAPP_PHONE_NUMBER_ID}
+        err = resp.json().get("error", {})
+        return {"token_valid": False, "error": err.get("message"), "code": err.get("code")}
+    except Exception as e:
+        return {"token_valid": False, "error": str(e)}
 
 @app.get("/webhook")
 async def verify_webhook(request: Request):

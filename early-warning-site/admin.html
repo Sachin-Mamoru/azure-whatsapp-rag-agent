@@ -25,6 +25,7 @@
     .btn-gray  { background: #95a5a6; color: #fff; }
     .btn-red   { background: #e74c3c; color: #fff; }
     .btn-blue  { background: #2980b9; color: #fff; }
+    .btn-orange{ background: #e67e22; color: #fff; }
     .alert-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
     .alert-section h2 { font-size: 0.95rem; color: #555; margin-bottom: 10px; }
     .alert-result { margin-top: 10px; font-size: 0.82rem; padding: 10px 12px; border-radius: 7px; display: none; }
@@ -65,9 +66,10 @@
 
   <div class="alert-section">
     <h2>🔔 Alert Controls</h2>
-    <div style="display:flex; gap:10px;">
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
       <button class="btn btn-red" onclick="triggerAlerts()" id="alert-btn">🚨 Send Alerts Now</button>
       <button class="btn btn-blue" onclick="syncSheets()" id="sync-btn">🔄 Sync Registrations</button>
+      <button class="btn btn-orange" onclick="checkToken()" id="token-btn">🔑 Check Token</button>
     </div>
     <div id="alert-result" class="alert-result"></div>
   </div>
@@ -216,6 +218,29 @@
     url: "https://whatsapp-agent.wittysand-7a29c211.eastus.azurecontainerapps.io",
     token: "admin_secret_change_me"
   };
+
+  async function checkToken() {
+    var btn = document.getElementById("token-btn");
+    var res = document.getElementById("alert-result");
+    btn.disabled = true; btn.textContent = "Checking...";
+    res.style.display = "none";
+    try {
+      var r = await fetch(BOT.url + "/health/token");
+      var data = await r.json();
+      if (data.token_valid) {
+        res.textContent = "✅ Token is valid. Phone ID: " + data.phone_number_id;
+        res.style.background = "#d5f5e3"; res.style.color = "#1e8449";
+      } else {
+        res.textContent = "❌ Token EXPIRED or invalid: " + (data.error || 'unknown') + " (code " + data.code + "). Update WHATSAPP_TOKEN on Azure.";
+        res.style.background = "#fdecea"; res.style.color = "#c0392b";
+      }
+    } catch(e) {
+      res.textContent = "❌ Check failed: " + e.message;
+      res.style.background = "#fdecea"; res.style.color = "#c0392b";
+    }
+    res.style.display = "block";
+    btn.disabled = false; btn.textContent = "🔑 Check Token";
+  }
 
   async function triggerAlerts() {
     var btn = document.getElementById("alert-btn");
