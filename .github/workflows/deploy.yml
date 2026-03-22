@@ -1,7 +1,6 @@
 name: Deploy to Azure Container Apps
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:  # manual trigger only — run ./deploy.sh for local deploys
 
 jobs:
   build-deploy:
