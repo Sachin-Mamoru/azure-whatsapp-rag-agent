@@ -1,11 +1,10 @@
 import redis
 import json
-import asyncio
 from typing import Optional, Dict, Any
 from agent.memory import ConversationMemory
 from agent.rag import RAGSystem
 from agent.tools import WebSearchTool
-from agent.i18n import LanguageDetector, get_menu_text, get_response_text, get_registration_prompt
+from agent.i18n import get_menu_text, get_response_text, get_registration_prompt
 from config import Config
 
 class WhatsAppOrchestrator:
@@ -24,7 +23,6 @@ class WhatsAppOrchestrator:
         self.memory = ConversationMemory(self.redis_client)
         self.rag_system = RAGSystem()
         self.web_search = WebSearchTool()
-        self.lang_detector = LanguageDetector()
 
     # ── Registration commands ──────────────────────────────────────────────
     _REGISTER_COMMANDS = [
@@ -36,37 +34,58 @@ class WhatsAppOrchestrator:
     # ── STOP / unsubscribe ─────────────────────────────────────────────────
     _STOP_COMMANDS = ["stop", "unsubscribe", "නතර", "நிறுத்து"]
 
+    @staticmethod
+    def _detect_script_language(text: str) -> Optional[str]:
+        """Detect language purely from Unicode script ranges — fast and reliable."""
+        for ch in text:
+            cp = ord(ch)
+            if 0x0D80 <= cp <= 0x0DFF:   # Sinhala block
+                return "si"
+            if 0x0B80 <= cp <= 0x0BFF:   # Tamil block
+                return "ta"
+        return None  # no non-ASCII script found → treat as English
+
     async def process_message(self, phone_number: str, message: str, message_id: str) -> Optional[str]:
         """Process incoming WhatsApp message and return response"""
         try:
             # Get user session data
             session = self.memory.get_session(phone_number)
             message_lower = message.strip().lower()
-            
-            # Check for language change commands first (more comprehensive list)
+
+            # ── 1. Script-based language detection (highest priority) ──────
+            # Detect Sinhala/Tamil from the actual Unicode characters in the message.
+            # This overrides the stored session language so replies always match input.
+            script_lang = self._detect_script_language(message)
+            if script_lang:
+                session["language"] = script_lang
+                self.memory.update_session(phone_number, session)
+
+            # ── 2. Language change intent detection ───────────────────────
             language_commands = [
-                # English commands
-                "change language", "language", "menu", "/language", "/lang", "switch language",
-                "i want to change the language", "i want to change language", "want to change language",
+                # English
+                "change language", "language", "menu", "/language", "/lang",
+                "switch language", "i want to change the language",
+                "i want to change language", "want to change language",
                 "change the language", "switch to", "language menu", "select language",
-                # Sinhala commands  
-                "භාෂාව වෙනස් කරන්න", "භාෂාව", "ලැයිස්තුව", "භාෂාව වෙනස් කරන්න",
+                # Sinhala
+                "භාෂාව වෙනස් කරන්න", "භාෂාව", "ලැයිස්තුව",
                 "භාෂාවක් තෝරන්න", "භාෂා මෙනුව",
-                # Tamil commands
+                # Tamil
                 "மொழியை மாற்று", "மொழி", "பட்டியல்", "மொழியை மாற்றுங்கள்",
-                "மொழியைத் தேர்ந்தெடுக்கவும்", "மொழி மெனு"
+                "மொழியைத் தேர்ந்தெடுக்கவும்", "மொழி மெனு",
             ]
-            
-            # Check if user wants to change language (more flexible matching)
             if any(cmd in message_lower for cmd in language_commands):
+                # Reset language so next reply sets it fresh
+                session["language"] = None
+                self.memory.update_session(phone_number, session)
                 return get_menu_text()
 
-            # ── Registration command ────────────────────────────────────────
+            # ── 3. Registration command ────────────────────────────────────
             if any(cmd in message_lower for cmd in self._REGISTER_COMMANDS):
                 lang = session.get("language", "en")
                 return get_registration_prompt(Config.REGISTRATION_FORM_URL, lang)
 
-            # ── STOP / unsubscribe command ──────────────────────────────────
+            # ── 4. STOP / unsubscribe command ─────────────────────────────
             if any(cmd in message_lower for cmd in self._STOP_COMMANDS):
                 lang = session.get("language", "en")
                 stop_msgs = {
@@ -74,13 +93,10 @@ class WhatsAppOrchestrator:
                     "si": "✅ ඔබ මුල් අනතුරු ඇඟවීම් දැනුම්දීම් වලින් ඉවත් කර ඇත. නැවත ලියාපදිංචි වීමට ඕනෑම වේලාවක *register* ලෙස පිළිතුරු දෙන්න.",
                     "ta": "✅ ஆரம்ப எச்சரிக்கை அறிவிப்புகளிலிருந்து நீங்கள் பதிவு நீக்கப்பட்டீர்கள். மீண்டும் பதிவு செய்ய எந்த நேரத்திலும் *register* என்று பதிலளிக்கவும்.",
                 }
-                # Mark as unsubscribed in the registration DB (if they exist)
                 try:
-                    from agent.registration import upsert_registration, get_all_subscribers
-                    import sqlite3, os
-                    db_path = os.getenv("REGISTRATIONS_DB", "./data/registrations.db")
-                    if os.path.exists(db_path):
-                        import sqlite3 as _sqlite3
+                    import sqlite3 as _sqlite3, os as _os
+                    db_path = _os.getenv("REGISTRATIONS_DB", "./data/registrations.db")
+                    if _os.path.exists(db_path):
                         conn = _sqlite3.connect(db_path)
                         conn.execute(
                             "UPDATE registrations SET consent = 0 WHERE phone_number = ?",
@@ -92,64 +108,62 @@ class WhatsAppOrchestrator:
                     print(f"[orchestrator] STOP update failed: {e}")
                 return stop_msgs.get(lang, stop_msgs["en"])
 
-
+            # ── 5. Language selection menu reply (1 / 2 / 3) ──────────────
             if message.strip() in ["1", "2", "3"]:
                 language_map = {"1": "si", "2": "en", "3": "ta"}
-                selected_language = language_map.get(message.strip())
-                
-                if selected_language:
-                    session["language"] = selected_language
-                    self.memory.update_session(phone_number, session)
-                    return get_response_text("language_selected", selected_language)
-            
-            # If no language set, show menu only for greetings/short messages
-            # For real questions, default silently to English and answer directly
-            if not session.get("language"):
-                session["language"] = "en"
+                selected_language = language_map[message.strip()]
+                session["language"] = selected_language
                 self.memory.update_session(phone_number, session)
+                return get_response_text("language_selected", selected_language)
+
+            # ── 6. First-time users: show menu for greetings ──────────────
+            if not session.get("language"):
                 greetings = {"hi", "hello", "hey", "start", "help", "menu", "1", "2", "3"}
                 if message_lower.strip() in greetings or len(message_lower.strip()) <= 3:
                     return get_menu_text()
-            
-            user_language = session["language"]
-            
-            # Detect if message is in a different language and update if needed
-            detected_lang = self.lang_detector.detect_language(message)
-            if detected_lang in ["si", "en", "ta"] and detected_lang != user_language:
-                # Only switch if we're confident about the detection
-                if len(message) > 10:  # Only for longer messages to avoid false positives
-                    session["language"] = detected_lang
-                    user_language = detected_lang
-                    self.memory.update_session(phone_number, session)
-                    # Acknowledge the language change
-                    await asyncio.sleep(0.1)  # Small delay to ensure session is updated
-            
-            # Add message to conversation history
+                # For a real first question with no script detected, default to English
+                session["language"] = "en"
+                self.memory.update_session(phone_number, session)
+
+            user_language = session["language"] or "en"
+
+            # ── 7. Fetch conversation history for context ─────────────────
+            conversation_history = self.memory.get_conversation_history(phone_number, limit=10)
+
+            # ── 8. Save the user message ──────────────────────────────────
             self.memory.add_message(phone_number, "user", message)
-            
-            # Try RAG first
-            rag_response = await self.rag_system.query(message, user_language)
-            
+
+            # ── 9. Try RAG with history ───────────────────────────────────
+            rag_response = await self.rag_system.query(
+                message, user_language, conversation_history=conversation_history
+            )
+
             if rag_response and rag_response.get("confidence", 0) > 0.7:
                 response = rag_response["answer"]
             else:
-                # Fall back to web search
-                web_response = await self.web_search.search(message, user_language)
+                # Fall back to web search for factual/current-events queries
+                web_keywords = ["weather", "news", "current", "today", "time", "price", "stock"]
+                web_response = None
+                if any(keyword in message.lower() for keyword in web_keywords):
+                    web_response = await self.web_search.search(message, user_language)
+
                 if web_response:
                     response = web_response
                 else:
-                    # Check if it's likely a question that needs web search
-                    web_keywords = ["weather", "news", "current", "today", "time", "price", "stock"]
-                    if any(keyword in message.lower() for keyword in web_keywords):
-                        response = get_response_text("web_search_limited", user_language)
-                    else:
+                    # Final fallback: LLM with full conversation history.
+                    # This handles meta-questions ("what did I ask?"), follow-ups,
+                    # and anything not in the knowledge base — always in the right language.
+                    response = await self.rag_system.chat_with_history(
+                        message, user_language, conversation_history
+                    )
+                    if not response:
                         response = get_response_text("no_answer", user_language)
-            
-            # Add response to conversation history
+
+            # ── 10. Save the assistant reply ──────────────────────────────
             self.memory.add_message(phone_number, "assistant", response)
-            
+
             return response
-            
+
         except Exception as e:
             print(f"Error in orchestrator: {e}")
             return get_response_text("error", session.get("language", "en"))

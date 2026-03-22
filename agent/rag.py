@@ -6,8 +6,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from config import Config
 
 class RAGSystem:
@@ -22,7 +21,6 @@ class RAGSystem:
             temperature=0.1
         )
         self.vectorstore = None
-        self.qa_chain = None
         self.initialize_rag()
     
     def initialize_rag(self):
@@ -41,7 +39,6 @@ class RAGSystem:
                 self.build_vectorstore()
             
             if self.vectorstore:
-                self.setup_qa_chain()
                 print("RAG system initialized successfully")
             
         except Exception as e:
@@ -97,64 +94,57 @@ class RAGSystem:
         return documents
     
     def setup_qa_chain(self):
-        """Setup the QA chain with custom prompt"""
-        if not self.vectorstore:
-            return
-        
-        # Custom prompt template for multilingual support
-        prompt_template = """You are a helpful safety and hazard awareness assistant. Use the following context to answer the question accurately and concisely.
+        """No-op — we now query directly via the vectorstore + LLM."""
+        pass
 
-Context: {context}
-
-Question: {question}
-
-Instructions:
-- Answer in the same language as the question
-- If the context doesn't contain relevant information, say "I don't have specific information about that in my knowledge base"
-- Keep answers clear and actionable
-- Focus on safety and hazard awareness
-
-Answer:"""
-
-        PROMPT = PromptTemplate(
-            template=prompt_template,
-            input_variables=["context", "question"]
-        )
-        
-        self.qa_chain = RetrievalQA.from_chain_type(
-            llm=self.llm,
-            chain_type="stuff",
-            retriever=self.vectorstore.as_retriever(
-                search_type="similarity",
-                search_kwargs={"k": 4}
-            ),
-            chain_type_kwargs={"prompt": PROMPT}
-        )
-    
-    async def query(self, question: str, language: str = "en") -> Optional[Dict[str, Any]]:
-        """Query the RAG system"""
+    async def query(self, question: str, language: str = "en",
+                    conversation_history: Optional[List[Dict]] = None) -> Optional[Dict[str, Any]]:
+        """Query the RAG system with full conversation history for context."""
         try:
-            if not self.qa_chain:
+            if not self.vectorstore:
                 return None
-            
-            # Add language context to question if not English
-            if language != "en":
-                lang_names = {"si": "Sinhala", "ta": "Tamil"}
-                lang_instruction = f"Please respond in {lang_names.get(language, 'English')}. "
-                question = lang_instruction + question
-            
-            result = self.qa_chain.invoke({"query": question})
-            answer = result["result"]
-            
-            # Simple confidence scoring based on answer content
+
+            # Retrieve relevant documents
+            docs = self.vectorstore.similarity_search(question, k=4)
+            context = "\n\n".join([doc.page_content for doc in docs])
+
+            lang_names = {"si": "Sinhala", "ta": "Tamil", "en": "English"}
+            lang_name = lang_names.get(language, "English")
+
+            system_prompt = (
+                f"You are a helpful safety and hazard awareness assistant for Sri Lanka.\n"
+                f"Use the knowledge base context below to answer questions accurately and concisely.\n"
+                f"ALWAYS respond in {lang_name} — even if the user wrote in another language.\n\n"
+                f"Knowledge Base Context:\n{context}\n\n"
+                f"Instructions:\n"
+                f"- Reply ONLY in {lang_name}.\n"
+                f"- If the context does not contain relevant information, say so briefly in {lang_name}.\n"
+                f"- Keep answers clear and actionable.\n"
+                f"- Focus on safety and hazard awareness.\n"
+                f"- You remember the conversation history and can refer back to it."
+            )
+
+            messages: List = [SystemMessage(content=system_prompt)]
+
+            # Inject last 6 turns of conversation history for context
+            if conversation_history:
+                for msg in conversation_history[-6:]:
+                    role = msg.get("role", "")
+                    content = msg.get("content", "")
+                    if role == "user":
+                        messages.append(HumanMessage(content=content))
+                    elif role == "assistant":
+                        messages.append(AIMessage(content=content))
+
+            # Add current user question
+            messages.append(HumanMessage(content=question))
+
+            result = await self.llm.ainvoke(messages)
+            answer = result.content
+
             confidence = self.calculate_confidence(answer)
-            
-            return {
-                "answer": answer,
-                "confidence": confidence,
-                "source": "rag"
-            }
-            
+            return {"answer": answer, "confidence": confidence, "source": "rag"}
+
         except Exception as e:
             print(f"Error querying RAG system: {e}")
             return None
@@ -170,6 +160,38 @@ Answer:"""
         else:
             return 0.8
     
+    async def chat_with_history(self, message: str, language: str,
+                                conversation_history: Optional[List[Dict]] = None) -> str:
+        """Answer conversational / meta questions using only LLM + conversation history."""
+        lang_names = {"si": "Sinhala", "ta": "Tamil", "en": "English"}
+        lang_name = lang_names.get(language, "English")
+
+        system_prompt = (
+            f"You are a friendly safety and hazard awareness assistant for Sri Lanka.\n"
+            f"ALWAYS respond in {lang_name}.\n"
+            f"You have full memory of the conversation below. "
+            f"Use it to answer questions about what was previously discussed, "
+            f"previous questions asked, or any follow-up queries."
+        )
+
+        messages: List = [SystemMessage(content=system_prompt)]
+        if conversation_history:
+            for msg in conversation_history[-10:]:
+                role = msg.get("role", "")
+                content = msg.get("content", "")
+                if role == "user":
+                    messages.append(HumanMessage(content=content))
+                elif role == "assistant":
+                    messages.append(AIMessage(content=content))
+        messages.append(HumanMessage(content=message))
+
+        try:
+            result = await self.llm.ainvoke(messages)
+            return result.content
+        except Exception as e:
+            print(f"[rag] chat_with_history error: {e}")
+            return ""
+
     def refresh_vectorstore(self):
         """Refresh the vectorstore with new documents"""
         print("Refreshing vectorstore...")
@@ -179,5 +201,4 @@ Answer:"""
         
         self.build_vectorstore()
         if self.vectorstore:
-            self.setup_qa_chain()
             print("Vectorstore refreshed successfully")
