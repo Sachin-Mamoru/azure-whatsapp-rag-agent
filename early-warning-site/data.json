@@ -1,14 +1,14 @@
 {
-  "last_updated": "2026-03-22T15:57:30.822Z",
+  "last_updated": "2026-03-23T05:21:39.586Z",
   "warnings": {
     "Ampara": false,
     "Anuradhapura": false,
     "Badulla": false,
     "Batticaloa": false,
-    "Colombo": true,
+    "Colombo": false,
     "Galle": false,
     "Gampaha": false,
-    "Hambantota": true,
+    "Hambantota": false,
     "Jaffna": false,
     "Kalutara": false,
     "Kandy": false,
