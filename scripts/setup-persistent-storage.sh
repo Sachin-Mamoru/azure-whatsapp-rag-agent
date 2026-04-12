@@ -3,6 +3,9 @@
 # After this, redeploys preserve the SQLite databases.
 set -e
 
+# Use the full path to az CLI (Homebrew install on macOS)
+AZ=/opt/homebrew/bin/az
+
 source .env
 
 RG=rg-whatsapp-agent
@@ -13,7 +16,7 @@ SHARE=whatsapp-agent-data
 VOLUME=data-volume
 
 echo "📦 Creating Azure Storage Account..."
-az storage account create \
+$AZ storage account create \
   --name $STORAGE_ACCOUNT \
   --resource-group $RG \
   --sku Standard_LRS \
@@ -21,19 +24,19 @@ az storage account create \
   --output none
 
 echo "📁 Creating file share..."
-az storage share-rm create \
+$AZ storage share-rm create \
   --name $SHARE \
   --storage-account $STORAGE_ACCOUNT \
   --quota 1 \
   --output none
 
-STORAGE_KEY=$(az storage account keys list \
+STORAGE_KEY=$($AZ storage account keys list \
   --account-name $STORAGE_ACCOUNT \
   --resource-group $RG \
   --query "[0].value" -o tsv)
 
 echo "🔗 Linking storage to Container Apps environment..."
-az containerapp env storage set \
+$AZ containerapp env storage set \
   --name $ENV \
   --resource-group $RG \
   --storage-name $VOLUME \
@@ -46,7 +49,7 @@ az containerapp env storage set \
 echo "💾 Attaching volume to container app..."
 # Export current app definition, inject volume + volumeMount, re-apply
 TMPFILE=$(mktemp /tmp/ca-patch.XXXXXX.yaml)
-az containerapp show --name $APP --resource-group $RG -o yaml > "$TMPFILE"
+$AZ containerapp show --name $APP --resource-group $RG -o yaml > "$TMPFILE"
 
 # Inject volumes block (idempotent — overwrites if already present)
 python3 - "$TMPFILE" "$VOLUME" <<'PYEOF'
@@ -75,7 +78,7 @@ with open(path, "w") as f:
     yaml.dump(doc, f, default_flow_style=False, allow_unicode=True)
 PYEOF
 
-az containerapp update --name $APP --resource-group $RG --yaml "$TMPFILE" --output none
+$AZ containerapp update --name $APP --resource-group $RG --yaml "$TMPFILE" --output none
 rm -f "$TMPFILE"
 
 echo ""
