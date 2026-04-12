@@ -261,7 +261,7 @@ The contribution is a **three-layer credibility framework** designed for low-res
 
 #### Confidence Score (Composite)
 
-$$\text{conf} = w_1 \cdot S_{\text{completeness}} + w_2 \cdot S_{\text{plausibility}} + w_3 \cdot S_{\text{triangulation}} + w_4 \cdot S_{\text{severity\_boost}}$$
+$$\text{conf} = w_1 \cdot S_{\text{completeness}} + w_2 \cdot S_{\text{plausibility}} + w_3 \cdot S_{\text{triangulation}} + w_4 \cdot S_{\text{sev-boost}}$$
 
 Where default weights are:
 
@@ -270,7 +270,7 @@ Where default weights are:
 | $S_{\text{completeness}}$ | 0.30 | Fraction of schema fields populated (location, description, hazard type, etc.) |
 | $S_{\text{plausibility}}$ | 0.20 | District/locality lookup + Open-Meteo rainfall correlation |
 | $S_{\text{triangulation}}$ | 0.30 | Bayesian truth discovery across independent corroborators |
-| $S_{\text{severity\_boost}}$ | 0.20 | Presence of high-severity linguistic indicators |
+| $S_{\text{sev-boost}}$ | 0.20 | Presence of high-severity linguistic indicators |
 
 #### Severity Score
 
@@ -343,7 +343,7 @@ Archived reports trigger a half-weight reliability decay ($\alpha \times 0.5$) o
 
 All user identifiers are stored as irreversible 16-character hex digests:
 
-$$\text{user\_hash} = \text{SHA-256}(\text{phone\_number})[{:}16]$$
+$$\text{user-hash} = \text{SHA-256}(\text{phone-number})[{:}16]$$
 
 The raw phone number is never written to the community reports database.
 
