@@ -242,19 +242,19 @@ async def admin_verify_report(report_id: str, request: Request):
                 raise HTTPException(status_code=404, detail="Report not found")
             user_hash, old_status = row
             conn.execute(
-                "UPDATE community_reports SET status = 'escalated' WHERE report_id = ?",
+                "UPDATE community_reports SET status = 'verified' WHERE report_id = ?",
                 (report_id,)
             )
             conn.execute("""
                 INSERT INTO report_status_log (report_id, old_status, new_status, changed_at, note)
-                VALUES (?, ?, 'escalated', ?, 'admin verified')
+                VALUES (?, ?, 'verified', ?, 'admin verified')
             """, (report_id, old_status, now))
             conn.commit()
         # Update Bayesian reliability
         orchestrator.reporter.update_user_reliability(
             user_hash, verified=True, note=f"admin verified {report_id}"
         )
-        return {"status": "ok", "report_id": report_id, "new_status": "escalated"}
+        return {"status": "ok", "report_id": report_id, "new_status": "verified"}
     except HTTPException:
         raise
     except Exception as e:

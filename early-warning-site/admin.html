@@ -360,25 +360,35 @@
 
   async function reviewReport(reportId, verify) {
     var endpoint = verify ? "verify" : "reject";
+    var card = document.querySelector('[data-report-id="' + reportId + '"]');
+    if (card) {
+      var btnRow = card.querySelector(".report-actions");
+      if (btnRow) btnRow.innerHTML = '<span style="font-size:0.78rem;color:#888">Sending...</span>';
+    }
     try {
       var r = await fetch(BOT.url + "/admin/reports/" + reportId + "/" + endpoint, {
         method: "POST",
         headers: { "X-Admin-Token": BOT.token }
       });
       if (!r.ok) throw new Error("HTTP " + r.status);
-      // Find the card by its data-id attribute and replace the button row
-      var card = document.querySelector('[data-report-id="' + reportId + '"]');
+      var d = await r.json();
+      // Show status badge on the card
       if (card) {
+        var color  = verify ? "#1e8449" : "#c0392b";
+        var label  = verify ? "✔ Verified — status: " + d.new_status : "✘ Rejected — status: " + d.new_status;
+        card.style.opacity = "0.6";
         var btnRow = card.querySelector(".report-actions");
         if (btnRow) {
-          btnRow.innerHTML = '<span style="font-size:0.78rem;font-weight:bold;color:' +
-            (verify ? "#1e8449" : "#c0392b") + '">' +
-            (verify ? "✔ Verified" : "✘ Rejected") + '</span>';
+          btnRow.innerHTML = '<span style="font-size:0.78rem;font-weight:bold;color:' + color + '">' + label + '</span>';
         }
       }
+      // Refresh stats
       loadReportStats();
     } catch(e) {
-      alert("Failed: " + e.message);
+      if (card) {
+        var btnRow = card.querySelector(".report-actions");
+        if (btnRow) btnRow.innerHTML = '<span style="font-size:0.78rem;color:#c0392b">Failed: ' + e.message + '</span>';
+      }
     }
   }
 
