@@ -68,7 +68,7 @@ if az containerapp show --name $APP --resource-group $RG &>/dev/null; then
       EARLY_WARNING_DATA_URL="$EARLY_WARNING_DATA_URL" \
       SHEETS_SYNC_INTERVAL_MINUTES="${SHEETS_SYNC_INTERVAL_MINUTES:-30}" \
       ALERT_CHECK_INTERVAL_MINUTES="${ALERT_CHECK_INTERVAL_MINUTES:-60}" \
-      COMMUNITY_REPORTS_DB="${COMMUNITY_REPORTS_DB:-/data/community_reports.db}" \
+      COMMUNITY_REPORTS_DB="${COMMUNITY_REPORTS_DB:-/tmp/community_reports.db}" \
       ADMIN_SECRET="$ADMIN_SECRET"
 else
   az containerapp create --name $APP --resource-group $RG \
@@ -96,7 +96,7 @@ else
       EARLY_WARNING_DATA_URL="$EARLY_WARNING_DATA_URL" \
       SHEETS_SYNC_INTERVAL_MINUTES="${SHEETS_SYNC_INTERVAL_MINUTES:-30}" \
       ALERT_CHECK_INTERVAL_MINUTES="${ALERT_CHECK_INTERVAL_MINUTES:-60}" \
-      COMMUNITY_REPORTS_DB="${COMMUNITY_REPORTS_DB:-/data/community_reports.db}" \
+      COMMUNITY_REPORTS_DB="${COMMUNITY_REPORTS_DB:-/tmp/community_reports.db}" \
       ADMIN_SECRET="$ADMIN_SECRET"
 fi
 
