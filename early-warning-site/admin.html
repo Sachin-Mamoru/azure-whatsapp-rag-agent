@@ -333,7 +333,7 @@
         var sev  = (rp.severity_score  * 100).toFixed(0);
         var confColor = conf >= 70 ? "#1e8449" : conf >= 40 ? "#e67e22" : "#888";
         var sevColor  = sev  >= 70 ? "#c0392b" : sev  >= 30 ? "#e67e22" : "#888";
-        return '<div style="border:1px solid #e0e0e0;border-radius:8px;padding:10px;margin-bottom:8px;background:#fafafa">' +
+        return '<div data-report-id="' + rp.report_id + '" style="border:1px solid #e0e0e0;border-radius:8px;padding:10px;margin-bottom:8px;background:#fafafa">' +
           '<div style="display:flex;justify-content:space-between;align-items:center">' +
             '<strong style="font-size:0.83rem">' + rp.report_id + '</strong>' +
             '<span style="font-size:0.75rem;color:#888">' + (rp.timestamp || "").slice(0,16).replace("T"," ") + ' UTC</span>' +
@@ -346,7 +346,7 @@
           '</div>' +
           '<div style="font-size:0.79rem;color:#444;margin:3px 0">&#x1F4CD; ' + (rp.location_text||"—") + '</div>' +
           '<div style="font-size:0.79rem;color:#555;margin:3px 0">' + (rp.description||"").slice(0,120) + '</div>' +
-          '<div style="display:flex;gap:8px;margin-top:8px">' +
+          '<div class="report-actions" style="display:flex;gap:8px;margin-top:8px">' +
             '<button onclick="reviewReport(\'' + rp.report_id + '\',true)"  style="padding:5px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Verify</button>' +
             '<button onclick="reviewReport(\'' + rp.report_id + '\',false)" style="padding:5px 12px;background:#e74c3c;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Reject</button>' +
           '</div>' +
@@ -365,17 +365,16 @@
         headers: { "X-Admin-Token": BOT.token }
       });
       if (!r.ok) throw new Error("HTTP " + r.status);
-      // Find the card and replace its button row with a status badge
-      var el = document.getElementById("reports-result");
-      var btns = el.querySelectorAll("button[onclick]");
-      btns.forEach(function(btn) {
-        if (btn.getAttribute("onclick").indexOf(reportId) !== -1) {
-          var row = btn.parentNode;
-          row.innerHTML = '<span style="font-size:0.78rem;font-weight:bold;color:' +
+      // Find the card by its data-id attribute and replace the button row
+      var card = document.querySelector('[data-report-id="' + reportId + '"]');
+      if (card) {
+        var btnRow = card.querySelector(".report-actions");
+        if (btnRow) {
+          btnRow.innerHTML = '<span style="font-size:0.78rem;font-weight:bold;color:' +
             (verify ? "#1e8449" : "#c0392b") + '">' +
-            (verify ? "Verified" : "Rejected") + '</span>';
+            (verify ? "✔ Verified" : "✘ Rejected") + '</span>';
         }
-      });
+      }
       loadReportStats();
     } catch(e) {
       alert("Failed: " + e.message);
