@@ -416,3 +416,37 @@ Available at `https://sachin-mamoru.github.io/azure-whatsapp-rag-agent/admin.htm
 | `deploy.sh` | **Modified** | Added `COMMUNITY_REPORTS_DB` env var to both create and update blocks |
 | `early-warning-site/admin.html` | **Modified** | Community Reports panel with New/Escalated/Needs Review/Verified/Stats tabs, Verify/Reject buttons, inline status badges |
 | `scripts/setup-persistent-storage.sh` | **New** | One-time Azure Files persistent volume setup (reference only — SQLite on SMB has locking constraints) |
+
+---
+
+## 5. Architecture Diagrams
+
+### 5.1 Full System Architecture
+
+End-to-end view of all components: WhatsApp users, the FastAPI container, the two-layer orchestrator, LangChain tool-calling agent, community reporting pipeline, background scheduler, both SQLite databases, FAISS vectorstore, Redis session state, all external APIs (OpenAI, SerpAPI, Open-Meteo, Google Sheets), GitHub Pages, and the admin panel browser.
+
+![Azure WhatsApp RAG Agent — System Architecture](azure_whatsapp_rag_agent_architecture.svg)
+
+---
+
+### 5.2 Azure Infrastructure Architecture
+
+Azure-focused view showing the deployment topology: Azure Container Apps environment, Container Registry, networking ingress, environment variable secrets, volume mounts, and how the container interacts with Azure-managed services and external callers.
+
+![Azure infrastructure — WhatsApp RAG Agent](azure_infrastructure_architecture.svg)
+
+---
+
+### 5.3 Concise Architecture Overview
+
+Compact summary diagram (top-to-bottom swimlanes):
+
+- **External callers** — WhatsApp user, Admin browser SPA, GitHub CI/CD deploy pipeline
+- **Ingress + Registry** — Azure Container Apps HTTPS endpoint (TLS termination) + Azure Container Registry (Docker images)
+- **Azure Container Apps environment** — Container App with Orchestrator, Community Reporter, APScheduler, FAISS vectorstore, env-var secrets, two SQLite databases, session state store
+- **External API calls** — OpenAI (GPT-4o-mini + embeddings), SerpAPI, Open-Meteo, Google Sheets
+- **GitHub Pages** — hosts `data.json` (polled every 60 min by Job 2) and the Admin SPA
+- **Deploy pipeline** — four-step `deploy.sh` flow (build → push ACR → update Container App revision)
+- **Storage note** — SQLite at `/tmp` (ephemeral; Azure Files SMB locking prevents persistent use)
+
+![Azure WhatsApp RAG Agent — concise architecture](azure_architecture_concise.svg)
