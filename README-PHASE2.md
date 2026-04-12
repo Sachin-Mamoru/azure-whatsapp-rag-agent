@@ -272,6 +272,17 @@ Where default weights are:
 | $S_{\text{triangulation}}$ | 0.30 | Bayesian truth discovery across independent corroborators |
 | $S_{\text{sev-boost}}$ | 0.20 | Presence of high-severity linguistic indicators |
 
+**Weight rationale:** The weights and composite structure are an original contribution of this work. Each dimension is grounded in prior literature:
+
+| Component | Literature basis |
+|---|---|
+| $S_{\text{completeness}}$ (0.30) | VGI data quality literature — Goodchild & Li (2012), Haklay (2010): completeness of required fields (location, hazard type, description) is a standard quality dimension for volunteered geographic information |
+| $S_{\text{plausibility}}$ (0.20) | Environmental context validation — geo-spatial ground truth (landslide-prone districts, flood-prone localities) combined with Open-Meteo precipitation as physical corroboration; inspired by Panteras et al. (2014) on sensor cross-validation for crisis reports |
+| $S_{\text{triangulation}}$ (0.30) | TruthFinder algorithm — Yin et al. (2008) *"Towards Truth Discovery from Fact Conflicts"*: Bayesian source-credibility weighted corroboration adapted to spatially-independent VGI reporters |
+| $S_{\text{sev-boost}}$ (0.20) | Original heuristic — higher-severity signals (people at risk, ongoing emergency) receive priority weighting consistent with disaster response triage principles (e.g., Comes et al., 2014) |
+
+The specific combination of these four dimensions — applied to WhatsApp-based VGI in a low-resource multilingual disaster context — constitutes a novel contribution without direct precedent in the literature.
+
 #### Severity Score
 
 $$S_{\text{severity}} = \frac{1}{|K|} \sum_{k \in K} \mathbb{1}[\text{indicator}_k \in \text{description}]$$
