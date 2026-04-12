@@ -98,8 +98,15 @@ class RAGSystem:
         pass
 
     async def query(self, question: str, language: str = "en",
-                    conversation_history: Optional[List[Dict]] = None) -> Optional[Dict[str, Any]]:
-        """Query the RAG system with full conversation history for context."""
+                    conversation_history: Optional[List[Dict]] = None,
+                    community_context: str = "") -> Optional[Dict[str, Any]]:
+        """Query the RAG system with full conversation history for context.
+
+        community_context: optional read-only summary of recent verified
+        community reports, injected as supplementary context only.
+        The authoritative knowledge base and the community observations
+        are kept explicitly separate in the prompt.
+        """
         try:
             if not self.vectorstore:
                 return None
@@ -116,11 +123,22 @@ class RAGSystem:
                 f"Use the knowledge base context below to answer questions accurately and concisely.\n"
                 f"ALWAYS respond in {lang_name} — even if the user wrote in another language.\n\n"
                 f"Knowledge Base Context:\n{context}\n\n"
+            )
+
+            if community_context:
+                system_prompt += (
+                    f"Community Observations (unverified citizen reports — treat as supplementary "
+                    f"context only; do NOT present these as authoritative facts):\n"
+                    f"{community_context}\n\n"
+                )
+
+            system_prompt += (
                 f"Instructions:\n"
                 f"- Reply ONLY in {lang_name}.\n"
                 f"- If the context does not contain relevant information, say so briefly in {lang_name}.\n"
                 f"- Keep answers clear and actionable.\n"
                 f"- Focus on safety and hazard awareness.\n"
+                f"- If you reference a community observation, label it as 'community report (unverified)'.\n"
                 f"- You remember the conversation history and can refer back to it."
             )
 

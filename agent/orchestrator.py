@@ -3,6 +3,8 @@ import json
 from typing import Optional, Dict, Any
 from agent.memory import ConversationMemory
 from agent.rag import RAGSystem
+from agent.reporter import CommunityReporter, detect_report_intent
+from agent.disaster_agent import DisasterAgent
 from agent.tools import WebSearchTool
 from agent.i18n import get_menu_text, get_response_text, get_registration_prompt
 from config import Config
@@ -22,7 +24,9 @@ class WhatsAppOrchestrator:
             self.redis_client = None
         self.memory = ConversationMemory(self.redis_client)
         self.rag_system = RAGSystem()
+        self.reporter = CommunityReporter()
         self.web_search = WebSearchTool()
+        self.agent = DisasterAgent(self.rag_system, self.reporter, self.web_search)
 
     # ── Registration commands ──────────────────────────────────────────────
     _REGISTER_COMMANDS = [
@@ -33,6 +37,16 @@ class WhatsAppOrchestrator:
 
     # ── STOP / unsubscribe ─────────────────────────────────────────────────
     _STOP_COMMANDS = ["stop", "unsubscribe", "නතර", "நிறுத்து"]
+
+    # ── Community report explicit triggers ────────────────────────────────
+    _REPORT_COMMANDS = [
+        "report", "report hazard", "submit report", "i want to report",
+        "report incident", "report an issue", "i need to report",
+        # Sinhala
+        "වාර්තා", "වාර්තා කරන්න", "දැනුම් දෙන්න", "අනතුරක් වාර්තා",
+        # Tamil
+        "அறிக்கை", "அறிக்கை செய்", "தெரிவிக்க", "புகார்",
+    ]
 
     @staticmethod
     def _detect_script_language(text: str) -> Optional[str]:
@@ -127,39 +141,49 @@ class WhatsAppOrchestrator:
 
             user_language = session["language"] or "en"
 
-            # ── 7. Fetch conversation history for context ─────────────────
-            conversation_history = self.memory.get_conversation_history(phone_number, limit=10)
+            # ── 7. Community report clarification bypass ──────────────────
+            # If the user was asked a location clarification for a pending
+            # report, route directly back to the reporter — no agent call
+            # needed since this is a stateful continuation, not a new decision.
+            if session.get("report_state") == "awaiting_clarification":
+                self.memory.add_message(phone_number, "user", message)
+                result = await self.reporter.process_report(
+                    phone_number, message, user_language,
+                    pending_report=session.get("pending_report"),
+                )
+                if result["needs_clarification"]:
+                    session["pending_report"] = result["pending_report"]
+                else:
+                    session.pop("report_state", None)
+                    session.pop("pending_report", None)
+                self.memory.update_session(phone_number, session)
+                self.memory.add_message(phone_number, "assistant", result["response"])
+                return result["response"]
 
-            # ── 8. Save the user message ──────────────────────────────────
-            self.memory.add_message(phone_number, "user", message)
-
-            # ── 9. Try RAG with history ───────────────────────────────────
-            rag_response = await self.rag_system.query(
-                message, user_language, conversation_history=conversation_history
+            # ── 8. Fetch conversation history ─────────────────────────────
+            conversation_history = self.memory.get_conversation_history(
+                phone_number, limit=10
             )
 
-            if rag_response and rag_response.get("confidence", 0) > 0.7:
-                response = rag_response["answer"]
-            else:
-                # Fall back to web search for factual/current-events queries
-                web_keywords = ["weather", "news", "current", "today", "time", "price", "stock"]
-                web_response = None
-                if any(keyword in message.lower() for keyword in web_keywords):
-                    web_response = await self.web_search.search(message, user_language)
+            # ── 9. Save user message ──────────────────────────────────────
+            self.memory.add_message(phone_number, "user", message)
 
-                if web_response:
-                    response = web_response
-                else:
-                    # Final fallback: LLM with full conversation history.
-                    # This handles meta-questions ("what did I ask?"), follow-ups,
-                    # and anything not in the knowledge base — always in the right language.
-                    response = await self.rag_system.chat_with_history(
-                        message, user_language, conversation_history
-                    )
-                    if not response:
-                        response = get_response_text("no_answer", user_language)
+            # ── 10. Agent-based routing ───────────────────────────────────
+            # The LLM agent decides which tool to call: query_knowledge_base,
+            # search_web, submit_community_report, or get_community_observations.
+            # Every tool-call decision is logged in agent_tool_calls for
+            # research evaluation.
+            response = await self.agent.ainvoke(
+                message, user_language, phone_number, conversation_history
+            )
 
-            # ── 10. Save the assistant reply ──────────────────────────────
+            # If the agent reported a pending clarification, capture state
+            # (the submit_community_report tool surfaces this in its response text;
+            # we also check the reporter's last pending state for session tracking)
+            if not response:
+                response = get_response_text("no_answer", user_language)
+
+            # ── 11. Save the assistant reply ──────────────────────────────
             self.memory.add_message(phone_number, "assistant", response)
 
             return response

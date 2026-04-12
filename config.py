@@ -24,6 +24,9 @@ class Config:
     # SQLite path for subscriber registrations
     REGISTRATIONS_DB = os.getenv("REGISTRATIONS_DB", "./data/registrations.db")
 
+    # SQLite path for community hazard reports (separate from authoritative RAG)
+    COMMUNITY_REPORTS_DB = os.getenv("COMMUNITY_REPORTS_DB", "./data/community_reports.db")
+
     # Google Sheets (linked to Google Form responses)
     GOOGLE_SHEETS_CREDENTIALS_FILE = os.getenv("GOOGLE_SHEETS_CREDENTIALS_FILE", "./credentials.json")
     GOOGLE_SHEETS_SPREADSHEET_ID   = os.getenv("GOOGLE_SHEETS_SPREADSHEET_ID", "")
