@@ -450,3 +450,11 @@ Compact summary diagram (top-to-bottom swimlanes):
 - **Storage note** — SQLite at `/tmp` (ephemeral; Azure Files SMB locking prevents persistent use)
 
 ![Azure WhatsApp RAG Agent — concise architecture](azure_architecture_concise.svg)
+
+---
+
+### 5.4 Summary Diagram — Components & Data Flows
+
+A single at-a-glance diagram showing all major components and the data flows between them with clearly labelled, directional arrows. Use this as the canonical summary view of the Phase 2 system.
+
+![Azure WhatsApp RAG Agent — components clear arrows](azure_components_clear_arrows.svg)
