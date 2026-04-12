@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         print(f"[startup] ⚠️  Could not verify WhatsApp token: {e}")
 
-    start_scheduler()
+    start_scheduler(reporter=orchestrator.reporter)
     yield
     stop_scheduler()
 
@@ -172,6 +172,141 @@ def _require_admin_token(request: Request):
     token = request.headers.get("X-Admin-Token", "")
     if token != secret:
         raise HTTPException(status_code=401, detail="Unauthorized")
+
+
+# ── Community report admin endpoints ──────────────────────────────────────
+
+@app.get("/admin/reports")
+async def admin_list_reports(
+    request: Request,
+    status: str = "new",
+    limit: int = 50,
+):
+    """
+    List community reports filtered by status.
+    status: new | monitored | under_review | escalated | closed | archived
+    """
+    _require_admin_token(request)
+    import sqlite3 as _sq
+    db_path = Config.COMMUNITY_REPORTS_DB
+    try:
+        with _sq.connect(db_path) as conn:
+            conn.row_factory = _sq.Row
+            rows = conn.execute("""
+                SELECT report_id, timestamp, language, report_domain,
+                       hazard_type, category, location_text, description,
+                       confidence_score, severity_score, action, status,
+                       people_at_risk, ongoing
+                FROM community_reports
+                WHERE status = ?
+                ORDER BY severity_score DESC, timestamp DESC
+                LIMIT ?
+            """, (status, limit)).fetchall()
+        return {"reports": [dict(r) for r in rows]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/admin/reports/{report_id}/verify")
+async def admin_verify_report(report_id: str, request: Request):
+    """
+    Mark a report as verified (confirmed by official source or observation).
+    Updates the reporter's Bayesian reliability score upward.
+    """
+    _require_admin_token(request)
+    import sqlite3 as _sq
+    db_path = Config.COMMUNITY_REPORTS_DB
+    now = __import__("datetime").datetime.utcnow().isoformat()
+    try:
+        with _sq.connect(db_path) as conn:
+            row = conn.execute(
+                "SELECT user_hash, status FROM community_reports WHERE report_id = ?",
+                (report_id,)
+            ).fetchone()
+            if not row:
+                raise HTTPException(status_code=404, detail="Report not found")
+            user_hash, old_status = row
+            conn.execute(
+                "UPDATE community_reports SET status = 'escalated' WHERE report_id = ?",
+                (report_id,)
+            )
+            conn.execute("""
+                INSERT INTO report_status_log (report_id, old_status, new_status, changed_at, note)
+                VALUES (?, ?, 'escalated', ?, 'admin verified')
+            """, (report_id, old_status, now))
+            conn.commit()
+        # Update Bayesian reliability
+        orchestrator.reporter.update_user_reliability(
+            user_hash, verified=True, note=f"admin verified {report_id}"
+        )
+        return {"status": "ok", "report_id": report_id, "new_status": "escalated"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/admin/reports/{report_id}/reject")
+async def admin_reject_report(report_id: str, request: Request):
+    """
+    Mark a report as closed/rejected (false report or unvalidated).
+    Updates the reporter's Bayesian reliability score downward.
+    """
+    _require_admin_token(request)
+    import sqlite3 as _sq
+    db_path = Config.COMMUNITY_REPORTS_DB
+    now = __import__("datetime").datetime.utcnow().isoformat()
+    try:
+        with _sq.connect(db_path) as conn:
+            row = conn.execute(
+                "SELECT user_hash, status FROM community_reports WHERE report_id = ?",
+                (report_id,)
+            ).fetchone()
+            if not row:
+                raise HTTPException(status_code=404, detail="Report not found")
+            user_hash, old_status = row
+            conn.execute(
+                "UPDATE community_reports SET status = 'closed' WHERE report_id = ?",
+                (report_id,)
+            )
+            conn.execute("""
+                INSERT INTO report_status_log (report_id, old_status, new_status, changed_at, note)
+                VALUES (?, ?, 'closed', ?, 'admin rejected')
+            """, (report_id, old_status, now))
+            conn.commit()
+        # Update Bayesian reliability
+        orchestrator.reporter.update_user_reliability(
+            user_hash, verified=False, note=f"admin rejected {report_id}"
+        )
+        return {"status": "ok", "report_id": report_id, "new_status": "closed"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/admin/reports/stats")
+async def admin_report_stats(request: Request):
+    """Summary stats for the community reports dashboard."""
+    _require_admin_token(request)
+    import sqlite3 as _sq
+    db_path = Config.COMMUNITY_REPORTS_DB
+    try:
+        with _sq.connect(db_path) as conn:
+            total     = conn.execute("SELECT COUNT(*) FROM community_reports").fetchone()[0]
+            new_ct    = conn.execute("SELECT COUNT(*) FROM community_reports WHERE status='new'").fetchone()[0]
+            escalated = conn.execute("SELECT COUNT(*) FROM community_reports WHERE status='escalated'").fetchone()[0]
+            review    = conn.execute("SELECT COUNT(*) FROM community_reports WHERE action='flag_review' AND status='new'").fetchone()[0]
+            users     = conn.execute("SELECT COUNT(*) FROM user_reliability").fetchone()[0]
+        return {
+            "total": total,
+            "new": new_ct,
+            "escalated": escalated,
+            "needs_review": review,
+            "tracked_users": users,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":

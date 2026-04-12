@@ -23,6 +23,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
+import aiohttp
 
 from config import Config
 
@@ -164,6 +165,21 @@ _REPORT_INDICATOR_GROUPS = [
 _MIN_SEPARATION_REPORTS = 2   # need at least this many *independent* contributors
 _DEFAULT_RELIABILITY    = 0.5  # prior for new/unknown users (TruthFinder prior)
 
+# Approximate lat/lon centres for Sri Lanka districts used for rainfall lookup.
+# Open-Meteo free API requires no key.  Phase-1 uses district-level centres;
+# a future phase can replace with user-provided GPS coordinates.
+_DISTRICT_COORDS: Dict[str, tuple] = {
+    "colombo":      (6.93, 79.85),  "gampaha":   (7.09, 80.01),
+    "kalutara":     (6.58, 80.00),  "kandy":     (7.29, 80.63),
+    "matale":       (7.47, 80.62),  "nuwara eliya": (6.96, 80.77),
+    "galle":        (6.05, 80.22),  "matara":    (5.95, 80.55),
+    "hambantota":   (6.12, 81.12),  "ratnapura": (6.68, 80.38),
+    "kegalle":      (7.25, 80.34),  "badulla":   (6.99, 81.05),
+    "monaragala":   (6.87, 81.35),  "kurunegala":(7.49, 80.36),
+    "kelani":       (6.97, 80.01),  "hanwella":  (6.91, 80.08),
+    "kelaniya":     (7.00, 79.92),
+}
+
 # Lookup sets for Phase-1 plausibility scoring
 LANDSLIDE_PRONE_DISTRICTS = {
     "badulla", "ratnapura", "kandy", "kegalle", "nuwara eliya",
@@ -245,6 +261,9 @@ class CommunityReporter:
             temperature=0.0,
         )
         self.db_path = Config.COMMUNITY_REPORTS_DB
+        # Short-lived in-memory rainfall cache {district: mm_today}
+        # Populated per-report by _fetch_rainfall_for_location()
+        self._rainfall_cache: Dict[str, float] = {}
         self._init_db()
 
     # ── Database setup ────────────────────────────────────────────────────
@@ -357,6 +376,11 @@ class CommunityReporter:
                 "pending_report": extracted,
                 "stored": False,
             }
+
+        # Fetch rainfall context for plausibility scoring (non-blocking — best effort)
+        loc = extracted.get("location_text") or ""
+        if loc:
+            await self._fetch_rainfall_for_location(loc)
 
         # Score
         confidence = self._score_confidence(extracted, phone_number)
@@ -552,7 +576,7 @@ class CommunityReporter:
         return min(score, 1.0)
 
     def _check_plausibility(self, extracted: Dict) -> float:
-        """Phase-1: district / locality lookup."""
+        """Phase-1: district / locality lookup + Open-Meteo rainfall context."""
         loc = (extracted.get("location_text") or "").lower()
         if not loc:
             return 0.0
@@ -560,17 +584,80 @@ class CommunityReporter:
         hazard = extracted.get("hazard_type", "")
         domain = extracted.get("report_domain", "")
 
+        base = 0.0
         if hazard == "landslide" or domain == "hazard":
             for district in LANDSLIDE_PRONE_DISTRICTS:
                 if district in loc:
-                    return 0.20
+                    base = 0.15
+                    break
 
         if hazard in ("flood", "drainage") or "flood" in loc:
             for locality in FLOOD_PRONE_LOCALITIES:
                 if locality in loc:
-                    return 0.20
+                    base = 0.15
+                    break
 
+        # Temporal rainfall bonus: if recent heavy rain recorded for this
+        # location, raise plausibility by up to 0.05 (capped at 0.20 total).
+        # This is a synchronous call that checks a short-lived in-memory cache
+        # updated by the async method called during report processing.
+        rainfall_bonus = self._get_rainfall_bonus_sync(loc, hazard)
+        return min(base + rainfall_bonus, 0.20)
+
+    def _get_rainfall_bonus_sync(self, loc: str, hazard: str) -> float:
+        """
+        Return a small plausibility bonus (0.0 \u2013 0.05) if the rainfall cache
+        shows recent heavy precipitation for the matched district.
+        Updated by _fetch_rainfall_for_location() called during extraction.
+        """
+        if hazard not in ("flood", "landslide", "drainage", "erosion"):
+            return 0.0
+        for district, mm in self._rainfall_cache.items():
+            if district in loc:
+                # > 50 mm/day = heavy rain in Sri Lanka context
+                if mm >= 50:
+                    return 0.05
+                if mm >= 20:
+                    return 0.02
         return 0.0
+
+    async def _fetch_rainfall_for_location(self, loc: str) -> None:
+        """
+        Async fetch of today's precipitation from Open-Meteo for the district
+        closest to the reported location.  Updates self._rainfall_cache.
+        Free API, no key required.
+        """
+        loc_lower = loc.lower()
+        coords = None
+        matched_district = None
+        for district, latlon in _DISTRICT_COORDS.items():
+            if district in loc_lower:
+                coords = latlon
+                matched_district = district
+                break
+
+        if not coords:
+            return
+
+        lat, lon = coords
+        url = (
+            f"https://api.open-meteo.com/v1/forecast"
+            f"?latitude={lat}&longitude={lon}"
+            f"&daily=precipitation_sum&timezone=Asia%2FColombo&forecast_days=1"
+        )
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, timeout=aiohttp.ClientTimeout(total=5)) as resp:
+                    if resp.status == 200:
+                        data = await resp.json()
+                        precip_list = data.get("daily", {}).get("precipitation_sum", [0])
+                        mm = precip_list[0] if precip_list else 0
+                        self._rainfall_cache[matched_district] = mm or 0
+                        print(
+                            f"[reporter] rainfall {matched_district}: {mm:.1f} mm today"
+                        )
+        except Exception as exc:
+            print(f"[reporter] _fetch_rainfall_for_location error: {exc}")
 
     def _get_user_reliability(self, user_hash: str) -> float:
         """Return the stored reliability score for a user, or the default prior."""
