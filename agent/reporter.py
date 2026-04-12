@@ -444,12 +444,9 @@ class CommunityReporter:
 
     def get_recent_reports_context(self) -> str:
         """
-        Return a brief formatted summary of recent, high-confidence community
-        reports suitable for injection into RAG advisory responses as read-only
-        supplementary context.
-
-        Only surfaces reports with action in (monitor, flag_review, escalate)
-        and confidence >= 0.4, from the last 48 hours.
+        Return a brief formatted summary of recent community reports for RAG
+        injection. Verified reports are labelled as confirmed; others as unverified.
+        Only surfaces reports with confidence >= 0.4 from the last 48 hours.
         """
         cutoff = (datetime.now(timezone.utc) - timedelta(hours=48)).isoformat()
         try:
@@ -458,13 +455,15 @@ class CommunityReporter:
                 rows = conn.execute("""
                     SELECT report_domain, hazard_type, location_text,
                            description, confidence_score, severity_score,
-                           action, timestamp
+                           action, status, timestamp
                     FROM community_reports
                     WHERE timestamp >= ?
                       AND action IN ('monitor', 'flag_review', 'escalate')
                       AND confidence_score >= 0.4
                       AND status NOT IN ('closed', 'archived', 'stale')
-                    ORDER BY severity_score DESC, timestamp DESC
+                    ORDER BY
+                      CASE WHEN status = 'verified' THEN 0 ELSE 1 END,
+                      severity_score DESC, timestamp DESC
                     LIMIT 5
                 """, (cutoff,)).fetchall()
         except Exception as exc:
@@ -474,11 +473,12 @@ class CommunityReporter:
         if not rows:
             return ""
 
-        lines = ["📍 Recent community observations (unverified):"]
+        lines = ["📍 Recent community observations:"]
         for row in rows:
-            ts = row["timestamp"][:16].replace("T", " ")
+            ts     = row["timestamp"][:16].replace("T", " ")
+            label  = "✅ CONFIRMED" if row["status"] == "verified" else "⚠ unverified"
             lines.append(
-                f"• [{row['report_domain'].upper()}] {row['location_text']} — "
+                f"• [{row['report_domain'].upper()} — {label}] {row['location_text']} — "
                 f"{(row['description'] or '')[:120]} "
                 f"(conf: {row['confidence_score']:.2f}, sev: {row['severity_score']:.2f}, {ts} UTC)"
             )
