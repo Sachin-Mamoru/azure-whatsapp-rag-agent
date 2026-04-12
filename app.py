@@ -183,25 +183,40 @@ async def admin_list_reports(
     limit: int = 50,
 ):
     """
-    List community reports filtered by status.
-    status: new | monitored | under_review | escalated | closed | archived
+    List community reports.
+    status: new | monitored | under_review | verified | closed | archived
+            OR an action value: escalate | flag_review | monitor | store_only
+    When the value matches a known action it filters by action instead of status.
     """
     _require_admin_token(request)
     import sqlite3 as _sq
     db_path = Config.COMMUNITY_REPORTS_DB
+    _action_values = {"escalate", "flag_review", "monitor", "store_only"}
     try:
         with _sq.connect(db_path) as conn:
             conn.row_factory = _sq.Row
-            rows = conn.execute("""
-                SELECT report_id, timestamp, language, report_domain,
-                       hazard_type, category, location_text, description,
-                       confidence_score, severity_score, action, status,
-                       people_at_risk, ongoing
-                FROM community_reports
-                WHERE status = ?
-                ORDER BY severity_score DESC, timestamp DESC
-                LIMIT ?
-            """, (status, limit)).fetchall()
+            if status in _action_values:
+                rows = conn.execute("""
+                    SELECT report_id, timestamp, language, report_domain,
+                           hazard_type, category, location_text, description,
+                           confidence_score, severity_score, action, status,
+                           people_at_risk, ongoing
+                    FROM community_reports
+                    WHERE action = ?
+                    ORDER BY severity_score DESC, timestamp DESC
+                    LIMIT ?
+                """, (status, limit)).fetchall()
+            else:
+                rows = conn.execute("""
+                    SELECT report_id, timestamp, language, report_domain,
+                           hazard_type, category, location_text, description,
+                           confidence_score, severity_score, action, status,
+                           people_at_risk, ongoing
+                    FROM community_reports
+                    WHERE status = ?
+                    ORDER BY severity_score DESC, timestamp DESC
+                    LIMIT ?
+                """, (status, limit)).fetchall()
         return {"reports": [dict(r) for r in rows]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

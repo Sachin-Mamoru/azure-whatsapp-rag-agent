@@ -82,9 +82,10 @@
     <h2>📋 Community Reports</h2>
 
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
-      <button class="btn btn-blue" style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('new')">New</button>
-      <button class="btn btn-orange" style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('escalated')">Escalated</button>
-      <button class="btn btn-gray" style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReportStats()">Stats</button>
+      <button class="btn btn-blue"   style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('new')">New</button>
+      <button class="btn btn-orange" style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('escalate')">Escalated</button>
+      <button class="btn btn-gray"   style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('flag_review')">Needs Review</button>
+      <button class="btn btn-gray"   style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReportStats()">Stats</button>
     </div>
     <div id="reports-result" style="font-size:0.8rem;margin-top:8px;max-height:420px;overflow-y:auto"></div>
   </div>
