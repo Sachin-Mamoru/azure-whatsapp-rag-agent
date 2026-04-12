@@ -91,100 +91,6 @@
 </div>
 
 <script>
-  // ── existing CFG / BOT / loadData etc stay above this block ──────────────
-
-  async function loadReportStats() {
-    var el = document.getElementById("reports-result");
-    el.textContent = "Loading...";
-    try {
-      var r = await fetch(BOT.url + "/admin/reports/stats", {
-        headers: { "X-Admin-Token": BOT.token }
-      });
-      var d = await r.json();
-      el.innerHTML =
-        "<strong>Total:</strong> " + d.total +
-        " &nbsp;|&nbsp; <strong>New:</strong> " + d.new +
-        " &nbsp;|&nbsp; <strong>Needs review:</strong> " + d.needs_review +
-        " &nbsp;|&nbsp; <strong>Escalated:</strong> " + d.escalated +
-        " &nbsp;|&nbsp; <strong>Tracked users:</strong> " + d.tracked_users;
-    } catch(e) {
-      el.textContent = "❌ " + e.message;
-    }
-  }
-
-  async function loadReports(status) {
-    var el = document.getElementById("reports-result");
-    el.innerHTML = "Loading " + status + " reports...";
-    try {
-      var r = await fetch(BOT.url + "/admin/reports?status=" + status, {
-        headers: { "X-Admin-Token": BOT.token }
-      });
-      var d = await r.json();
-      if (!d.reports || d.reports.length === 0) {
-        el.textContent = "No " + status + " reports.";
-        return;
-      }
-      el.innerHTML = d.reports.map(function(rp) {
-        var conf = (rp.confidence_score * 100).toFixed(0);
-        var sev  = (rp.severity_score  * 100).toFixed(0);
-        var confColor = conf >= 70 ? "#1e8449" : conf >= 40 ? "#e67e22" : "#888";
-        var sevColor  = sev  >= 70 ? "#c0392b" : sev  >= 30 ? "#e67e22" : "#888";
-        return '<div style="border:1px solid #e0e0e0;border-radius:8px;padding:10px;margin-bottom:8px;background:#fafafa">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center">' +
-            '<strong style="font-size:0.83rem">' + rp.report_id + '</strong>' +
-            '<span style="font-size:0.75rem;color:#888">' + (rp.timestamp || "").slice(0,16).replace("T"," ") + ' UTC</span>' +
-          '</div>' +
-          '<div style="margin:4px 0;font-size:0.8rem">' +
-            '<span style="background:#eaf2ff;padding:2px 6px;border-radius:4px;margin-right:4px">' + (rp.report_domain||"?") + '</span>' +
-            '<span style="background:#fff3e0;padding:2px 6px;border-radius:4px;margin-right:4px">' + (rp.hazard_type||"?") + '</span>' +
-            '<span style="color:' + confColor + ';margin-right:8px">conf ' + conf + '%</span>' +
-            '<span style="color:' + sevColor  + '">sev '  + sev  + '%</span>' +
-          '</div>' +
-          '<div style="font-size:0.79rem;color:#444;margin:3px 0">📍 ' + (rp.location_text||"—") + '</div>' +
-          '<div style="font-size:0.79rem;color:#555;margin:3px 0">' + (rp.description||"").slice(0,120) + '</div>' +
-          '<div style="display:flex;gap:8px;margin-top:8px">' +
-            '<button onclick="reviewReport(\'' + rp.report_id + '\',true)"  style="padding:5px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">✅ Verify</button>' +
-            '<button onclick="reviewReport(\'' + rp.report_id + '\',false)" style="padding:5px 12px;background:#e74c3c;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">❌ Reject</button>' +
-          '</div>' +
-        '</div>';
-      }).join("");
-    } catch(e) {
-      el.textContent = "❌ " + e.message;
-    }
-  }
-
-  async function reviewReport(reportId, verify) {
-    var endpoint = verify ? "verify" : "reject";
-    try {
-      var r = await fetch(BOT.url + "/admin/reports/" + reportId + "/" + endpoint, {
-        method: "POST",
-        headers: { "X-Admin-Token": BOT.token }
-      });
-      var d = await r.json();
-      // Refresh the current view
-      var el = document.getElementById("reports-result");
-      var firstCard = el.querySelector("div[style]");
-      if (firstCard) {
-        var badge = document.createElement("span");
-        badge.textContent = verify ? "✅ Verified" : "❌ Rejected";
-        badge.style.cssText = "font-size:0.78rem;font-weight:bold;color:" + (verify?"#1e8449":"#c0392b");
-        // Remove action buttons from this card
-        var card = el.querySelector('[onclick*="' + reportId + '"]');
-        if (card) {
-          var btnRow = card.closest("div").querySelector("div:last-child");
-          if (btnRow) btnRow.innerHTML = badge.outerHTML;
-        }
-      }
-      // Reload stats
-      loadReportStats();
-    } catch(e) {
-      alert("Failed: " + e.message);
-    }
-  }
-
-  // Auto-load stats on page open
-  loadReportStats();
-</script>
   var sha = null;
   var currentData = null;
 
@@ -391,7 +297,93 @@
     btn.disabled = false; btn.textContent = "🔄 Sync Registrations";
   }
 
+  async function loadReportStats() {
+    var el = document.getElementById("reports-result");
+    el.textContent = "Loading...";
+    try {
+      var r = await fetch(BOT.url + "/admin/reports/stats", {
+        headers: { "X-Admin-Token": BOT.token }
+      });
+      var d = await r.json();
+      el.innerHTML =
+        "<strong>Total:</strong> " + d.total +
+        " &nbsp;|&nbsp; <strong>New:</strong> " + d.new +
+        " &nbsp;|&nbsp; <strong>Needs review:</strong> " + d.needs_review +
+        " &nbsp;|&nbsp; <strong>Escalated:</strong> " + d.escalated +
+        " &nbsp;|&nbsp; <strong>Tracked users:</strong> " + d.tracked_users;
+    } catch(e) {
+      el.textContent = "Failed to load: " + e.message;
+    }
+  }
+
+  async function loadReports(status) {
+    var el = document.getElementById("reports-result");
+    el.innerHTML = "Loading " + status + " reports...";
+    try {
+      var r = await fetch(BOT.url + "/admin/reports?status=" + status, {
+        headers: { "X-Admin-Token": BOT.token }
+      });
+      var d = await r.json();
+      if (!d.reports || d.reports.length === 0) {
+        el.textContent = "No " + status + " reports.";
+        return;
+      }
+      el.innerHTML = d.reports.map(function(rp) {
+        var conf = (rp.confidence_score * 100).toFixed(0);
+        var sev  = (rp.severity_score  * 100).toFixed(0);
+        var confColor = conf >= 70 ? "#1e8449" : conf >= 40 ? "#e67e22" : "#888";
+        var sevColor  = sev  >= 70 ? "#c0392b" : sev  >= 30 ? "#e67e22" : "#888";
+        return '<div style="border:1px solid #e0e0e0;border-radius:8px;padding:10px;margin-bottom:8px;background:#fafafa">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<strong style="font-size:0.83rem">' + rp.report_id + '</strong>' +
+            '<span style="font-size:0.75rem;color:#888">' + (rp.timestamp || "").slice(0,16).replace("T"," ") + ' UTC</span>' +
+          '</div>' +
+          '<div style="margin:4px 0;font-size:0.8rem">' +
+            '<span style="background:#eaf2ff;padding:2px 6px;border-radius:4px;margin-right:4px">' + (rp.report_domain||"?") + '</span>' +
+            '<span style="background:#fff3e0;padding:2px 6px;border-radius:4px;margin-right:4px">' + (rp.hazard_type||"?") + '</span>' +
+            '<span style="color:' + confColor + ';margin-right:8px">conf ' + conf + '%</span>' +
+            '<span style="color:' + sevColor  + '">sev '  + sev  + '%</span>' +
+          '</div>' +
+          '<div style="font-size:0.79rem;color:#444;margin:3px 0">&#x1F4CD; ' + (rp.location_text||"—") + '</div>' +
+          '<div style="font-size:0.79rem;color:#555;margin:3px 0">' + (rp.description||"").slice(0,120) + '</div>' +
+          '<div style="display:flex;gap:8px;margin-top:8px">' +
+            '<button onclick="reviewReport(\'' + rp.report_id + '\',true)"  style="padding:5px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Verify</button>' +
+            '<button onclick="reviewReport(\'' + rp.report_id + '\',false)" style="padding:5px 12px;background:#e74c3c;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Reject</button>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+    } catch(e) {
+      el.textContent = "Failed to load: " + e.message;
+    }
+  }
+
+  async function reviewReport(reportId, verify) {
+    var endpoint = verify ? "verify" : "reject";
+    try {
+      var r = await fetch(BOT.url + "/admin/reports/" + reportId + "/" + endpoint, {
+        method: "POST",
+        headers: { "X-Admin-Token": BOT.token }
+      });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      // Find the card and replace its button row with a status badge
+      var el = document.getElementById("reports-result");
+      var btns = el.querySelectorAll("button[onclick]");
+      btns.forEach(function(btn) {
+        if (btn.getAttribute("onclick").indexOf(reportId) !== -1) {
+          var row = btn.parentNode;
+          row.innerHTML = '<span style="font-size:0.78rem;font-weight:bold;color:' +
+            (verify ? "#1e8449" : "#c0392b") + '">' +
+            (verify ? "Verified" : "Rejected") + '</span>';
+        }
+      });
+      loadReportStats();
+    } catch(e) {
+      alert("Failed: " + e.message);
+    }
+  }
+
   loadData();
+  loadReportStats();
 </script>
 </body>
 </html>
