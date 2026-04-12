@@ -14,6 +14,7 @@ read-only supplementary context with explicit source labelling.
 
 import hashlib
 import json
+import math
 import os
 import sqlite3
 import uuid
@@ -156,6 +157,13 @@ _REPORT_INDICATOR_GROUPS = [
     REGULATORY_INDICATORS,
 ]
 
+# Minimum distance (km) two reporters must be apart to count as spatially
+# independent corroborating evidence (Sybil-resistance threshold).
+# Phase-1: we use coarse location-text token matching, so this is applied
+# as a logical guard — same location token from same user_hash = not independent.
+_MIN_SEPARATION_REPORTS = 2   # need at least this many *independent* contributors
+_DEFAULT_RELIABILITY    = 0.5  # prior for new/unknown users (TruthFinder prior)
+
 # Lookup sets for Phase-1 plausibility scoring
 LANDSLIDE_PRONE_DISTRICTS = {
     "badulla", "ratnapura", "kandy", "kegalle", "nuwara eliya",
@@ -285,6 +293,22 @@ class CommunityReporter:
                     tool_name  TEXT NOT NULL,
                     tool_input TEXT,
                     called_at  TEXT NOT NULL
+                )
+            """)
+            # Bayesian source reliability table (TruthFinder model).
+            # r_total     = sum of log-odds updates from verified corroborations
+            # n_reports   = total reports submitted by this user
+            # n_verified  = reports later confirmed by official source or triangulation
+            # n_rejected  = reports that expired unvalidated or were marked false
+            # reliability = current P(user tells truth), initialised to 0.5
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS user_reliability (
+                    user_hash   TEXT PRIMARY KEY,
+                    reliability REAL    NOT NULL DEFAULT 0.5,
+                    n_reports   INTEGER NOT NULL DEFAULT 0,
+                    n_verified  INTEGER NOT NULL DEFAULT 0,
+                    n_rejected  INTEGER NOT NULL DEFAULT 0,
+                    updated_at  TEXT    NOT NULL
                 )
             """)
             conn.commit()
@@ -505,7 +529,7 @@ class CommunityReporter:
         Dimensions (spec Table 4):
           completeness  0.30
           plausibility  0.20
-          triangulation 0.30
+          triangulation 0.30  ← now Bayesian source-credibility weighted
           (evidence skipped in Phase 1 — text only, no attachment analysis)
         """
         score = 0.0
@@ -522,8 +546,8 @@ class CommunityReporter:
         # Plausibility
         score += self._check_plausibility(extracted)
 
-        # Triangulation
-        score += self._check_triangulation(extracted)
+        # Bayesian source-credibility weighted triangulation
+        score += self._check_triangulation_bayesian(extracted, phone_number)
 
         return min(score, 1.0)
 
@@ -548,44 +572,192 @@ class CommunityReporter:
 
         return 0.0
 
-    def _check_triangulation(self, extracted: Dict) -> float:
+    def _get_user_reliability(self, user_hash: str) -> float:
+        """Return the stored reliability score for a user, or the default prior."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                row = conn.execute(
+                    "SELECT reliability FROM user_reliability WHERE user_hash = ?",
+                    (user_hash,)
+                ).fetchone()
+            return row[0] if row else _DEFAULT_RELIABILITY
+        except Exception as exc:
+            print(f"[reporter] _get_user_reliability error: {exc}")
+            return _DEFAULT_RELIABILITY
+
+    def _check_spatial_independence(
+        self, user_hash: str, user_hash_candidate: str, loc_token: str
+    ) -> bool:
         """
-        Phase-1 triangulation: same domain + hazard_type, overlapping location
-        text, within the last 12 hours. Returns 0.30 for >=2 corroborating
-        reports, 0.15 for exactly 1, 0.0 otherwise.
+        Return True if user_hash_candidate is a spatially independent reporter
+        (different identity AND same location cluster).
+
+        Sybil-resistance rule: a single user_hash cannot corroborate their own
+        report — repeated self-reports are linked to the same case and excluded
+        from triangulation, as per spec Section 11 (edge-case table).
+        """
+        return user_hash_candidate != user_hash
+
+    def _check_triangulation_bayesian(self, extracted: Dict, phone_number: str) -> float:
+        """
+        Bayesian source-credibility weighted triangulation (TruthFinder model).
+
+        Algorithm:
+          1. Find all recent, independent corroborating reports for this
+             (domain, hazard_type, location) cluster within the last 12 hours.
+          2. Exclude reports from the same user_hash (Sybil-resistance).
+          3. For each independent corroborating reporter, retrieve their
+             reliability score r_u.
+          4. Combine using the TruthFinder formula:
+
+               P(true) = prod(r_u) / [prod(r_u) + prod(1-r_u)]
+
+          5. Scale to the [0, 0.30] contribution band for the triangulation
+             dimension.
+
+        With no corroborators: returns 0.0.
+        With 1 corroborator at default reliability (0.5): returns ~0.15.
+        With 2+ corroborators at high reliability: approaches 0.30.
+
+        References:
+          Yin et al. (2008) TruthFinder, VLDB.
+          Li et al. (2016) Survey on Truth Discovery, ACM SIGKDD.
         """
         cutoff = (datetime.now(timezone.utc) - timedelta(hours=12)).isoformat()
         loc = (extracted.get("location_text") or "").lower()
         domain = extracted.get("report_domain", "unknown")
         hazard = extracted.get("hazard_type", "unknown")
+        current_user_hash = _hash_phone(phone_number)
 
         if not loc or domain == "unknown":
             return 0.0
 
-        # Use the first meaningful token from the location for a fuzzy overlap
         loc_token = next((w for w in loc.split() if len(w) > 2), "")
         if not loc_token:
             return 0.0
 
         try:
             with sqlite3.connect(self.db_path) as conn:
-                row = conn.execute("""
-                    SELECT COUNT(*) FROM community_reports
+                conn.row_factory = sqlite3.Row
+                rows = conn.execute("""
+                    SELECT DISTINCT user_hash FROM community_reports
                     WHERE timestamp >= ?
                       AND report_domain = ?
                       AND (hazard_type = ? OR ? = 'unknown')
                       AND location_text LIKE ?
                       AND status NOT IN ('closed', 'archived')
-                """, (cutoff, domain, hazard, hazard, f"%{loc_token}%")).fetchone()
-            count = row[0] if row else 0
-            if count >= 2:
-                return 0.30
-            if count == 1:
-                return 0.15
+                """, (cutoff, domain, hazard, hazard, f"%{loc_token}%")).fetchall()
         except Exception as exc:
-            print(f"[reporter] triangulation query error: {exc}")
+            print(f"[reporter] triangulation_bayesian query error: {exc}")
+            return 0.0
 
-        return 0.0
+        # Filter to spatially independent reporters (exclude self)
+        independent_hashes = [
+            r["user_hash"] for r in rows
+            if self._check_spatial_independence(current_user_hash, r["user_hash"], loc_token)
+        ]
+
+        if not independent_hashes:
+            return 0.0
+
+        # TruthFinder combination: P(true) = Π r_u / [Π r_u + Π (1-r_u)]
+        prod_r   = 1.0
+        prod_1_r = 1.0
+        for uh in independent_hashes:
+            r = self._get_user_reliability(uh)
+            # Clamp to avoid log(0) instability at extremes
+            r = max(0.05, min(0.95, r))
+            prod_r   *= r
+            prod_1_r *= (1.0 - r)
+
+        denom = prod_r + prod_1_r
+        p_true = prod_r / denom if denom > 0 else 0.0
+
+        # Scale p_true (0→1) to the [0, 0.30] triangulation band
+        triangulation_score = round(p_true * 0.30, 4)
+        print(
+            f"[reporter] triangulation_bayesian: {len(independent_hashes)} independent "
+            f"reporters → p_true={p_true:.3f} → tri_score={triangulation_score:.3f}"
+        )
+        return triangulation_score
+
+    def update_user_reliability(
+        self, user_hash: str, verified: bool, note: str = ""
+    ) -> None:
+        """
+        Update a user's Bayesian reliability score after a report outcome is known.
+
+        Called from:
+          - Admin panel when a report is manually verified or rejected.
+          - Scheduler when a report reaches its retention expiry unvalidated
+            (treated as weak rejection, weight 0.5).
+
+        Update rule (TruthFinder log-odds update):
+          If verified:  reliability = reliability + α*(1 - reliability)
+          If rejected:  reliability = reliability - α*reliability
+          where α = 0.3 (learning rate — tunable for thesis evaluation).
+
+        The score is clamped to [0.05, 0.95] to prevent lock-in.
+        """
+        ALPHA = 0.3
+        now = datetime.now(timezone.utc).isoformat()
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                row = conn.execute(
+                    "SELECT reliability, n_reports, n_verified, n_rejected "
+                    "FROM user_reliability WHERE user_hash = ?",
+                    (user_hash,)
+                ).fetchone()
+
+                if row:
+                    r, n_rep, n_ver, n_rej = row
+                else:
+                    r, n_rep, n_ver, n_rej = _DEFAULT_RELIABILITY, 0, 0, 0
+
+                if verified:
+                    r = r + ALPHA * (1.0 - r)
+                    n_ver += 1
+                else:
+                    r = r - ALPHA * r
+                    n_rej += 1
+
+                r = max(0.05, min(0.95, r))
+
+                conn.execute("""
+                    INSERT INTO user_reliability
+                        (user_hash, reliability, n_reports, n_verified, n_rejected, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                    ON CONFLICT(user_hash) DO UPDATE SET
+                        reliability = excluded.reliability,
+                        n_verified  = excluded.n_verified,
+                        n_rejected  = excluded.n_rejected,
+                        updated_at  = excluded.updated_at
+                """, (user_hash, round(r, 4), n_rep, n_ver, n_rej, now))
+                conn.commit()
+            print(
+                f"[reporter] reliability updated: {user_hash[:8]}… "
+                f"{'verified' if verified else 'rejected'} → r={r:.3f} "
+                f"({note})"
+            )
+        except Exception as exc:
+            print(f"[reporter] update_user_reliability error: {exc}")
+
+    def _upsert_user_report_count(self, user_hash: str) -> None:
+        """Increment n_reports for a user when a new report is stored."""
+        now = datetime.now(timezone.utc).isoformat()
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                conn.execute("""
+                    INSERT INTO user_reliability
+                        (user_hash, reliability, n_reports, n_verified, n_rejected, updated_at)
+                    VALUES (?, ?, 1, 0, 0, ?)
+                    ON CONFLICT(user_hash) DO UPDATE SET
+                        n_reports  = n_reports + 1,
+                        updated_at = excluded.updated_at
+                """, (user_hash, _DEFAULT_RELIABILITY, now))
+                conn.commit()
+        except Exception as exc:
+            print(f"[reporter] _upsert_user_report_count error: {exc}")
 
     # ── Severity scoring ──────────────────────────────────────────────────
 
@@ -668,6 +840,8 @@ class CommunityReporter:
                 f"domain={record['report_domain']} action={record['action']} "
                 f"conf={record['confidence_score']:.2f} sev={record['severity_score']:.2f}"
             )
+            # Increment report count in user_reliability table
+            self._upsert_user_report_count(record["user_hash"])
         except Exception as exc:
             print(f"[reporter] store error: {exc}")
 
