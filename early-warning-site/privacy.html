@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Flood & Landslide Advisory Chatbot</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 760px;
+      margin: 48px auto;
+      padding: 0 24px;
+      color: #1a1a1a;
+      line-height: 1.7;
+    }
+    h1 { font-size: 1.75rem; margin-bottom: 4px; }
+    h2 { font-size: 1.1rem; margin-top: 36px; color: #2c5f2e; }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 32px; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; font-size: 0.9rem; }
+    th { background: #f4f4f4; }
+    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.88rem; }
+    footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #eee; color: #888; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+  <h1>Privacy Policy</h1>
+  <p class="meta">
+    Flood &amp; Landslide Early-Warning Advisory Chatbot<br />
+    Last updated: April 2026 &nbsp;·&nbsp; MPhil Research Project, University of Moratuwa
+  </p>
+
+  <p>
+    This chatbot is an academic research prototype that provides disaster safety
+    information and collects voluntary community hazard reports via WhatsApp.
+    This page explains what data we collect, how it is used, and how you can
+    opt out.
+  </p>
+
+  <h2>1. What Data We Collect</h2>
+  <table>
+    <thead>
+      <tr><th>Data</th><th>How it is stored</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Phone number</td>
+        <td>One-way SHA-256 hash (first 16 hex chars). The original number is <strong>never</strong> written to any database.</td>
+        <td>Anonymous user identity for reliability scoring; duplicate detection</td>
+      </tr>
+      <tr>
+        <td>District &amp; language preference</td>
+        <td>Stored in <code>registrations.db</code> against a pseudonymous ID</td>
+        <td>Sending district-specific early-warning alerts in your language</td>
+      </tr>
+      <tr>
+        <td>Hazard report content</td>
+        <td>Stored in <code>community_reports.db</code> with phone hash only (no name, no number)</td>
+        <td>Community situational awareness; research on VGI credibility scoring</td>
+      </tr>
+      <tr>
+        <td>Conversation messages</td>
+        <td>Held in temporary session memory (in-process, not persisted to disk)</td>
+        <td>Maintaining conversation context within a single session</td>
+      </tr>
+      <tr>
+        <td>Tool-call logs</td>
+        <td>Stored with phone hash; no message content, only which tool was called</td>
+        <td>Research evaluation dataset (routing accuracy)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>2. What We Do Not Collect</h2>
+  <ul>
+    <li>Your name (unless you voluntarily provide it during registration)</li>
+    <li>Your location or GPS coordinates</li>
+    <li>Any data from your device beyond the WhatsApp message text</li>
+    <li>Payment or financial information</li>
+  </ul>
+
+  <h2>3. How Data is Used</h2>
+  <p>
+    Data is used solely for the purposes of this MPhil research project:
+  </p>
+  <ul>
+    <li>Delivering disaster safety information and district-level alerts via WhatsApp</li>
+    <li>Aggregating community hazard reports to improve situational awareness</li>
+    <li>Evaluating the performance of the AI agent (research dataset)</li>
+  </ul>
+  <p>
+    Data is <strong>not</strong> sold, shared with third parties, or used for
+    advertising. Aggregated, anonymised findings may be published in academic papers.
+  </p>
+
+  <h2>4. Data Retention</h2>
+  <p>
+    Community hazard reports are automatically archived or deleted after 7–180 days
+    depending on hazard type. Registration records are kept for the duration of the
+    study and deleted upon study completion.
+  </p>
+
+  <h2>5. How to Opt Out</h2>
+  <p>
+    Send <strong>STOP</strong> to the chatbot at any time via WhatsApp. This
+    immediately removes you from the alert distribution list and suppresses your
+    data from all future processing. No further messages will be sent to you.
+  </p>
+
+  <h2>6. Third-Party Services</h2>
+  <p>
+    This chatbot uses the following external services. Please review their
+    respective privacy policies:
+  </p>
+  <ul>
+    <li><a href="https://www.whatsapp.com/legal/privacy-policy">WhatsApp / Meta</a> — message delivery</li>
+    <li><a href="https://openai.com/policies/privacy-policy">OpenAI</a> — AI language model (message text is processed by GPT-4o-mini)</li>
+    <li><a href="https://open-meteo.com/en/terms">Open-Meteo</a> — rainfall data (district coordinates only, no personal data)</li>
+  </ul>
+
+  <h2>7. Contact</h2>
+  <p>
+    This is an academic research project conducted at the University of Moratuwa,
+    Sri Lanka. For questions or data deletion requests please contact the researcher
+    via the university.
+  </p>
+
+  <footer>
+    &copy; 2026 MPhil Research Project — University of Moratuwa, Sri Lanka.
+    This chatbot is a research prototype and not a commercial service.
+  </footer>
+
+</body>
+</html>
