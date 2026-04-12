@@ -196,6 +196,7 @@ async def admin_list_reports(
         with _sq.connect(db_path) as conn:
             conn.row_factory = _sq.Row
             if status in _action_values:
+                # Only show reports not yet reviewed — exclude verified/closed/archived
                 rows = conn.execute("""
                     SELECT report_id, timestamp, language, report_domain,
                            hazard_type, category, location_text, description,
@@ -203,6 +204,7 @@ async def admin_list_reports(
                            people_at_risk, ongoing
                     FROM community_reports
                     WHERE action = ?
+                      AND status NOT IN ('verified', 'closed', 'archived')
                     ORDER BY severity_score DESC, timestamp DESC
                     LIMIT ?
                 """, (status, limit)).fetchall()

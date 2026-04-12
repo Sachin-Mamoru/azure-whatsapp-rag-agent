@@ -85,6 +85,7 @@
       <button class="btn btn-blue"   style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('new')">New</button>
       <button class="btn btn-orange" style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('escalate')">Escalated</button>
       <button class="btn btn-gray"   style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('flag_review')">Needs Review</button>
+      <button class="btn btn-green"  style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('verified')">Verified</button>
       <button class="btn btn-gray"   style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReportStats()">Stats</button>
     </div>
     <div id="reports-result" style="font-size:0.8rem;margin-top:8px;max-height:420px;overflow-y:auto"></div>
@@ -348,8 +349,13 @@
           '<div style="font-size:0.79rem;color:#444;margin:3px 0">&#x1F4CD; ' + (rp.location_text||"—") + '</div>' +
           '<div style="font-size:0.79rem;color:#555;margin:3px 0">' + (rp.description||"").slice(0,120) + '</div>' +
           '<div class="report-actions" style="display:flex;gap:8px;margin-top:8px">' +
-            '<button onclick="reviewReport(\'' + rp.report_id + '\',true)"  style="padding:5px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Verify</button>' +
-            '<button onclick="reviewReport(\'' + rp.report_id + '\',false)" style="padding:5px 12px;background:#e74c3c;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Reject</button>' +
+            (rp.status === 'verified'
+              ? '<span style="font-size:0.78rem;font-weight:bold;color:#1e8449">✔ Verified</span>'
+              : rp.status === 'closed'
+              ? '<span style="font-size:0.78rem;font-weight:bold;color:#c0392b">✘ Rejected</span>'
+              : '<button onclick="reviewReport(\'' + rp.report_id + '\',true)"  style="padding:5px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Verify</button>' +
+                '<button onclick="reviewReport(\'' + rp.report_id + '\',false)" style="padding:5px 12px;background:#e74c3c;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Reject</button>'
+            ) +
           '</div>' +
         '</div>';
       }).join("");
