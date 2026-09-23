@@ -130,7 +130,7 @@ Apple M3 Pro, 18 GB RAM, macOS 15.5; Python 3.11.16; FastAPI 0.115.0; LangChain 
 
 ```bash
 python3 -m venv .venv-eval && source .venv-eval/bin/activate
-pip install -r requirements.txt matplotlib numpy pandas scikit-learn
+pip install -r requirements.txt matplotlib numpy pandas scikit-learn scipy
 python evaluation/run_all.py     # executes bench_00 .. bench_10, then regenerates all figures
 ```
 Raw results: `evaluation/results/*.json`. Figures: `evaluation/figures/*.png`. Test sets: `evaluation/datasets/*.json`.
@@ -287,15 +287,25 @@ To address the missing-baseline gap common in agentic-RAG evaluations, we compar
 
 | Metric | RAG (grounded) | Closed-book (no retrieval) |
 |---|---|---|
-| Faithfulness (0–5) | 4.67, 95% CI [4.27, 4.97] | 4.40, 95% CI [3.87, 4.83] |
+| Faithfulness (0–5) | 4.67 | 4.40 |
 | Relevance (0–5) | 4.40 | 4.70 |
-| **Hallucination-flag rate** | **13.3%**, Wilson 95% CI [5.3%, 29.7%] | **20.0%**, Wilson 95% CI [9.5%, 37.3%] |
+| **Hallucination-flag rate** | **13.3%** | **20.0%** |
 | Keyword coverage | 0.76 | 0.74 |
 | Mean latency | 3.46 s | 4.34 s |
 
+Because this is a **paired** design (identical 30 questions in both conditions), we test the per-item paired differences rather than comparing two independent-sample confidence intervals: a paired-bootstrap CI on the mean difference plus a Wilcoxon signed-rank test for the ordinal judge scores, and McNemar's exact test on discordant hallucination-flag pairs.
+
+**Table 13b.** Paired significance tests (RAG − closed-book, n=30).
+
+| Comparison | Mean diff. | 95% paired-bootstrap CI | Test | p-value |
+|---|---|---|---|---|
+| Faithfulness | +0.27 | [−0.33, +0.90] | Wilcoxon signed-rank | 0.37 |
+| Relevance | −0.30 | [−0.80, +0.13] | Wilcoxon signed-rank | 0.30 |
+| Hallucination flag (discordant: RAG-only=4, CB-only=6) | — | — | McNemar exact | 0.75 |
+
 ![Figure 9 — RAG vs. closed-book ablation](evaluation/figures/fig9_rag_vs_closedbook_ablation.png)
 
-RAG shows a directionally lower hallucination rate (13.3% vs. 20.0%) and higher faithfulness (4.67 vs. 4.40) than the closed-book baseline using the *identical* generator model — consistent with the core motivating hypothesis that grounding reduces fabricated claims. Closed-book scored marginally higher on judge-rated relevance (4.70 vs. 4.40). At n=30 the 95% confidence intervals for faithfulness and hallucination rate overlap between conditions, so **the effect is directionally consistent with the RAG hypothesis but does not reach conventional statistical significance at this sample size** — we report this honestly rather than overstating significance, and recommend scaling to n≥100 with paired significance testing (e.g. McNemar's test on the binary hallucination flag) for a camera-ready submission (§7).
+RAG shows a directionally lower hallucination rate (13.3% vs. 20.0%) and higher faithfulness (4.67 vs. 4.40) than the closed-book baseline using the *identical* generator model — consistent with the core motivating hypothesis that grounding reduces fabricated claims. Closed-book scored marginally higher on judge-rated relevance (4.70 vs. 4.40). All three paired significance tests agree (p ≥ 0.30 in every case): **none of the observed differences reach conventional statistical significance at n=30.** We report this transparently — the effect direction is consistent with the RAG hypothesis but is *directionally suggestive, not statistically confirmed* — and recommend scaling to n≥100 for adequate statistical power in a camera-ready submission (§7).
 
 ### 5.12 Live Azure deployment probe
 
@@ -355,7 +365,7 @@ The Bayesian triangulation computation itself is not a bottleneck (sub-10 ms at 
 
 ### 6.6 Does RAG actually reduce hallucination here?
 
-The ablation in §5.11 provides the first controlled (same-model, same-question) comparison in this evaluation between grounded and ungrounded generation. The direction of every measured effect (lower hallucination rate, higher faithfulness for RAG) is consistent with the standard RAG hypothesis, but at n=30 the confidence intervals overlap and the closed-book condition even scored slightly higher on judge-rated relevance. We interpret this as *encouraging but inconclusive* evidence rather than a proven effect, and note that closed-book `gpt-4o-mini` already has non-trivial world knowledge about Sri Lankan disaster preparedness from pretraining data, which likely narrows the gap versus a domain where the LLM has no relevant prior knowledge at all. A larger, pre-registered version of this ablation (n≥100, paired significance testing) is the natural next step.
+The ablation in §5.11 provides the first controlled (same-model, same-question) comparison in this evaluation between grounded and ungrounded generation. The direction of every measured effect (lower hallucination rate, higher faithfulness for RAG) is consistent with the standard RAG hypothesis, but paired significance testing (Wilcoxon signed-rank for the judge scores, McNemar's exact test for the hallucination flag) gives p ≥ 0.30 throughout, and the closed-book condition even scored slightly higher on judge-rated relevance. We interpret this as *encouraging but inconclusive* evidence rather than a proven effect, and note that closed-book `gpt-4o-mini` already has non-trivial world knowledge about Sri Lankan disaster preparedness from pretraining data, which likely narrows the gap versus a domain where the LLM has no relevant prior knowledge at all. A larger, pre-registered version of this ablation (n≥100) is the natural next step to obtain adequate statistical power.
 
 ### 6.7 Live deployment reveals a documentation-reality gap
 

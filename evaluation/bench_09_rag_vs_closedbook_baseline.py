@@ -23,7 +23,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from evaluation.common import load_dataset, save_json, summarize, wilson_ci
+from evaluation.common import load_dataset, save_json, summarize, wilson_ci, bootstrap_ci
 from evaluation.llm_judge import LLMJudge
 from agent.rag import RAGSystem
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -61,6 +61,47 @@ async def closed_book_answer(llm: ChatOpenAI, question: str, language: str) -> s
         HumanMessage(content=question),
     ])
     return result.content
+
+
+def paired_analysis(items):
+    """Correct statistics for this PAIRED design (same questions, both conditions):
+    paired-difference bootstrap CIs (not independent per-condition CI overlap,
+    which ignores that both conditions were measured on the same items) plus
+    Wilcoxon signed-rank (ordinal judge scores) and a McNemar-style exact binomial
+    test on discordant hallucination-flag pairs."""
+    from scipy.stats import wilcoxon, binomtest
+
+    faith_diff = [it["rag"]["faithfulness"] - it["closed_book"]["faithfulness"] for it in items]
+    rel_diff = [it["rag"]["relevance"] - it["closed_book"]["relevance"] for it in items]
+    cov_diff = [it["rag"]["keyword_coverage"] - it["closed_book"]["keyword_coverage"] for it in items]
+
+    def wilcoxon_p(diffs):
+        try:
+            return float(wilcoxon(diffs).pvalue)
+        except Exception:
+            return None  # e.g. all-zero differences
+
+    hallu_rag = [1 if it["rag"]["hallucination_flag"] else 0 for it in items]
+    hallu_cb = [1 if it["closed_book"]["hallucination_flag"] else 0 for it in items]
+    rag_only = sum(1 for r, c in zip(hallu_rag, hallu_cb) if r == 1 and c == 0)
+    cb_only = sum(1 for r, c in zip(hallu_rag, hallu_cb) if r == 0 and c == 1)
+    both = sum(1 for r, c in zip(hallu_rag, hallu_cb) if r == 1 and c == 1)
+    neither = sum(1 for r, c in zip(hallu_rag, hallu_cb) if r == 0 and c == 0)
+    n_discordant = rag_only + cb_only
+    mcnemar_p = (
+        float(binomtest(min(rag_only, cb_only), n_discordant, 0.5).pvalue)
+        if n_discordant > 0 else None
+    )
+
+    return {
+        "faithfulness_paired_diff_rag_minus_cb": summarize(faith_diff),
+        "faithfulness_wilcoxon_p": wilcoxon_p(faith_diff),
+        "relevance_paired_diff_rag_minus_cb": summarize(rel_diff),
+        "relevance_wilcoxon_p": wilcoxon_p(rel_diff),
+        "keyword_coverage_paired_diff_rag_minus_cb": summarize(cov_diff),
+        "hallucination_2x2": {"both": both, "neither": neither, "rag_only": rag_only, "cb_only": cb_only},
+        "hallucination_mcnemar_exact_p": mcnemar_p,
+    }
 
 
 async def main():
@@ -150,6 +191,15 @@ async def main():
 
     print(f"\nRAG hallucination rate: {summary['rag']['hallucination_rate']}")
     print(f"Closed-book hallucination rate: {summary['closed_book']['hallucination_rate']}")
+
+    paired = paired_analysis(results)
+    summary["paired_analysis"] = paired
+    print(f"Paired faithfulness diff (RAG-CB): mean={paired['faithfulness_paired_diff_rag_minus_cb']['mean']:.3f} "
+          f"Wilcoxon p={paired['faithfulness_wilcoxon_p']}")
+    print(f"McNemar exact p (hallucination flag): {paired['hallucination_mcnemar_exact_p']} "
+          f"(discordant pairs: RAG-only={paired['hallucination_2x2']['rag_only']}, "
+          f"CB-only={paired['hallucination_2x2']['cb_only']})")
+
     save_json("09_rag_vs_closedbook_baseline.json", summary)
 
 
