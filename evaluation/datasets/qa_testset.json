@@ -1,0 +1,22 @@
+[
+  {"id": "qa01", "language": "en", "question": "What are the early warning signs of a landslide I should look for around my house?", "keywords": ["crack", "tilt", "lean", "wall", "pole"]},
+  {"id": "qa02", "language": "en", "question": "What is the difference between a translational slide and a rotational slide?", "keywords": ["translational", "rotational", "planar", "slope"]},
+  {"id": "qa03", "language": "en", "question": "What is preloading and how is it used before construction on weak ground?", "keywords": ["preload", "surcharge", "load", "ground"]},
+  {"id": "qa04", "language": "en", "question": "What hazard icons are used in the housing manual and what do they mean?", "keywords": ["flood", "earthquake", "landslide", "wind", "tsunami"]},
+  {"id": "qa05", "language": "en", "question": "What factors affect the wind forces acting on a house?", "keywords": ["wind", "topography", "exposure", "height"]},
+  {"id": "qa06", "language": "en", "question": "How do large woody plants with tap roots help mitigate landslide risk?", "keywords": ["root", "vegetation", "soil", "buttress"]},
+  {"id": "qa07", "language": "en", "question": "What structural abnormalities indicate that a slope near my home might be failing?", "keywords": ["crack", "tilt", "retaining wall", "structure"]},
+  {"id": "qa08", "language": "en", "question": "What should I do to prepare my house for a cyclone or high wind event?", "keywords": ["wind", "cyclone", "roof", "secure"]},
+  {"id": "qa09", "language": "en", "question": "What is bio-engineering and how is it used for slope stabilization?", "keywords": ["bio", "vegetation", "root", "soil"]},
+  {"id": "qa10", "language": "en", "question": "What ground subsidence risks should be considered before building a house?", "keywords": ["subsidence", "ground", "settlement"]},
+  {"id": "qa11", "language": "en", "question": "What actions should a family take immediately after heavy rainfall in a landslide-prone area?", "keywords": ["rain", "evacuate", "landslide", "safety"]},
+  {"id": "qa12", "language": "en", "question": "How can retaining walls fail and what warning signs should residents monitor?", "keywords": ["retaining wall", "crack", "bulge", "tilt"]},
+  {"id": "qa13", "language": "si", "question": "නාය යෑමට පෙර දක්නට ලැබෙන පූර්ව ලක්ෂණ මොනවාද?", "keywords": ["නාය", "ඉරිතලා", "බෑවුම"]},
+  {"id": "qa14", "language": "si", "question": "ගං වතුරින් ආරක්ෂා වීමට ගත යුතු පියවර මොනවාද?", "keywords": ["ගං", "ජලය", "ආරක්ෂ"]},
+  {"id": "qa15", "language": "ta", "question": "நிலச்சரிவுக்கு முன் தோன்றும் எச்சரிக்கை அறிகுறிகள் என்ன?", "keywords": ["நிலச்சரிவு", "வெடிப்பு", "சரிவு"]},
+  {"id": "qa16", "language": "ta", "question": "வெள்ளத்திலிருந்து பாதுகாக்க என்ன நடவடிக்கை எடுக்க வேண்டும்?", "keywords": ["வெள்ளம்", "நீர்", "பாதுகாப்பு"]},
+  {"id": "qa17", "language": "en", "question": "What is a debris flow and how does it differ from a slow-moving slide?", "keywords": ["debris", "flow", "fast", "slide"]},
+  {"id": "qa18", "language": "en", "question": "Why should construction avoid steep slopes without engineering assessment?", "keywords": ["slope", "construction", "risk", "assessment"]},
+  {"id": "qa19", "language": "en", "question": "What role does vegetation density play in reducing slope erosion?", "keywords": ["vegetation", "erosion", "soil", "root"]},
+  {"id": "qa20", "language": "en", "question": "What is the recommended way to identify tilted utility poles as a hazard indicator?", "keywords": ["tilt", "pole", "lean", "indicator"]}
+]

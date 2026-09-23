@@ -127,3 +127,7 @@ credentials.json
 
 # SQLite registrations database
 data/registrations.db
+
+# ── Performance evaluation suite ──────────────────────────────────────────
+.venv-eval/
+evaluation/results/*.db

@@ -1,0 +1,22 @@
+[
+  {"id": "r01", "language": "en", "message": "What should I do to prepare for a landslide?", "expected_tool": "query_knowledge_base"},
+  {"id": "r02", "language": "en", "message": "How do I make my house safer from flooding?", "expected_tool": "query_knowledge_base"},
+  {"id": "r03", "language": "en", "message": "What are the warning signs of a slope failure?", "expected_tool": "query_knowledge_base"},
+  {"id": "r04", "language": "en", "message": "Explain what a retaining wall does.", "expected_tool": "query_knowledge_base"},
+  {"id": "r05", "language": "en", "message": "What's today's weather forecast for Ratnapura?", "expected_tool": "search_web"},
+  {"id": "r06", "language": "en", "message": "Is there any active flood alert right now in Kalutara?", "expected_tool": "search_web"},
+  {"id": "r07", "language": "en", "message": "Any recent news about landslides in Sri Lanka this week?", "expected_tool": "search_web"},
+  {"id": "r08", "language": "en", "message": "What is the current river level near Kelani river?", "expected_tool": "search_web"},
+  {"id": "r09", "language": "en", "message": "I can see a big crack on the slope behind my house and the ground is moving.", "expected_tool": "submit_community_report"},
+  {"id": "r10", "language": "en", "message": "Water is rising fast and entering our street near the main road, families are trapped.", "expected_tool": "submit_community_report"},
+  {"id": "r11", "language": "en", "message": "The drain near my house is completely blocked and water is overflowing right now.", "expected_tool": "submit_community_report"},
+  {"id": "r12", "language": "en", "message": "There's a tilted utility pole and the wall next to it has a fresh crack, happening now.", "expected_tool": "submit_community_report"},
+  {"id": "r13", "language": "en", "message": "Has anyone else reported problems near my area recently?", "expected_tool": "get_community_observations"},
+  {"id": "r14", "language": "en", "message": "What are people reporting nearby right now?", "expected_tool": "get_community_observations"},
+  {"id": "r15", "language": "en", "message": "Are there any community reports close to Kandy today?", "expected_tool": "get_community_observations"},
+  {"id": "r16", "language": "si", "message": "නාය යෑමකට මම සූදානම් විය යුත්තේ කෙසේද?", "expected_tool": "query_knowledge_base"},
+  {"id": "r17", "language": "si", "message": "අද කොළඹ කාලගුණය කෙසේද?", "expected_tool": "search_web"},
+  {"id": "r18", "language": "si", "message": "මගේ ගෙදර ළඟ බෑවුමේ විශාල ඉරිතලාවක් තියෙනවා, දැන් සිද්ධ වෙනවා.", "expected_tool": "submit_community_report"},
+  {"id": "r19", "language": "ta", "message": "நிலச்சரிவுக்கு நான் எப்படி தயாராக வேண்டும்?", "expected_tool": "query_knowledge_base"},
+  {"id": "r20", "language": "ta", "message": "இப்போது எங்கள் தெருவில் தண்ணீர் வேகமாக உயர்கிறது.", "expected_tool": "submit_community_report"}
+]

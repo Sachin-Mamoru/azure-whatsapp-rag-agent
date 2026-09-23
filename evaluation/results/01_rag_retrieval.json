@@ -1,0 +1,632 @@
+{
+  "n_vectors": 916,
+  "vectorstore_load_s": 0.04220008314587176,
+  "embedding_model": "text-embedding-3-large",
+  "n_queries": 20,
+  "by_k": {
+    "1": {
+      "latency": {
+        "n": 20,
+        "mean": 0.4222620085347444,
+        "stdev": 0.24552672034483514,
+        "min": 0.3034122500102967,
+        "max": 1.2101631669793278,
+        "p50": 0.33912870893254876,
+        "p90": 0.5268160421401262,
+        "p95": 1.0335360830649734,
+        "p99": 1.2101631669793278
+      },
+      "recall_at_k": 0.8,
+      "per_query": [
+        {
+          "id": "qa01",
+          "language": "en",
+          "k": 1,
+          "latency_s": 1.0335360830649734,
+          "hit": true
+        },
+        {
+          "id": "qa02",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.31746904202736914,
+          "hit": true
+        },
+        {
+          "id": "qa03",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.33379775006324053,
+          "hit": true
+        },
+        {
+          "id": "qa04",
+          "language": "en",
+          "k": 1,
+          "latency_s": 1.2101631669793278,
+          "hit": true
+        },
+        {
+          "id": "qa05",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.31973729212768376,
+          "hit": true
+        },
+        {
+          "id": "qa06",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.3359202090650797,
+          "hit": true
+        },
+        {
+          "id": "qa07",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.3270141251850873,
+          "hit": true
+        },
+        {
+          "id": "qa08",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.32137245894409716,
+          "hit": true
+        },
+        {
+          "id": "qa09",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.34550595888867974,
+          "hit": true
+        },
+        {
+          "id": "qa10",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.3034122500102967,
+          "hit": true
+        },
+        {
+          "id": "qa11",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.32981387502513826,
+          "hit": true
+        },
+        {
+          "id": "qa12",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.3112597910221666,
+          "hit": true
+        },
+        {
+          "id": "qa13",
+          "language": "si",
+          "k": 1,
+          "latency_s": 0.5268160421401262,
+          "hit": false
+        },
+        {
+          "id": "qa14",
+          "language": "si",
+          "k": 1,
+          "latency_s": 0.33912870893254876,
+          "hit": false
+        },
+        {
+          "id": "qa15",
+          "language": "ta",
+          "k": 1,
+          "latency_s": 0.34463354106992483,
+          "hit": false
+        },
+        {
+          "id": "qa16",
+          "language": "ta",
+          "k": 1,
+          "latency_s": 0.3203486669808626,
+          "hit": false
+        },
+        {
+          "id": "qa17",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.3984491671435535,
+          "hit": true
+        },
+        {
+          "id": "qa18",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.3391945001203567,
+          "hit": true
+        },
+        {
+          "id": "qa19",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.34211795893497765,
+          "hit": true
+        },
+        {
+          "id": "qa20",
+          "language": "en",
+          "k": 1,
+          "latency_s": 0.3455495829693973,
+          "hit": true
+        }
+      ]
+    },
+    "2": {
+      "latency": {
+        "n": 20,
+        "mean": 0.32476342503214256,
+        "stdev": 0.01212602438220148,
+        "min": 0.29735420807264745,
+        "max": 0.34296375000849366,
+        "p50": 0.3266492080874741,
+        "p90": 0.33900045813061297,
+        "p95": 0.33913812483660877,
+        "p99": 0.34296375000849366
+      },
+      "recall_at_k": 0.8,
+      "per_query": [
+        {
+          "id": "qa01",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.33356837509199977,
+          "hit": true
+        },
+        {
+          "id": "qa02",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.29735420807264745,
+          "hit": true
+        },
+        {
+          "id": "qa03",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.3169639580883086,
+          "hit": true
+        },
+        {
+          "id": "qa04",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.3266492080874741,
+          "hit": true
+        },
+        {
+          "id": "qa05",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.3089606671128422,
+          "hit": true
+        },
+        {
+          "id": "qa06",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.3321663751266897,
+          "hit": true
+        },
+        {
+          "id": "qa07",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.3246177500113845,
+          "hit": true
+        },
+        {
+          "id": "qa08",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.34296375000849366,
+          "hit": true
+        },
+        {
+          "id": "qa09",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.3299677500035614,
+          "hit": true
+        },
+        {
+          "id": "qa10",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.33900045813061297,
+          "hit": true
+        },
+        {
+          "id": "qa11",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.32737479195930064,
+          "hit": true
+        },
+        {
+          "id": "qa12",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.3042711659800261,
+          "hit": true
+        },
+        {
+          "id": "qa13",
+          "language": "si",
+          "k": 2,
+          "latency_s": 0.3205436251591891,
+          "hit": false
+        },
+        {
+          "id": "qa14",
+          "language": "si",
+          "k": 2,
+          "latency_s": 0.33398529211990535,
+          "hit": false
+        },
+        {
+          "id": "qa15",
+          "language": "ta",
+          "k": 2,
+          "latency_s": 0.33913812483660877,
+          "hit": false
+        },
+        {
+          "id": "qa16",
+          "language": "ta",
+          "k": 2,
+          "latency_s": 0.3229434590321034,
+          "hit": false
+        },
+        {
+          "id": "qa17",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.32505895802751184,
+          "hit": true
+        },
+        {
+          "id": "qa18",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.3139484168495983,
+          "hit": true
+        },
+        {
+          "id": "qa19",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.31898591690696776,
+          "hit": true
+        },
+        {
+          "id": "qa20",
+          "language": "en",
+          "k": 2,
+          "latency_s": 0.33680625003762543,
+          "hit": true
+        }
+      ]
+    },
+    "4": {
+      "latency": {
+        "n": 20,
+        "mean": 0.32465429791482164,
+        "stdev": 0.011072785145276641,
+        "min": 0.29623725009150803,
+        "max": 0.3467853330075741,
+        "p50": 0.3266170830465853,
+        "p90": 0.3360372500028461,
+        "p95": 0.34262283286079764,
+        "p99": 0.3467853330075741
+      },
+      "recall_at_k": 0.8,
+      "per_query": [
+        {
+          "id": "qa01",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.31879216711968184,
+          "hit": true
+        },
+        {
+          "id": "qa02",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.313349167117849,
+          "hit": true
+        },
+        {
+          "id": "qa03",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.3273839168250561,
+          "hit": true
+        },
+        {
+          "id": "qa04",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.32848212495446205,
+          "hit": true
+        },
+        {
+          "id": "qa05",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.3166836251039058,
+          "hit": true
+        },
+        {
+          "id": "qa06",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.3266170830465853,
+          "hit": true
+        },
+        {
+          "id": "qa07",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.3316925410181284,
+          "hit": true
+        },
+        {
+          "id": "qa08",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.3360372500028461,
+          "hit": true
+        },
+        {
+          "id": "qa09",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.33204125007614493,
+          "hit": true
+        },
+        {
+          "id": "qa10",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.3179702500347048,
+          "hit": true
+        },
+        {
+          "id": "qa11",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.3467853330075741,
+          "hit": true
+        },
+        {
+          "id": "qa12",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.32472354103811085,
+          "hit": true
+        },
+        {
+          "id": "qa13",
+          "language": "si",
+          "k": 4,
+          "latency_s": 0.32162854191847146,
+          "hit": false
+        },
+        {
+          "id": "qa14",
+          "language": "si",
+          "k": 4,
+          "latency_s": 0.34262283286079764,
+          "hit": false
+        },
+        {
+          "id": "qa15",
+          "language": "ta",
+          "k": 4,
+          "latency_s": 0.3272961671464145,
+          "hit": false
+        },
+        {
+          "id": "qa16",
+          "language": "ta",
+          "k": 4,
+          "latency_s": 0.29623725009150803,
+          "hit": false
+        },
+        {
+          "id": "qa17",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.3202655001077801,
+          "hit": true
+        },
+        {
+          "id": "qa18",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.3128306248690933,
+          "hit": true
+        },
+        {
+          "id": "qa19",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.32666054205037653,
+          "hit": true
+        },
+        {
+          "id": "qa20",
+          "language": "en",
+          "k": 4,
+          "latency_s": 0.32498624990694225,
+          "hit": true
+        }
+      ]
+    },
+    "8": {
+      "latency": {
+        "n": 20,
+        "mean": 0.3312294084229507,
+        "stdev": 0.026647920522674062,
+        "min": 0.30202254094183445,
+        "max": 0.42421987489797175,
+        "p50": 0.33434512512758374,
+        "p90": 0.3453980409540236,
+        "p95": 0.3600986669771373,
+        "p99": 0.42421987489797175
+      },
+      "recall_at_k": 0.8,
+      "per_query": [
+        {
+          "id": "qa01",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.30615762504749,
+          "hit": true
+        },
+        {
+          "id": "qa02",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.33586491690948606,
+          "hit": true
+        },
+        {
+          "id": "qa03",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.32981720892712474,
+          "hit": true
+        },
+        {
+          "id": "qa04",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.31394341704435647,
+          "hit": true
+        },
+        {
+          "id": "qa05",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.33930616709403694,
+          "hit": true
+        },
+        {
+          "id": "qa06",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.33434512512758374,
+          "hit": true
+        },
+        {
+          "id": "qa07",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.3345297500491142,
+          "hit": true
+        },
+        {
+          "id": "qa08",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.31549916695803404,
+          "hit": true
+        },
+        {
+          "id": "qa09",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.3347600840497762,
+          "hit": true
+        },
+        {
+          "id": "qa10",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.30202254094183445,
+          "hit": true
+        },
+        {
+          "id": "qa11",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.33067004196345806,
+          "hit": true
+        },
+        {
+          "id": "qa12",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.42421987489797175,
+          "hit": true
+        },
+        {
+          "id": "qa13",
+          "language": "si",
+          "k": 8,
+          "latency_s": 0.30668299994431436,
+          "hit": false
+        },
+        {
+          "id": "qa14",
+          "language": "si",
+          "k": 8,
+          "latency_s": 0.33583437488414347,
+          "hit": false
+        },
+        {
+          "id": "qa15",
+          "language": "ta",
+          "k": 8,
+          "latency_s": 0.3600986669771373,
+          "hit": false
+        },
+        {
+          "id": "qa16",
+          "language": "ta",
+          "k": 8,
+          "latency_s": 0.3078610838856548,
+          "hit": false
+        },
+        {
+          "id": "qa17",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.3169010828714818,
+          "hit": true
+        },
+        {
+          "id": "qa18",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.33573525003157556,
+          "hit": true
+        },
+        {
+          "id": "qa19",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.31494074990041554,
+          "hit": true
+        },
+        {
+          "id": "qa20",
+          "language": "en",
+          "k": 8,
+          "latency_s": 0.3453980409540236,
+          "hit": true
+        }
+      ]
+    }
+  }
+}

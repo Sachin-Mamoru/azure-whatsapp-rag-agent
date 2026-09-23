@@ -1,6 +1,6 @@
 import redis
 import json
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from agent.memory import ConversationMemory
 from agent.rag import RAGSystem
 from agent.reporter import CommunityReporter, detect_report_intent
@@ -48,6 +48,32 @@ class WhatsAppOrchestrator:
         "அறிக்கை", "அறிக்கை செய்", "தெரிவிக்க", "புகார்",
     ]
 
+    # Interrogative markers — a message matching these is a question, never a
+    # short standalone command, even if it happens to contain a command word
+    # (e.g. "Is there an active flood alert?" must NOT be treated as "alert").
+    _QUESTION_STARTERS = (
+        "what", "how", "why", "when", "where", "who", "which",
+        "is ", "are ", "can ", "could ", "should ", "would ",
+        "tell me", "explain", "describe", "does ", "do ",
+    )
+
+    @staticmethod
+    def _is_command_intent(message_lower: str, commands: List[str], max_words: int = 6) -> bool:
+        """
+        True only if the message itself IS a short command phrase, not a
+        longer sentence/question that merely mentions a command word.
+        Prevents substring collisions such as "alert" matching inside
+        "Is there any active flood alert right now?".
+        """
+        text = message_lower.strip()
+        if not text:
+            return False
+        if text.endswith("?") or any(text.startswith(q) for q in WhatsAppOrchestrator._QUESTION_STARTERS):
+            return False
+        if len(text.split()) > max_words:
+            return False
+        return any(cmd in text for cmd in commands)
+
     @staticmethod
     def _detect_script_language(text: str) -> Optional[str]:
         """Detect language purely from Unicode script ranges — fast and reliable."""
@@ -88,19 +114,19 @@ class WhatsAppOrchestrator:
                 "மொழியை மாற்று", "மொழி", "பட்டியல்", "மொழியை மாற்றுங்கள்",
                 "மொழியைத் தேர்ந்தெடுக்கவும்", "மொழி மெனு",
             ]
-            if any(cmd in message_lower for cmd in language_commands):
+            if self._is_command_intent(message_lower, language_commands):
                 # Reset language so next reply sets it fresh
                 session["language"] = None
                 self.memory.update_session(phone_number, session)
                 return get_menu_text()
 
             # ── 3. Registration command ────────────────────────────────────
-            if any(cmd in message_lower for cmd in self._REGISTER_COMMANDS):
+            if self._is_command_intent(message_lower, self._REGISTER_COMMANDS):
                 lang = session.get("language", "en")
                 return get_registration_prompt(Config.REGISTRATION_FORM_URL, lang)
 
             # ── 4. STOP / unsubscribe command ─────────────────────────────
-            if any(cmd in message_lower for cmd in self._STOP_COMMANDS):
+            if self._is_command_intent(message_lower, self._STOP_COMMANDS):
                 lang = session.get("language", "en")
                 stop_msgs = {
                     "en": "✅ You have been unsubscribed from early warning alerts. Reply *register* anytime to re-subscribe.",

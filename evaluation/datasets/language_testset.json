@@ -1,0 +1,22 @@
+[
+  {"id": "l01", "language": "en", "text": "What should I do to prepare for a landslide?"},
+  {"id": "l02", "language": "en", "text": "How can I keep my family safe during a flood?"},
+  {"id": "l03", "language": "si", "text": "නාය යෑමකට මම සූදානම් විය යුත්තේ කෙසේද?"},
+  {"id": "l04", "language": "si", "text": "ගං වතුරෙන් ආරක්ෂා වන්නේ කෙසේද?"},
+  {"id": "l05", "language": "ta", "text": "நிலச்சரிவுக்கு நான் எப்படி தயாராக வேண்டும்?"},
+  {"id": "l06", "language": "ta", "text": "வெள்ளத்தில் இருந்து எப்படி பாதுகாப்பாக இருப்பது?"},
+  {"id": "l07", "language": "en", "text": "hello"},
+  {"id": "l08", "language": "en", "text": "menu"},
+  {"id": "l09", "language": "si", "text": "භාෂාව වෙනස් කරන්න"},
+  {"id": "l10", "language": "ta", "text": "மொழியை மாற்று"},
+  {"id": "l11", "language": "en", "text": "There is a crack near my house, ongoing right now"},
+  {"id": "l12", "language": "si", "text": "මගේ ගෙදර ළඟ ඉරිතලාවක් තියෙනවා"},
+  {"id": "l13", "language": "ta", "text": "எனது வீட்டுக்கு அருகில் வெடிப்பு உள்ளது"},
+  {"id": "l14", "language": "en", "text": "1"},
+  {"id": "l15", "language": "en", "text": "Is there flooding near Colombo today?"},
+  {"id": "l16", "language": "si", "text": "අද කොළඹ ගං වතුර තියෙනවද?"},
+  {"id": "l17", "language": "ta", "text": "இன்று கொழும்பில் வெள்ளம் உள்ளதா?"},
+  {"id": "l18", "language": "en", "text": "register"},
+  {"id": "l19", "language": "si", "text": "ලියාපදිංචි වන්න"},
+  {"id": "l20", "language": "ta", "text": "பதிவு செய்"}
+]

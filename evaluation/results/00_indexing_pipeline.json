@@ -1,0 +1,9 @@
+{
+  "n_pdfs": 3,
+  "n_chunks": 916,
+  "chunk_size_chars": 1000,
+  "chunk_overlap_chars": 200,
+  "embedding_model": "text-embedding-3-large",
+  "total_build_time_s": 12.473308583023027,
+  "chunks_per_second": 73.43681060266037
+}
