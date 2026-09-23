@@ -60,7 +60,10 @@ The evaluated system is the Azure Container Apps–hosted WhatsApp disaster-advi
 
 | Component | Test mode | Rationale |
 |---|---|---|
-| FAISS retrieval, GPT-4o-mini generation, LangChain agent, report extraction, Bayesian scoring, SQLite | **Real production code, real OpenAI API calls** | These are the components whose performance is scientifically interesting; no mocking. |
+| FAISS retrieval, GPT-4o-mini/gpt-4o generation, LangChain agent, report extraction | **Real production code, real OpenAI API calls** | These are the components whose performance is scientifically interesting; no mocking. |
+| Bayesian triangulation scoring (§7), SQLite persistence (§8) | **Real production code, no external API** | These components are pure computation/local I/O in production too — `bench_05`/`bench_06` correctly make zero OpenAI calls, so there is nothing to disclose beyond "unmodified code path." |
+| Web search tool (`search_web`) | **Real Serper.dev / DuckDuckGo calls** | Exercised for real whenever the agent selected this tool during §5/§10 benchmarks (visible as ~5–8 s real network latencies in the routing results); not mocked, since search-result quality/latency is part of what §5 measures. |
+| Open-Meteo rainfall API (`agent/reporter.py`) | **Real calls, no key required** | Exercised for real during §6's report-extraction benchmark (see the `[reporter] rainfall ...` log lines in `bench_04`'s output); free public API, so no cost/quota concern. |
 | WhatsApp Cloud API (send) | **Not called** | `send_whatsapp_message()` lives in [app.py](../app.py), outside `orchestrator.process_message()`, and was never invoked — this benchmark suite never dispatches a real WhatsApp message. Chosen to avoid noise/cost on Meta's API and, per current project stage, because outbound messages are not the object of study. |
 | Redis session store | **Forced to in-memory fallback** ([agent/memory.py](../agent/memory.py)'s existing, production fallback path) | Isolates *agent reasoning* latency from *Redis network* latency; Redis network latency is out of scope for this repo (managed Azure service) and would conflate two independent variables. |
 | Google Sheets sync, GitHub Pages alert crawl | **Not exercised** | Depend on live third-party data not owned by the evaluation; excluded rather than faked. |

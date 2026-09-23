@@ -102,7 +102,10 @@ Every result in §5 was produced by executing the actual, unmodified production 
 
 | Component | Test mode | Rationale |
 |---|---|---|
-| FAISS retrieval, GPT-4o-mini generation, LangChain agent, report extraction, Bayesian scoring, SQLite | Real code, real OpenAI calls | These are the scientifically relevant measurements. |
+| FAISS retrieval, GPT-4o-mini/gpt-4o generation, LangChain agent, report extraction | Real code, real OpenAI calls | These are the scientifically relevant measurements. |
+| Bayesian triangulation scoring, SQLite persistence | Real code, no external API | Pure computation/local I/O in production too — these benchmarks correctly make zero OpenAI calls. |
+| Web search tool (Serper.dev / DuckDuckGo) | Real calls | Exercised for real whenever the agent selected this tool; not mocked, since result quality/latency is part of what is measured. |
+| Open-Meteo rainfall API | Real calls, no key required | Exercised for real during the report-extraction benchmark; free public API. |
 | WhatsApp Cloud API (outbound send) | Not invoked | `send_whatsapp_message()` lives outside the benchmarked call path; excluded to avoid cost/noise on a third-party API not under study. |
 | Redis session store | Forced in-memory fallback (an existing, production fallback path) | Isolates agent-reasoning latency from Azure-managed Redis network latency, a separate variable. |
 | Google Sheets sync, GitHub Pages alert crawl | Not exercised | Depend on live third-party data outside the evaluation's scope. |
