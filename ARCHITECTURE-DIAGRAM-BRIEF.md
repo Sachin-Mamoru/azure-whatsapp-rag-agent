@@ -60,7 +60,7 @@ A multilingual (English / Sinhala / Tamil) WhatsApp disaster advisory chatbot de
   | Tool | Trigger | Action |
   |---|---|---|
   | `query_knowledge_base` | Safety / hazard / preparedness question | FAISS vector search → GPT-4o-mini synthesis, injects verified community context |
-  | `search_web` | Real-time / current events question | SerpAPI (Google) → DuckDuckGo fallback |
+  | `search_web` | Real-time / current events question | Serper.dev (Google) → DuckDuckGo fallback |
   | `submit_community_report` | User describes a hazard they are observing | Calls Community Reporting Pipeline |
   | `get_community_observations` | User asks what others report nearby | SQL query on `community_reports.db` |
 
@@ -69,7 +69,7 @@ A multilingual (English / Sinhala / Tamil) WhatsApp disaster advisory chatbot de
 #### 3c — Community Reporting Pipeline (`agent/reporter.py`)
 Sequential steps per report:
 1. `detect_report_intent()` — keyword match in EN/SI/TA indicator dictionaries (LANDSLIDE_INDICATORS, FLOOD_INDICATORS, INFRASTRUCTURE_INDICATORS)
-2. `_extract_report()` — GPT-4o-mini zero-shot JSON extraction → typed schema (domain, hazard_type, location_text, description, people_at_risk, ongoing, immediacy)
+2. `_extract_report()` — GPT-4o-mini zero-shot JSON extraction → typed schema (report_domain, hazard_type, category, location_text, description, people_at_risk, ongoing, hazard_scale, infrastructure_damage)
 3. Clarification check — if no location → ask user once, set `report_state=awaiting_clarification`
 4. `_fetch_rainfall_for_location()` — async call to **Open-Meteo API** (free, no key), 17 district coordinates, 5s timeout; caches result
 5. `_score_confidence()` — composite score `0.30×completeness + 0.20×plausibility + 0.30×triangulation + 0.20×severity_boost`
@@ -132,8 +132,10 @@ APScheduler `AsyncIOScheduler`, started in FastAPI lifespan hook. Three jobs:
   - Inbound: webhook → FastAPI app
   - Outbound: app → `POST /messages` to send replies and alerts
 
-- **SerpAPI** (primary web search) / **DuckDuckGo** (fallback)
+- **Serper.dev** (primary web search) / **DuckDuckGo** (fallback)
   - Called by `search_web` tool when KB has no answer
+
+(Note: despite the codebase's env var and cost-estimate docs elsewhere referring to "SerpAPI", `agent/tools.py`'s actual integration calls **Serper.dev** (`google.serper.dev`, `SERPER_API_KEY`) — a different, similarly-named product. This brief reflects the code as implemented.)
 
 - **Open-Meteo API** (free, no key required)
   - Called by Community Reporting Pipeline to fetch today's precipitation for flood/landslide plausibility
@@ -154,8 +156,7 @@ APScheduler `AsyncIOScheduler`, started in FastAPI lifespan hook. Three jobs:
 
 - Static SPA at `https://sachin-mamoru.github.io/azure-whatsapp-rag-agent/admin.html`
 - Calls FastAPI admin endpoints (CORS allowed for `sachin-mamoru.github.io`):
-  - `GET /admin/reports?status=new|escalated|verified` → list reports
-  - `GET /admin/reports?action=escalate|flag_review` → filter by action
+  - `GET /admin/reports?status=<value>` → single `status` query param, overloaded: pass a real status (`new|verified|closed|archived|...`) to filter by status, or an action value (`escalate|flag_review|monitor|store_only`) to filter by the report's assigned action instead
   - `POST /admin/reports/{id}/verify` → sets status=verified, triggers `update_user_reliability(+)`
   - `POST /admin/reports/{id}/reject` → sets status=closed, triggers `update_user_reliability(-)`
   - `GET /admin/reports/stats` → counts by status
@@ -168,7 +169,7 @@ APScheduler `AsyncIOScheduler`, started in FastAPI lifespan hook. Three jobs:
 1. User → WhatsApp Cloud API → `/webhook` POST → FastAPI
 2. FastAPI → Orchestrator → (pre-checks pass) → DisasterAgent
 3. DisasterAgent → Tool: `query_knowledge_base` → FAISS + community_context → OpenAI GPT-4o-mini → answer
-4. DisasterAgent → Tool: `search_web` → SerpAPI / DuckDuckGo → answer
+4. DisasterAgent → Tool: `search_web` → Serper.dev / DuckDuckGo → answer
 5. DisasterAgent → Tool: `submit_community_report` → Community Reporting Pipeline → `community_reports.db`
 6. Community Reporting Pipeline → Open-Meteo API (rainfall)
 7. Community Reporting Pipeline → OpenAI GPT-4o-mini (extraction)

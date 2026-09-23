@@ -55,7 +55,8 @@ We designed and deployed a system (Figure 1) that: detects the user's language f
 Figure 1 shows the complete seven-zone architecture: (1) the WhatsApp user; (2) WhatsApp Cloud API (Meta); (3) the Azure Container Apps–hosted FastAPI application, comprising (3a) the orchestrator's deterministic pre-check and session layer, (3b) the LangChain tool-calling agent and its four tools plus the RAG subsystem, (3c) the community reporting pipeline, and (3d) the background scheduler; (4) Azure filesystem storage (two SQLite databases and the FAISS vectorstore); (5) external APIs (OpenAI, Serper/DuckDuckGo, Open-Meteo, Google Sheets); (6) GitHub (source control and the GitHub Pages early-warning feed); and (7) a static admin panel for human report review.
 
 **Figure 1.** System architecture (all seven zones, component inventory, and labelled data flows).
-`![Figure 1 — System architecture](evaluation/figures/fig0_system_architecture.png)`
+
+![Figure 1 — System architecture](evaluation/figures/fig0_system_architecture.png)
 
 ### 3.2 Deterministic pre-check layer (Layer 1)
 
@@ -153,7 +154,7 @@ Building the FAISS index from 3 PDFs (355 pages → 916 chunks, chunk size 1000/
 | 4 | 0.67 | 331.9 ms | 353.3 ms |
 | 8 | 0.67 | 329.8 ms | 362.2 ms |
 
-`![Figure 2 — Recall@k and latency vs. k](evaluation/figures/fig2_retrieval_recall_vs_k.png)`
+![Figure 2 — Recall@k and latency vs. k](evaluation/figures/fig2_retrieval_recall_vs_k.png)
 
 Latency is dominated by the embedding-API round trip rather than FAISS's exact nearest-neighbour search over 916 vectors (sub-millisecond); recall is flat across k, indicating retrieval quality is limited by query/embedding semantics rather than neighbourhood size. Recall settled at a more representative 0.65–0.67 at 3× the sample size, down from an optimistic 0.80 on the original 20-item pilot — a concrete illustration of why small pilot samples are a threat to validity (§7).
 
@@ -167,7 +168,7 @@ Latency is dominated by the embedding-API round trip rather than FAISS's exact n
 | Mean keyword coverage (groundedness proxy) | 0.77 |
 | Latency: English (n=40) / Sinhala (n=10) / Tamil (n=10) | 3.25 s / 3.60 s / 3.38 s |
 
-`![Figure 3 — RAG generation latency by language](evaluation/figures/fig3_rag_latency_by_language.png)`
+![Figure 3 — RAG generation latency by language](evaluation/figures/fig3_rag_latency_by_language.png)
 
 Language does not materially change latency, indicating the multilingual prompt design introduces no asymmetric cost across the three supported languages; the wider language split (10 si / 10 ta) makes this a more robust comparison than the original pilot's 2/2.
 
@@ -181,7 +182,7 @@ Language does not materially change latency, indicating the multilingual prompt 
 | Mean E2E latency | 6.21 s, 95% bootstrap CI [5.30 s, 7.16 s]; p50 5.56 s, p95 10.33 s |
 | By tool | KB query 7.35 s (n=11) · web search 6.21 s (n=10) · submit report 7.07 s (n=11) · get observations 2.53 s (n=6) |
 
-`![Figure 4 — Tool-routing confusion matrix](evaluation/figures/fig4_routing_confusion_matrix.png)`
+![Figure 4 — Tool-routing confusion matrix](evaluation/figures/fig4_routing_confusion_matrix.png)
 
 `get_community_observations` is markedly faster because, uniquely among the four tools, it performs a synchronous database read rather than a nested LLM call; the other three tools each incur a second OpenAI completion inside the tool body. The confusion matrix remains perfectly diagonal at nearly 2× the original sample size.
 
@@ -205,7 +206,7 @@ Language does not materially change latency, indicating the multilingual prompt 
 | **Exact match, all 5 fields** | **0.48** |
 | Mean latency | ≈ 1.7 s |
 
-`![Figure 5 — Reporting pipeline accuracy](evaluation/figures/fig5_reporting_pipeline_accuracy.png)`
+![Figure 5 — Reporting pipeline accuracy](evaluation/figures/fig5_reporting_pipeline_accuracy.png)
 
 The ~18-percentage-point gap between the keyword filter's recall (41%) and the agent's tool-routing accuracy (100%, §5.4, same class of report-style messages) is the central quantitative justification for escalating report detection to an LLM agent rather than a rule-based classifier; this gap is stable between the pilot (61 pts) and the expanded set (59 pts), indicating it is a genuine property of the rule-based approach rather than pilot-sample noise.
 
@@ -220,7 +221,7 @@ The ~18-percentage-point gap between the keyword filter's recall (41%) and the a
 | Reliability convergence (repeated verification) | 0.50 → 0.95 (clamp) in 7 update events |
 | Reliability convergence (repeated rejection) | 0.50 → 0.05 (clamp) in 7 update events |
 
-`![Figure 6 — Bayesian triangulation behaviour](evaluation/figures/fig6_triangulation_bayesian.png)`
+![Figure 6 — Bayesian triangulation behaviour](evaluation/figures/fig6_triangulation_bayesian.png)
 
 High-reliability reporters (r=0.9) push $P(\text{true})$ above 0.99 with only 2 independent corroborators, while low-reliability reporters (r=0.3) are actively down-weighted even as corroborator count grows — evidence the mechanism resists naive Sybil-style flooding by unreliable sources. Computation remains sub-10 ms at 50 corroborators, i.e. not a system bottleneck.
 
@@ -245,7 +246,7 @@ High-reliability reporters (r=0.9) push $P(\text{true})$ above 0.99 with only 2 
 | 8 | 2,110 | 0.62 ms |
 | 16 | 1,392 | 1.47 ms |
 
-`![Figure 7 — SQLite concurrency scaling](evaluation/figures/fig7_db_concurrency.png)`
+![Figure 7 — SQLite concurrency scaling](evaluation/figures/fig7_db_concurrency.png)
 
 Throughput falls 63% from 1 to 16 concurrent writers (no write errors observed — SQLite's busy-timeout absorbs contention as latency rather than failure), consistent with its single-writer lock. Because Azure Container Apps can auto-scale to multiple replicas while SQLite remains a local container-filesystem file, multi-replica deployment would fragment the database across replicas rather than share it — a concrete architectural limitation for horizontal scaling (§6.5).
 
@@ -260,7 +261,7 @@ Throughput falls 63% from 1 to 16 concurrent writers (no write errors observed �
 | 4 | 0.430 | 6.74 s | 11.18 s |
 | 8 | 0.531 | 8.37 s | 15.03 s |
 
-`![Figure 8 — End-to-end throughput/latency vs. concurrency](evaluation/figures/fig8_e2e_concurrency.png)`
+![Figure 8 — End-to-end throughput/latency vs. concurrency](evaluation/figures/fig8_e2e_concurrency.png)
 
 Throughput scales near-linearly (0.153 → 0.531 req/s, ≈3.5×) while p50 latency grows only 18% (7.07 s → 8.37 s), confirming the system is I/O-bound on external LLM calls rather than CPU-bound — the async FastAPI design absorbs concurrent webhook deliveries within a single container replica without proportional latency degradation. All 32 simulated requests across the four levels completed successfully.
 
@@ -292,7 +293,7 @@ To address the missing-baseline gap common in agentic-RAG evaluations, we compar
 | Keyword coverage | 0.76 | 0.74 |
 | Mean latency | 3.46 s | 4.34 s |
 
-`![Figure 9 — RAG vs. closed-book ablation](evaluation/figures/fig9_rag_vs_closedbook_ablation.png)`
+![Figure 9 — RAG vs. closed-book ablation](evaluation/figures/fig9_rag_vs_closedbook_ablation.png)
 
 RAG shows a directionally lower hallucination rate (13.3% vs. 20.0%) and higher faithfulness (4.67 vs. 4.40) than the closed-book baseline using the *identical* generator model — consistent with the core motivating hypothesis that grounding reduces fabricated claims. Closed-book scored marginally higher on judge-rated relevance (4.70 vs. 4.40). At n=30 the 95% confidence intervals for faithfulness and hallucination rate overlap between conditions, so **the effect is directionally consistent with the RAG hypothesis but does not reach conventional statistical significance at this sample size** — we report this honestly rather than overstating significance, and recommend scaling to n≥100 with paired significance testing (e.g. McNemar's test on the binary hallucination flag) for a camera-ready submission (§7).
 
@@ -311,7 +312,7 @@ Live scale configuration (`az containerapp show`): `minReplicas=1, maxReplicas=1
 
 ### 5.13 Cross-component summary
 
-`![Figure 1 (evaluation) — Component latency overview](evaluation/figures/fig1_component_latency_overview.png)`
+![Figure 1 (evaluation) — Component latency overview](evaluation/figures/fig1_component_latency_overview.png)
 
 **Table 15.** Mean latency across all measured components (log scale spans four orders of magnitude).
 
@@ -326,7 +327,7 @@ Live scale configuration (`az containerapp show`): `minReplicas=1, maxReplicas=1
 | RAG generation (E2E) | 3.33 s |
 | Agent routing (E2E) | 6.21 s |
 
-Deterministic components (language detection, SQLite I/O) are essentially free; the FAISS-retrieval network round trip sits three orders of magnitude above that; and every LLM-backed operation costs 1.8–6.2 s, dominating user-perceived latency. This motivates LLM-call reduction (response caching, smaller extraction models, request batching) as the highest-leverage direction for future latency optimisation.
+Deterministic components (language detection, SQLite I/O) are essentially free; the FAISS-retrieval network round trip sits three orders of magnitude above that; and every LLM-backed operation costs 1.7–6.2 s, dominating user-perceived latency. This motivates LLM-call reduction (response caching, smaller extraction models, request batching) as the highest-leverage direction for future latency optimisation.
 
 ---
 
@@ -334,7 +335,7 @@ Deterministic components (language detection, SQLite I/O) are essentially free; 
 
 ### 6.1 Agentic routing vs. rule-based dispatch
 
-The 100%-vs-38.9% gap between agentic tool-selection and keyword-based report detection (§5.4–§5.5) is direct, quantitative evidence — measured on the *same class* of report-style input — that natural-language routing decisions in this domain benefit materially from LLM reasoning over rigid keyword rules, at the cost of substantially higher per-request latency (µs → seconds) and non-zero per-request API expense.
+The 100%-vs-41.4% gap between agentic tool-selection and keyword-based report detection (§5.4–§5.5) is direct, quantitative evidence — measured on the *same class* of report-style input — that natural-language routing decisions in this domain benefit materially from LLM reasoning over rigid keyword rules, at the cost of substantially higher per-request latency (µs → seconds) and non-zero per-request API expense.
 
 ### 6.2 Latency budget and user experience
 
@@ -413,6 +414,7 @@ The complete benchmark suite, hand-labelled evaluation datasets, raw JSON result
 | 6 | `evaluation/figures/fig6_triangulation_bayesian.png` |
 | 7 | `evaluation/figures/fig7_db_concurrency.png` |
 | 8 | `evaluation/figures/fig8_e2e_concurrency.png` |
+| 9 | `evaluation/figures/fig9_rag_vs_closedbook_ablation.png` |
 
 ## Appendix B. Extended Results Appendix
 

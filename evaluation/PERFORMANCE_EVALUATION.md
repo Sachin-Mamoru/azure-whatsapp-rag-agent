@@ -332,7 +332,7 @@ Directly addresses the "tested locally, not the actual deployed system" gap (§1
 
 *Script: [generate_figures.py](generate_figures.py) (`fig_component_latency_overview`), aggregating [results/01](results/01_rag_retrieval.json), [02](results/02_rag_generation.json), [03](results/03_agent_routing.json), [04](results/04_reporting_pipeline.json), [06](results/06_database_throughput.json), [07](results/07_language_detection.json) · Figure: [fig1_component_latency_overview.png](figures/fig1_component_latency_overview.png)*
 
-**Figure 1** places all eight measured components on one log-scale latency chart. The result is a four-order-of-magnitude spread: language detection (~1 µs) and DB reads/writes (~0.1–1 ms) are effectively free; FAISS retrieval (~0.3 s) is network-bound on the embedding call; and any LLM-backed operation (RAG generation, report extraction, agent routing) costs 1.8–6.2 s, which **dominates** end-to-end user-perceived latency. This motivates prioritising LLM-call reduction (caching, smaller models for extraction, batching) as the highest-leverage optimisation target for future work.
+**Figure 1** places all eight measured components on one log-scale latency chart. The result is a four-order-of-magnitude spread: language detection (~1 µs) and DB reads/writes (~0.1–1 ms) are effectively free; FAISS retrieval (~0.3 s) is network-bound on the embedding call; and any LLM-backed operation (RAG generation, report extraction, agent routing) costs 1.7–6.2 s, which **dominates** end-to-end user-perceived latency. This motivates prioritising LLM-call reduction (caching, smaller models for extraction, batching) as the highest-leverage optimisation target for future work.
 
 ![Figure 1 — Mean latency by system component (log scale)](figures/fig1_component_latency_overview.png)
 
@@ -343,8 +343,8 @@ Directly addresses the "tested locally, not the actual deployed system" gap (§1
 | SQLite read | 0.07–0.4 ms | 10⁻⁴ s |
 | SQLite write | 0.3–0.8 ms | 10⁻³ s |
 | FAISS retrieval | 325 ms | 10⁻¹ s |
-| Report LLM extraction | 1.83 s | 10⁰ s |
-| RAG generation (E2E) | 4.09 s | 10⁰ s |
+| Report LLM extraction | ≈1.7 s | 10⁰ s |
+| RAG generation (E2E) | 3.33 s | 10⁰ s |
 | Agent routing (E2E) | 6.21 s | 10⁰ s |
 
 ---
