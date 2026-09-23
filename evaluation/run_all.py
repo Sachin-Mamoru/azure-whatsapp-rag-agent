@@ -21,6 +21,8 @@ BENCHMARKS = [
     "bench_06_database_throughput",
     "bench_07_language_detection",
     "bench_08_concurrency_load",
+    "bench_09_rag_vs_closedbook_baseline",
+    "bench_10_live_deployment_probe",
 ]
 
 if __name__ == "__main__":

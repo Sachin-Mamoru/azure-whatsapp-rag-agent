@@ -1,27 +1,29 @@
 {
-  "n_items": 20,
+  "n_items": 30,
   "accuracy": 1.0,
   "confusion_matrix": {
     "en": {
-      "en": 8
+      "en": 12
     },
     "si": {
-      "si": 6
+      "si": 9
     },
     "ta": {
-      "ta": 6
+      "ta": 9
     }
   },
   "latency_seconds": {
-    "n": 20,
-    "mean": 7.083290256559849e-07,
-    "stdev": 9.898444533067255e-07,
+    "n": 30,
+    "mean": 6.139123191436131e-07,
+    "stdev": 8.241500319695584e-07,
     "min": 1.2479722499847412e-07,
-    "max": 4.00003045797348e-06,
-    "p50": 2.50060111284256e-07,
-    "p90": 2.040993422269821e-06,
-    "p95": 2.125045284628868e-06,
-    "p99": 4.00003045797348e-06
+    "max": 3.500143066048622e-06,
+    "p50": 2.0884908735752106e-07,
+    "p90": 1.9168946892023087e-06,
+    "p95": 2.2079329937696457e-06,
+    "p99": 3.500143066048622e-06,
+    "ci95_mean_lo": 3.6121346056461336e-07,
+    "ci95_mean_hi": 9.042288487156232e-07
   },
   "per_item": [
     {
@@ -29,28 +31,28 @@
       "expected": "en",
       "detected": "en",
       "correct": true,
-      "latency_s": 4.00003045797348e-06
+      "latency_s": 3.500143066048622e-06
     },
     {
       "id": "l02",
       "expected": "en",
       "detected": "en",
       "correct": true,
-      "latency_s": 2.125045284628868e-06
+      "latency_s": 2.2079329937696457e-06
     },
     {
       "id": "l03",
       "expected": "si",
       "detected": "si",
       "correct": true,
-      "latency_s": 5.830079317092896e-07
+      "latency_s": 4.169996827840805e-07
     },
     {
       "id": "l04",
       "expected": "si",
       "detected": "si",
       "correct": true,
-      "latency_s": 2.50060111284256e-07
+      "latency_s": 2.498272806406021e-07
     },
     {
       "id": "l05",
@@ -64,21 +66,21 @@
       "expected": "ta",
       "detected": "ta",
       "correct": true,
-      "latency_s": 2.0791776478290558e-07
+      "latency_s": 2.0884908735752106e-07
     },
     {
       "id": "l07",
       "expected": "en",
       "detected": "en",
       "correct": true,
-      "latency_s": 3.7509016692638397e-07
+      "latency_s": 4.169996827840805e-07
     },
     {
       "id": "l08",
       "expected": "en",
       "detected": "en",
       "correct": true,
-      "latency_s": 6.249174475669861e-07
+      "latency_s": 6.670597940683365e-07
     },
     {
       "id": "l09",
@@ -92,21 +94,21 @@
       "expected": "ta",
       "detected": "ta",
       "correct": true,
-      "latency_s": 2.0884908735752106e-07
+      "latency_s": 2.0791776478290558e-07
     },
     {
       "id": "l11",
       "expected": "en",
       "detected": "en",
       "correct": true,
-      "latency_s": 2.040993422269821e-06
+      "latency_s": 2.1248124539852142e-06
     },
     {
       "id": "l12",
       "expected": "si",
       "detected": "si",
       "correct": true,
-      "latency_s": 2.0884908735752106e-07
+      "latency_s": 1.6693957149982452e-07
     },
     {
       "id": "l13",
@@ -120,21 +122,21 @@
       "expected": "en",
       "detected": "en",
       "correct": true,
-      "latency_s": 1.6693957149982452e-07
+      "latency_s": 1.671724021434784e-07
     },
     {
       "id": "l15",
       "expected": "en",
       "detected": "en",
       "correct": true,
-      "latency_s": 1.5418045222759247e-06
+      "latency_s": 1.6668345779180527e-06
     },
     {
       "id": "l16",
       "expected": "si",
       "detected": "si",
       "correct": true,
-      "latency_s": 1.6693957149982452e-07
+      "latency_s": 1.6600824892520905e-07
     },
     {
       "id": "l17",
@@ -155,14 +157,84 @@
       "expected": "si",
       "detected": "si",
       "correct": true,
-      "latency_s": 2.0815059542655945e-07
+      "latency_s": 1.6693957149982452e-07
     },
     {
       "id": "l20",
       "expected": "ta",
       "detected": "ta",
       "correct": true,
+      "latency_s": 1.6693957149982452e-07
+    },
+    {
+      "id": "l21",
+      "expected": "en",
+      "detected": "en",
+      "correct": true,
+      "latency_s": 2.50060111284256e-07
+    },
+    {
+      "id": "l22",
+      "expected": "si",
+      "detected": "si",
+      "correct": true,
       "latency_s": 1.6600824892520905e-07
+    },
+    {
+      "id": "l23",
+      "expected": "ta",
+      "detected": "ta",
+      "correct": true,
+      "latency_s": 1.6600824892520905e-07
+    },
+    {
+      "id": "l24",
+      "expected": "en",
+      "detected": "en",
+      "correct": true,
+      "latency_s": 1.9168946892023087e-06
+    },
+    {
+      "id": "l25",
+      "expected": "si",
+      "detected": "si",
+      "correct": true,
+      "latency_s": 1.6693957149982452e-07
+    },
+    {
+      "id": "l26",
+      "expected": "ta",
+      "detected": "ta",
+      "correct": true,
+      "latency_s": 1.671724021434784e-07
+    },
+    {
+      "id": "l27",
+      "expected": "en",
+      "detected": "en",
+      "correct": true,
+      "latency_s": 5.420297384262085e-07
+    },
+    {
+      "id": "l28",
+      "expected": "si",
+      "detected": "si",
+      "correct": true,
+      "latency_s": 1.6600824892520905e-07
+    },
+    {
+      "id": "l29",
+      "expected": "ta",
+      "detected": "ta",
+      "correct": true,
+      "latency_s": 1.2479722499847412e-07
+    },
+    {
+      "id": "l30",
+      "expected": "en",
+      "detected": "en",
+      "correct": true,
+      "latency_s": 9.580980986356735e-07
     }
   ]
 }

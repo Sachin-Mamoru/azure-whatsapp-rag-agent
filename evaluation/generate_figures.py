@@ -234,6 +234,50 @@ def fig_e2e_concurrency():
     plt.close(fig)
 
 
+def fig_rag_vs_closedbook_ablation():
+    r09 = load_json_result("09_rag_vs_closedbook_baseline.json")
+    rag, cb = r09["rag"], r09["closed_book"]
+
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+
+    metrics = ["faithfulness", "relevance"]
+    x = np.arange(len(metrics))
+    width = 0.35
+    rag_vals = [rag[m]["mean"] for m in metrics]
+    cb_vals = [cb[m]["mean"] for m in metrics]
+    rag_err = [rag[m]["mean"] - rag[m]["ci95_mean_lo"] for m in metrics]
+    cb_err = [cb[m]["mean"] - cb[m]["ci95_mean_lo"] for m in metrics]
+    axes[0].bar(x - width / 2, rag_vals, width, yerr=rag_err, capsize=4, label="RAG (grounded)", color="#2166ac")
+    axes[0].bar(x + width / 2, cb_vals, width, yerr=cb_err, capsize=4, label="Closed-book (no retrieval)", color="#b2182b")
+    axes[0].set_xticks(x, [m.capitalize() for m in metrics])
+    axes[0].set_ylim(0, 5.5)
+    axes[0].set_ylabel("LLM-judge score (0-5)")
+    axes[0].set_title("(a) Judge scores, 95% bootstrap CI")
+    axes[0].legend(fontsize=8)
+
+    hallu_rag = rag["hallucination_rate"] or 0
+    hallu_cb = cb["hallucination_rate"] or 0
+    axes[1].bar(["RAG", "Closed-book"], [hallu_rag, hallu_cb], color=["#2166ac", "#b2182b"])
+    axes[1].set_ylim(0, 1.0)
+    axes[1].set_ylabel("Hallucination-flag rate")
+    axes[1].set_title("(b) LLM-judge-flagged fabricated facts")
+    for i, v in enumerate([hallu_rag, hallu_cb]):
+        axes[1].text(i, v + 0.02, f"{v:.2f}", ha="center")
+
+    cov_rag = rag["keyword_coverage"]["mean"]
+    cov_cb = cb["keyword_coverage"]["mean"]
+    axes[2].bar(["RAG", "Closed-book"], [cov_rag, cov_cb], color=["#2166ac", "#b2182b"])
+    axes[2].set_ylim(0, 1.05)
+    axes[2].set_ylabel("Keyword coverage")
+    axes[2].set_title("(c) Keyword-coverage proxy")
+    for i, v in enumerate([cov_rag, cov_cb]):
+        axes[2].text(i, v + 0.02, f"{v:.2f}", ha="center")
+
+    fig.suptitle(f"Figure 9. RAG vs. closed-book ablation (n={r09['n']}, judge={r09['judge_model']})")
+    fig.savefig(os.path.join(FIGURES_DIR, "fig9_rag_vs_closedbook_ablation.png"))
+    plt.close(fig)
+
+
 def main():
     fig_component_latency_overview()
     fig_retrieval_recall_vs_k()
@@ -243,6 +287,7 @@ def main():
     fig_triangulation()
     fig_db_throughput()
     fig_e2e_concurrency()
+    fig_rag_vs_closedbook_ablation()
     print(f"Figures written to {FIGURES_DIR}")
 
 

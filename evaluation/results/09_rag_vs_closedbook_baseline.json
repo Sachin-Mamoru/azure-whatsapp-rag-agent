@@ -1,0 +1,784 @@
+{
+  "n": 30,
+  "judge_model": "gpt-4o",
+  "rag": {
+    "latency": {
+      "n": 30,
+      "mean": 3.4644799638384334,
+      "stdev": 1.2159232187451035,
+      "min": 1.3374047921970487,
+      "max": 6.096691875020042,
+      "p50": 3.2682833338622004,
+      "p90": 4.874210458016023,
+      "p95": 5.7083235420286655,
+      "p99": 6.096691875020042,
+      "ci95_mean_lo": 3.0431255957189327,
+      "ci95_mean_hi": 3.899332106835209
+    },
+    "keyword_coverage": {
+      "n": 30,
+      "mean": 0.7583333333333333,
+      "stdev": 0.3113051871399349,
+      "min": 0.0,
+      "max": 1.0,
+      "p50": 1.0,
+      "p90": 1.0,
+      "p95": 1.0,
+      "p99": 1.0,
+      "ci95_mean_lo": 0.6416666666666666,
+      "ci95_mean_hi": 0.8555555555555555
+    },
+    "faithfulness": {
+      "n": 30,
+      "mean": 4.666666666666667,
+      "stdev": 1.0283342182227606,
+      "min": 0,
+      "max": 5,
+      "p50": 5,
+      "p90": 5,
+      "p95": 5,
+      "p99": 5,
+      "ci95_mean_lo": 4.266666666666667,
+      "ci95_mean_hi": 4.966666666666667
+    },
+    "relevance": {
+      "n": 30,
+      "mean": 4.4,
+      "stdev": 1.2484473115254693,
+      "min": 1,
+      "max": 5,
+      "p50": 5,
+      "p90": 5,
+      "p95": 5,
+      "p99": 5,
+      "ci95_mean_lo": 3.9,
+      "ci95_mean_hi": 4.766666666666667
+    },
+    "hallucination_rate": 0.13333333333333333,
+    "hallucination_rate_ci95": [
+      0.05309655484054744,
+      0.29681326682036296
+    ]
+  },
+  "closed_book": {
+    "latency": {
+      "n": 30,
+      "mean": 4.340219588849383,
+      "stdev": 1.2812230660912727,
+      "min": 2.7452865839004517,
+      "max": 7.7827459999825805,
+      "p50": 3.855558916926384,
+      "p90": 6.658136040903628,
+      "p95": 6.77606812492013,
+      "p99": 7.7827459999825805,
+      "ci95_mean_lo": 3.919745623754958,
+      "ci95_mean_hi": 4.798529177640254
+    },
+    "keyword_coverage": {
+      "n": 30,
+      "mean": 0.7433333333333333,
+      "stdev": 0.2631448474281215,
+      "min": 0.0,
+      "max": 1.0,
+      "p50": 0.75,
+      "p90": 1.0,
+      "p95": 1.0,
+      "p99": 1.0,
+      "ci95_mean_lo": 0.6472222222222223,
+      "ci95_mean_hi": 0.8333333333333334
+    },
+    "faithfulness": {
+      "n": 30,
+      "mean": 4.4,
+      "stdev": 1.3796551293211172,
+      "min": 0,
+      "max": 5,
+      "p50": 5,
+      "p90": 5,
+      "p95": 5,
+      "p99": 5,
+      "ci95_mean_lo": 3.8666666666666667,
+      "ci95_mean_hi": 4.833333333333333
+    },
+    "relevance": {
+      "n": 30,
+      "mean": 4.7,
+      "stdev": 0.7022132498578064,
+      "min": 2,
+      "max": 5,
+      "p50": 5,
+      "p90": 5,
+      "p95": 5,
+      "p99": 5,
+      "ci95_mean_lo": 4.433333333333334,
+      "ci95_mean_hi": 4.9
+    },
+    "hallucination_rate": 0.2,
+    "hallucination_rate_ci95": [
+      0.0950510717728987,
+      0.37305696413148254
+    ]
+  },
+  "per_item": [
+    {
+      "id": "qa04",
+      "language": "en",
+      "question": "What hazard icons are used in the housing manual and what do they mean?",
+      "rag": {
+        "answer": "The housing manual uses hazard icons as visual indicators to help readers quickly find specific information. The icons include:\n\n1. **Warnings**: Present critical information to help avoid mistakes that could lead to dangerous outcomes or violations of ordinances or laws in housing construction.\n2. **Terminology**: Provides meanings of selected technical and special terms.\n3. **Cross References**: Points to additional information that supplements or further explains issues of interest, such as technical discussions, regulatory information, equations, tables, and figures.\n4. **Do\u2019s**: Lists recommended actions during planning, siting, designing, and construction of resilient houses.\n5. **Don'ts**: Lists actions to avoid during the same processes.\n\nThese icons are designed to enhance understanding and ensure safety in housing construction.",
+        "latency_s": 3.98546329094097,
+        "keyword_coverage": 0.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "In a housing manual, various hazard icons are typically used to convey important safety information. While the specific icons may vary, here are some common hazard icons and their meanings:\n\n1. **Warning Triangle**: Indicates a general warning about potential hazards. It suggests that caution should be exercised.\n\n2. **Electrical Hazard**: Often depicted with a lightning bolt, this icon warns of risks associated with electrical equipment or wiring.\n\n3. **Flammable Material**: Usually represented by a flame icon, this indicates the presence of flammable substances that could ignite.\n\n4. **Toxic Substance**: This icon, often a skull and crossbones, signifies the presence of harmful chemicals or materials that can be dangerous if inhaled or ingested.\n\n5. **Biohazard**: Depicted with a biohazard symbol, this warns of biological substances that pose a threat to human health.\n\n6. **Slip Hazard**: Often shown with a person slipping, this icon indicates areas where there is a risk of slipping or falling.\n\n7. **Heavy Lifting**: This icon, which may show a person lifting a heavy object, warns of the risk of injury from lifting heavy items.\n\n8. **Asbestos Warning**: Typically represented by a specific icon, this indicates the presence of asbestos, which can be hazardous when disturbed.\n\n9. **Radiation Hazard**: This icon, often a trefoil symbol, warns of exposure to radiation.\n\n10. **Emergency Information**: Usually depicted with an exclamation mark, this icon indicates important emergency procedures or contact information.\n\nAlways ensure to follow the guidelines associated with these icons to maintain safety in your housing environment.",
+        "latency_s": 7.7827459999825805,
+        "keyword_coverage": 0.0,
+        "faithfulness": 3,
+        "relevance": 4,
+        "hallucination_flag": true
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa18",
+      "language": "en",
+      "question": "Why should construction avoid steep slopes without engineering assessment?",
+      "rag": {
+        "answer": "Construction should avoid steep slopes without engineering assessment because steep slopes can pose significant risks of landslides and slope instability. Factors such as the angle of the slope, soil conditions, vegetation cover, and proximity to water paths can all contribute to these risks. Without a proper assessment, builders may not be aware of underlying issues that could lead to structural failures, increased costs, and safety hazards for occupants and the surrounding area. Professional advice is crucial for ensuring safe construction practices in such environments.",
+        "latency_s": 3.2251674998551607,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "Construction should avoid steep slopes without an engineering assessment for several important reasons:\n\n1. **Landslide Risk**: Steep slopes are more prone to landslides, especially during heavy rainfall or seismic activity. An engineering assessment can identify potential risks and help design appropriate mitigation measures.\n\n2. **Soil Stability**: The stability of soil on steep slopes can be compromised. An assessment can evaluate soil composition and moisture levels to determine if it can support construction safely.\n\n3. **Erosion**: Steep slopes are susceptible to erosion, which can undermine foundations and lead to structural failure. Engineers can recommend erosion control techniques to protect the site.\n\n4. **Drainage Issues**: Poor drainage on steep slopes can lead to water accumulation, increasing the risk of erosion and landslides. An assessment can help design effective drainage systems.\n\n5. **Access and Safety**: Construction on steep slopes can pose safety hazards for workers. An engineering assessment can help plan safe access routes and construction methods.\n\n6. **Regulatory Compliance**: Many regions have regulations regarding construction on steep slopes. An engineering assessment ensures compliance with local laws and standards.\n\nIn summary, conducting an engineering assessment before construction on steep slopes is crucial to ensure safety, stability, and compliance with regulations.",
+        "latency_s": 3.423668500036001,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa06",
+      "language": "en",
+      "question": "How do large woody plants with tap roots help mitigate landslide risk?",
+      "rag": {
+        "answer": "Large woody plants with tap roots help mitigate landslide risk by providing several key benefits:\n\n1. **Soil Binding**: Tap roots penetrate deeply into the soil, binding different soil strata together. This connection increases the overall stability of the slope.\n\n2. **Crossing Failure Planes**: The long vertical roots can cross potential failure planes within the soil, effectively anchoring the overlaying materials and reducing the likelihood of slope failure.\n\n3. **Mechanical Reinforcement**: The roots mechanically reinforce the soil by creating tensile strength, which helps hold the soil particles together and prevents erosion.\n\n4. **Water Management**: These plants also help manage water infiltration and reduce surface runoff, which can contribute to soil saturation and instability.\n\nOverall, the presence of large woody plants with tap roots enhances slope stability and reduces the risk of landslides.",
+        "latency_s": 3.69550129189156,
+        "keyword_coverage": 0.5,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "Large woody plants with tap roots play a significant role in mitigating landslide risk in several ways:\n\n1. **Soil Stabilization**: Tap roots penetrate deep into the soil, anchoring the plant firmly. This helps to hold the soil together, reducing the likelihood of erosion and landslides, especially on slopes.\n\n2. **Water Absorption**: These plants absorb significant amounts of water from the soil, which helps to lower the water table. Excess water can weaken soil structure and increase the risk of landslides, so reducing moisture content is crucial.\n\n3. **Root Structure**: The extensive root systems of large woody plants create a network that binds soil particles together. This increases soil cohesion and stability, making it less prone to sliding.\n\n4. **Vegetative Cover**: The presence of large woody plants provides ground cover that protects the soil from heavy rainfall and runoff, which can erode the surface and trigger landslides.\n\n5. **Microclimate Creation**: These plants can create a microclimate that reduces the intensity of rainfall hitting the ground directly, further protecting the soil from erosion.\n\nTo effectively mitigate landslide risk, it is beneficial to promote the growth of large woody plants in vulnerable areas, especially on slopes and hillsides.",
+        "latency_s": 4.479589666938409,
+        "keyword_coverage": 0.5,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa50",
+      "language": "si",
+      "question": "\u0dc1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf\u0dc0\u0dda \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc3\u0dca\u0dc0\u0dcf\u0db7\u0dcf\u0dc0\u0dd2\u0d9a \u0d85\u0db1\u0dad\u0dd4\u0dbb\u0dd4 \u0db8\u0ddc\u0db1\u0dc0\u0dcf\u0daf?",
+      "rag": {
+        "answer": "\u0dc1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf\u0dc0\u0dda \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc3\u0dca\u0dc0\u0dcf\u0db7\u0dcf\u0dc0\u0dd2\u0d9a \u0d85\u0db1\u0dad\u0dd4\u0dbb\u0dd4 \u0dbd\u0dd9\u0dc3 \u0db4\u0dc4\u0dad \u0dc3\u0db3\u0dc4\u0db1\u0dca \u0d9a\u0dbb\u0dd4\u0dab\u0dd4 \u0dc3\u0dbd\u0d9a\u0db1\u0dca\u0db1:\n\n1. \u0db7\u0dd6\u0d9a\u0db8\u0dca\u0db4\u0db1\n2. \u0db7\u0dd6\u0db8\u0dd2\u0d9a\u0db8\u0dca\u0db4\u0db1 (\u0dbd\u0dd0\u0db1\u0dca\u0da9\u0dca\u0dc3\u0dbd\u0dba\u0dd2\u0da9\u0dca)\n3. \u0da2\u0dbd\u0dba \u0dc3\u0dc4\u0dd2\u0dad \u0db4\u0dca\u200d\u0dbb\u0daf\u0dda\u0dc1\u0dc0\u0dbd \u0da2\u0dbd\u0dba \u0d89\u0dc4\u0dc5 \u0dba\u0dcf\u0db8 (Floods)\n4. \u0dc0\u0dd2\u0dba\u0dc5\u0dd2 \u0d9a\u0dcf\u0dbd\u0dba (Droughts)\n5. \u0dc3\u0dd4\u0dc5\u0d82 \u0dc3\u0dc4 \u0dc0\u0dcf\u0dc3\u0db1\u0dcf\u0dc0\u0db1\u0dca\u0dad \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab\u0dd2\u0d9a \u0dc3\u0dd2\u0daf\u0dd4\u0dc0\u0dd3\u0db8\u0dca (Cyclones and high wind events)\n\n\u0db8\u0dd9\u0db8 \u0d85\u0db1\u0dad\u0dd4\u0dbb\u0dd4 \u0dc1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf\u0dc0\u0dda \u0dc3\u0db8\u0dcf\u0da2\u0dba \u0dc4\u0dcf \u0d86\u0dbb\u0dca\u0dae\u0dd2\u0d9a\u0dba\u0da7 \u0daf\u0dd0\u0da9\u0dd2 \u0db6\u0dbd\u0db4\u0dd1\u0db8\u0dca \u0d87\u0dad\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.",
+        "latency_s": 3.254535417072475,
+        "keyword_coverage": 0.3333333333333333,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "\u0dc1\u0dca\u200d\u0dbb\u0dd3 \u0dbd\u0d82\u0d9a\u0dcf\u0dc0\u0dda \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc3\u0dca\u0dc0\u0dcf\u0db7\u0dcf\u0dc0\u0dd2\u0d9a \u0d85\u0db1\u0dad\u0dd4\u0dbb\u0dd4 \u0d9a\u0dd2\u0dc4\u0dd2\u0db4\u0dba\u0d9a\u0dca \u0d87\u0dad:\n\n1. **\u0dc3\u0dd0\u0dbd\u0dd0\u0dc3\u0dca\u0db8\u0db1\u0dca** - \u0dc0\u0dbb\u0dca\u0dc2\u0dcf \u0d9a\u0dcf\u0dbd\u0dba\u0dda\u0daf\u0dd3 \u0d87\u0dad\u0dd2\u0dc0\u0db1 \u0dc3\u0dd0\u0dbd\u0dd0\u0dc3\u0dca\u0db8\u0db1\u0dca, \u0dc0\u0dd2\u0dc1\u0dda\u0dc2\u0dba\u0dd9\u0db1\u0dca\u0db8 \u0d9a\u0db3\u0dd4\u0d9a\u0dbb \u0db4\u0dca\u200d\u0dbb\u0daf\u0dda\u0dc1\u0dc0\u0dbd\u0daf\u0dd3, \u0db6\u0ddc\u0dc4\u0ddd \u0dc0\u0dd2\u0da7 \u0db8\u0dd2\u0db1\u0dd2\u0dc3\u0dd4\u0db1\u0dca\u0da7 \u0dc4\u0dcf \u0dc3\u0dad\u0dca\u0dc0\u0dba\u0db1\u0dca\u0da7 \u0dc4\u0dcf\u0db1\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.\n\n2. **\u0dc3\u0dd2\u0dba\u0dd4\u0db8\u0dca** - \u0d9c\u0d82\u0d9c\u0dcf \u0dc3\u0dc4 \u0da2\u0dbd \u0db8\u0dcf\u0dbb\u0dca\u0d9c \u0dc0\u0dbd\u0daf\u0dd3 \u0d87\u0dad\u0dd2\u0dc0\u0db1 \u0dc3\u0dd2\u0dba\u0dd4\u0db8\u0dca, \u0da2\u0dbd\u0dba \u0dc0\u0da9\u0dcf\u0dad\u0dca\u0db8 \u0d85\u0db0\u0dd2\u0d9a \u0dc0\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0dc3\u0dd2\u0daf\u0dd4\u0dc0\u0dda.\n\n3. **\u0db4\u0dd0\u0dc4\u0dd0\u0daf\u0dd2\u0dbd\u0dd2 \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab\u0dba** - \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab\u0dba \u0d85\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0dbd\u0dd9\u0dc3 \u0dc0\u0dd9\u0db1\u0dc3\u0dca \u0dc0\u0dd3\u0db8, \u0dc0\u0dbb\u0dca\u0dc2\u0dcf\u0db4\u0dad\u0db1, \u0dc3\u0dd4\u0dc5\u0d82 \u0dc3\u0dc4 \u0dad\u0dd9\u0dad\u0dca \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab\u0dba, \u0db8\u0dd2\u0db1\u0dd2\u0dc3\u0dd4\u0db1\u0dca\u0d9c\u0dda \u0da2\u0dd3\u0dc0\u0dd2\u0dad\u0dba\u0da7 \u0dc4\u0dcf\u0db1\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.\n\n4. **\u0db4\u0dd0\u0dc4\u0dd0\u0daf\u0dd2\u0dbd\u0dd2 \u0db7\u0dd6\u0db8\u0dd2\u0d9a\u0db8\u0dca** - \u0db7\u0dd6\u0db8\u0dd2\u0d9a\u0db8\u0dca \u0dc3\u0dc4\u0dd2\u0dad \u0db4\u0dca\u200d\u0dbb\u0daf\u0dda\u0dc1\u0dc0\u0dbd\u0daf\u0dd3, \u0db7\u0dd6\u0db8\u0dd2\u0d9a\u0db8\u0dca \u0d87\u0dad\u0dd2 \u0dc0\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0db1\u0dd2\u0dc0\u0dcf\u0dc3 \u0dc4\u0dcf \u0dba\u0dcf\u0db1\u0dcf \u0dc0\u0dd2\u0db1\u0dcf\u0dc1 \u0dc0\u0dd2\u0dba \u0dc4\u0dd0\u0d9a.\n\n5. **\u0dc3\u0db8\u0db1\u0dbd \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab\u0dba** - \u0dc3\u0db8\u0db1\u0dbd \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab\u0dba, \u0dc0\u0dd2\u0dc1\u0dda\u0dc2\u0dba\u0dd9\u0db1\u0dca\u0db8 \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab\u0dba \u0d85\u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba \u0dc0\u0dd3\u0db8\u0dd9\u0db1\u0dca, \u0d9a\u0dd8\u0dc2\u0dd2\u0d9a\u0dbb\u0dca\u0db8\u0dba\u0da7 \u0dc4\u0dcf\u0db1\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2.\n\n\u0db8\u0dd9\u0db8 \u0d85\u0db1\u0dad\u0dd4\u0dbb\u0dd4 \u0dc0\u0dbd\u0dd2\u0db1\u0dca \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dcf \u0dc0\u0dd3\u0db8\u0da7, \u0db4\u0dca\u200d\u0dbb\u0daf\u0dda\u0dc1\u0dd3\u0dba \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0d9a \u0d9a\u0da7\u0dba\u0dd4\u0dad\u0dd4 \u0dc4\u0dcf \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2 \u0dc3\u0dd0\u0dbd\u0dc3\u0dd4\u0db8\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc0\u0dd0\u0daf\u0d9c\u0dad\u0dca \u0dc0\u0dda.",
+        "latency_s": 5.431213833158836,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 0,
+        "relevance": 5,
+        "hallucination_flag": true
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa27",
+      "language": "en",
+      "question": "What are the specifications for connecting a rafter to a wall plate in a resilient house?",
+      "rag": {
+        "answer": "The specifications for connecting a rafter to a wall plate in a resilient house are as follows:\n\n1. **Connection Method**: Use GI straps.\n2. **Nails**: Attach with 2 nails at each end of the strap.\n3. **Strap Specifications**: Straps must be 25mm (1\u201d) x 24 gauge galvanized steel.\n4. **Nail Specifications**: Use 50mm (2\u201d) x 12 gauge galvanized flat head nails.\n\nEnsure that all connections are made according to the relevant figures provided in the construction guidelines for proper structural integrity.",
+        "latency_s": 2.9134469591081142,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "When connecting a rafter to a wall plate in a resilient house, it's important to ensure structural integrity and resistance to environmental factors. Here are some general specifications and best practices:\n\n1. **Material Selection**: Use treated timber for both rafters and wall plates to resist moisture and pests. Ensure that the wood is of good quality and free from defects.\n\n2. **Connection Type**: Common methods for connecting rafters to wall plates include:\n   - **Toe Nailing**: Drive nails at an angle through the rafter into the wall plate. Use at least two nails per rafter.\n   - **Hurricane Ties**: Use metal connectors designed for rafter-to-wall plate connections, especially in areas prone to high winds.\n   - **Rafter Clips**: These can also be used to secure the rafter to the wall plate.\n\n3. **Fasteners**: Use appropriate fasteners such as galvanized nails or screws to prevent rusting. The size and type of fasteners should be chosen based on the load requirements and local building codes.\n\n4. **Spacing**: Ensure that rafters are spaced according to the design requirements, typically 16 to 24 inches apart, depending on the roof design and load.\n\n5. **Angle of Connection**: Ensure that the rafter is installed at the correct angle to match the roof pitch. This is usually between 20 to 45 degrees, depending on the design.\n\n6. **Load Considerations**: Calculate the load that the rafters will carry, including live loads (like snow) and dead loads (like the weight of the roofing material). Ensure that the connection can support these loads.\n\n7. **Local Building Codes**: Always check and comply with local building codes and regulations, as they may have specific requirements for rafter-to-wall plate connections.\n\n8. **Inspection**: After installation, have the connections inspected to ensure they meet safety standards and are secure.\n\nBy following these guidelines, you can create a strong and resilient connection between rafters and wall plates in your house.",
+        "latency_s": 5.508303582901135,
+        "keyword_coverage": 0.75,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa59",
+      "language": "ta",
+      "question": "\u0ba8\u0bc0\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0b9f\u0bbf\u0baf\u0bbf\u0bb2\u0bcd \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bbe?",
+      "rag": {
+        "answer": "\u0b86\u0bae\u0bcd, \u0ba8\u0bc0\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0b9f\u0bbf\u0baf\u0bbf\u0bb2\u0bcd \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f \u0bb5\u0bbe\u0baf\u0bcd\u0baa\u0bcd\u0baa\u0bc1 \u0b89\u0bb3\u0bcd\u0bb3\u0ba4\u0bc1. \u0bae\u0bb4\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b85\u0ba4\u0bbf\u0b95 \u0ba8\u0bc0\u0bb0\u0bcd \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0bc7\u0bb2\u0bc7 \u0b9a\u0bc6\u0bb2\u0bcd\u0bb2\u0bc1\u0bae\u0bcd\u0baa\u0bcb\u0ba4\u0bc1, \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bb2\u0bbe\u0bae\u0bcd. \u0b87\u0ba4\u0bc1 \u0bae\u0ba9\u0bbf\u0ba4 \u0b89\u0baf\u0bbf\u0bb0\u0bcd\u0b95\u0bb3\u0bc1\u0b95\u0bcd\u0b95\u0bc1, \u0b9a\u0bca\u0ba4\u0bcd\u0ba4\u0bc1\u0b95\u0bb3\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b85\u0b9f\u0bbf\u0baa\u0bcd\u0baa\u0b9f\u0bc8 \u0bb5\u0b9a\u0ba4\u0bbf\u0b95\u0bb3\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0ba4\u0bc0\u0b99\u0bcd\u0b95\u0bc1 \u0bb5\u0bbf\u0bb3\u0bc8\u0bb5\u0bbf\u0b95\u0bcd\u0b95\u0bb2\u0bbe\u0bae\u0bcd. \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1\u0b95\u0bb3\u0bc8\u0ba4\u0bcd \u0ba4\u0bb5\u0bbf\u0bb0\u0bcd\u0b95\u0bcd\u0b95, \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0bae\u0bc8\u0baf\u0bc8 \u0b95\u0bb5\u0ba9\u0bbf\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd, \u0ba4\u0bc7\u0bb5\u0bc8\u0baf\u0bbe\u0ba9 \u0bae\u0bc1\u0ba9\u0bcd\u0ba9\u0bc6\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0b95\u0bb3\u0bc8 \u0b8e\u0b9f\u0bc1\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0bae\u0bcd.",
+        "latency_s": 2.8235175418667495,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 5,
+        "relevance": 2,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "\u0b86\u0bae\u0bcd, \u0ba8\u0bc0\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0b9f\u0bbf\u0baf\u0bbf\u0bb2\u0bcd \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bcd. \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0bb5\u0ba4\u0bb1\u0bcd\u0b95\u0bbe\u0ba9 \u0b95\u0bbe\u0bb0\u0ba3\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0baa\u0bb2\u0bb5\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bb2\u0bbe\u0bae\u0bcd, \u0b85\u0ba4\u0bbf\u0bb2\u0bcd:\n\n1. **\u0bae\u0bb4\u0bc8**: \u0b85\u0ba4\u0bbf\u0b95 \u0bae\u0bb4\u0bc8 \u0baa\u0bc6\u0baf\u0bcd\u0baf\u0bc1\u0bae\u0bcd\u0baa\u0bcb\u0ba4\u0bc1, \u0ba8\u0bbf\u0bb2\u0bae\u0bcd \u0b88\u0bb0\u0bae\u0bbe\u0b95\u0bbf, \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f \u0bb5\u0bbe\u0baf\u0bcd\u0baa\u0bcd\u0baa\u0bc1 \u0b85\u0ba4\u0bbf\u0b95\u0bae\u0bbe\u0b95\u0bc1\u0bae\u0bcd.\n2. **\u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0b85\u0bae\u0bc8\u0baa\u0bcd\u0baa\u0bc1**: \u0ba8\u0bc0\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0b9f\u0bbf\u0baf\u0bbf\u0bb2\u0bcd \u0b89\u0bb3\u0bcd\u0bb3 \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0b85\u0bae\u0bc8\u0baa\u0bcd\u0baa\u0bc1 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b85\u0ba4\u0ba9\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0ba4\u0bcd\u0ba4\u0ba9\u0bcd\u0bae\u0bc8 \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0bae\u0bbe\u0ba9\u0ba4\u0bc1.\n3. **\u0bae\u0ba9\u0bbf\u0ba4 \u0b9a\u0bc6\u0baf\u0bb2\u0bcd\u0b95\u0bb3\u0bcd**: \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bbe\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bcd, \u0bae\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0bb5\u0bc6\u0b9f\u0bcd\u0b9f\u0bc1\u0ba4\u0bb2\u0bcd \u0baa\u0bcb\u0ba9\u0bcd\u0bb1 \u0bae\u0ba9\u0bbf\u0ba4 \u0b9a\u0bc6\u0baf\u0bb2\u0bcd\u0b95\u0bb3\u0bcd \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b95\u0bbe\u0bb0\u0ba3\u0bae\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bb2\u0bbe\u0bae\u0bcd.\n\n\u0ba8\u0bc0\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0b9f\u0bbf\u0baf\u0bbf\u0bb2\u0bcd \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0bb5\u0ba4\u0bbe\u0bb2\u0bcd \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95, \u0b85\u0ba8\u0bcd\u0ba4 \u0b87\u0b9f\u0b99\u0bcd\u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0b9a\u0bc6\u0bb2\u0bcd\u0bb2\u0bc1\u0bae\u0bcd\u0baa\u0bcb\u0ba4\u0bc1 \u0b95\u0bb5\u0ba9\u0bae\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd, \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0bae\u0bcd \u0b87\u0b9f\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0ba4\u0bb5\u0bbf\u0bb0\u0bcd\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd \u0baa\u0bb0\u0bbf\u0ba8\u0bcd\u0ba4\u0bc1\u0bb0\u0bc8\u0b95\u0bcd\u0b95\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0b95\u0bbf\u0bb1\u0ba4\u0bc1.",
+        "latency_s": 3.575567499967292,
+        "keyword_coverage": 0.3333333333333333,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa07",
+      "language": "en",
+      "question": "What structural abnormalities indicate that a slope near my home might be failing?",
+      "rag": {
+        "answer": "Structural abnormalities that may indicate a slope near your home is failing include:\n\n1. Trees leaning in different directions or having bent trunks (knees).\n2. Tilted or leaning fences, walls, or utility poles/posts.\n3. Moved structures such as houses or retaining walls.\n4. Cracked, bulged, tilted, or offset retaining walls or stone hedges.\n5. Tilted and/or moved ancillary structures like concrete steps, sidewalls, pavements, floors, and patios that are gaping away from the main structure or house.\n6. Patched or unpatched cracks in the walls or foundations.\n\nIf you observe any of these signs, it is advisable to seek professional advice regarding the stability of the slope.",
+        "latency_s": 3.5093886249233037,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "If you suspect that a slope near your home might be failing, look for the following structural abnormalities:\n\n1. **Cracks in the Ground**: Observe for any new or widening cracks in the soil or pavement. Diagonal cracks, especially those that are wider at the top, can indicate movement.\n\n2. **Tilting Trees or Utility Poles**: If trees or poles are leaning or tilting, it may suggest that the ground beneath them is shifting.\n\n3. **Bulging or Distorted Soil**: Look for areas where the soil appears to be bulging or has an unusual shape, which can indicate movement.\n\n4. **Erosion**: Check for signs of soil erosion, such as exposed roots or a loss of vegetation, which can weaken the slope.\n\n5. **Water Accumulation**: Puddles or excessive water pooling at the base of the slope can indicate drainage issues, which may contribute to slope instability.\n\n6. **Changes in Drainage Patterns**: If you notice changes in how water flows or drains around the slope, it could signal potential problems.\n\n7. **Visible Landslide Debris**: Look for any signs of previous landslides, such as debris or disturbed vegetation at the base of the slope.\n\n8. **Foundation Issues**: Inspect your home for signs of foundation problems, such as cracks in walls or uneven floors, which may be related to slope movement.\n\nIf you observe any of these signs, it is advisable to consult with a geotechnical engineer or a professional who specializes in slope stability to assess the situation further.",
+        "latency_s": 3.855558916926384,
+        "keyword_coverage": 0.5,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa03",
+      "language": "en",
+      "question": "What is preloading and how is it used before construction on weak ground?",
+      "rag": {
+        "answer": "Preloading is a technique used to improve the stability of weak ground before construction. It involves applying a load to the ground prior to the actual construction, typically at a weight of 1.5 times the intended building load. This process helps to achieve necessary ground settlement and reduces the risk of excessive settlement after construction begins.\n\nHere\u2019s how preloading is used:\n\n1. **Application of Load**: A surcharge load is placed on the ground to induce settlement. This load can be made from economical materials that are easily moved using machinery.\n\n2. **Settlement Monitoring**: The settlement of the ground is monitored to ensure that a significant portion of it occurs under the preload before construction starts. This helps to minimize future settlement issues.\n\n3. **Removal of Surcharge**: Once adequate settlement has been achieved, the surcharge load can be removed before commencing construction.\n\n4. **Compaction and Drainage**: The fill material used for preloading should be well compacted, and a layer of sand or quarry dust may be placed between the existing ground and the fill to improve drainage of pore water.\n\n5. **Time Consideration**: Adequate time should be allowed for the major part of settlement to occur under the preload, ensuring that any residual settlement is tolerable before construction begins.\n\nThis method is particularly important in areas with soft soil conditions, as it helps to ensure the stability and serviceability of foundations and structures built on such ground.",
+        "latency_s": 5.7083235420286655,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "Preloading is a ground improvement technique used to enhance the stability and load-bearing capacity of weak or compressible soils before construction. It involves placing a temporary load on the ground surface to accelerate the consolidation of the underlying soil. Here\u2019s how it works and its application:\n\n1. **Process**:\n   - **Load Application**: Heavy materials, such as soil, sand, or concrete, are placed on the site to create a load that exceeds the expected weight of the future structure.\n   - **Consolidation**: This load compresses the soil, causing water to be expelled from the pore spaces within the soil, leading to a reduction in volume and an increase in strength over time.\n   - **Monitoring**: During the preloading period, engineers monitor the settlement and consolidation of the soil to determine when it has stabilized sufficiently.\n\n2. **Duration**: The duration of preloading can vary depending on the soil type and the amount of load applied. It may take weeks to months for the soil to consolidate adequately.\n\n3. **Benefits**:\n   - **Increased Stability**: Preloading helps to reduce the risk of settlement and instability in the future structure.\n   - **Cost-Effective**: It can be a more economical solution compared to other ground improvement methods, such as deep foundations or soil replacement.\n\n4. **Considerations**:\n   - **Soil Type**: Preloading is most effective in soft, compressible soils, such as clay.\n   - **Design**: Engineers must carefully design the preload to ensure it is sufficient to achieve the desired consolidation without causing damage to the surrounding area.\n\nIn summary, preloading is a proactive measure to prepare weak ground for construction, ensuring that the soil can support the intended loads safely and effectively.",
+        "latency_s": 6.711610208032653,
+        "keyword_coverage": 0.75,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa25",
+      "language": "en",
+      "question": "How are plants selected for multiple benefits in slope stabilization projects?",
+      "rag": {
+        "answer": "Plants are selected for slope stabilization projects based on several criteria to ensure they provide multiple benefits. The main criteria include:\n\n1. **Plant Type and Structural Characteristics**: The morphology and topology of the plant's stem and root system influence slope stability. Smaller plants like grasses impose lower forces on soil, while larger trees can provide significant weight and stability.\n\n2. **Hydrological Significance**: Plants can modify slope hydrology through root uptake and foliage interception, which helps prevent shallow soil failures.\n\n3. **Root Strength Characteristics**: The mechanical reinforcement provided by roots is crucial for stabilizing slopes. Plants with strong root systems are preferred for their ability to hold soil together.\n\n4. **Ecological Significance**: The ecological role of plants, including their ability to support local biodiversity and contribute to the ecosystem, is considered.\n\n5. **Economic Value**: The cost-effectiveness of the plants, including their maintenance and potential economic benefits, is also a factor in selection.\n\nBy assessing these criteria, practitioners can choose a combination of different plant species that work together to optimize slope stabilization, improve soil conservation, and enhance the overall ecological health of the area.",
+        "latency_s": 4.654609415913001,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "In slope stabilization projects, plants are selected based on several criteria to ensure they provide multiple benefits. Here are the key factors considered:\n\n1. **Root Structure**: Plants with deep and extensive root systems are preferred as they help anchor the soil, reducing erosion and stabilizing slopes.\n\n2. **Growth Rate**: Fast-growing species can quickly cover bare soil, providing immediate protection against erosion while slower-growing plants establish themselves.\n\n3. **Drought Resistance**: In areas prone to dry conditions, drought-resistant plants are selected to ensure they can survive and thrive without excessive water.\n\n4. **Soil Improvement**: Some plants, like legumes, can fix nitrogen in the soil, improving soil fertility and structure, which is beneficial for long-term slope stability.\n\n5. **Native Species**: Native plants are often chosen because they are adapted to local conditions, require less maintenance, and support local biodiversity.\n\n6. **Aesthetic Value**: Plants that enhance the visual appeal of the landscape can also be selected, contributing to the overall environmental quality.\n\n7. **Pest Resistance**: Selecting plants that are resistant to local pests and diseases can reduce the need for chemical treatments, promoting a healthier ecosystem.\n\n8. **Multi-Functionality**: Some plants may provide additional benefits, such as food, habitat for wildlife, or medicinal properties, making them more valuable in the project.\n\nBy considering these factors, project planners can select a diverse range of plants that not only stabilize slopes but also contribute to ecological health and sustainability.",
+        "latency_s": 6.77606812492013,
+        "keyword_coverage": 0.75,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa35",
+      "language": "en",
+      "question": "How is a cumulative risk score calculated by weighting different slope characteristics?",
+      "rag": {
+        "answer": "A cumulative risk score is calculated by evaluating various slope characteristics and assigning weights to each characteristic based on their importance. The process involves the following steps:\n\n1. **Identify Characteristics**: Determine the relevant characteristics of the slope, such as plant type and structural characteristics, hydrological significance, root strength characteristics, ecological significance, and economic significance.\n\n2. **Assign Scores**: For each characteristic, assign scores based on specific attributes. For example, for plant type, you might evaluate height, plant weight and wind effect, and soil-plant interaction.\n\n3. **Allocate Weights**: Assign a cumulative weighing factor (w) to each characteristic based on its significance. This can be done using equal weightage or by prioritizing certain characteristics over others.\n\n4. **Calculate Final Score**: Multiply the score of each characteristic by its corresponding weight and sum these values to obtain the final cumulative score.\n\nFor example, if you have a plant with scores for different characteristics and their respective weights, you would calculate the final score as follows:\n\n- Cumulative score = (Score1 \u00d7 Weight1) + (Score2 \u00d7 Weight2) + ... + (ScoreN \u00d7 WeightN)\n\nThis method allows for a comprehensive evaluation of the slope's risk based on the weighted importance of each characteristic.",
+        "latency_s": 3.482908583013341,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "A cumulative risk score for slope stability can be calculated by assessing various slope characteristics and assigning weights to each based on their relative importance in contributing to slope failure. Here\u2019s a general approach to calculating this score:\n\n1. **Identify Slope Characteristics**: Determine the key characteristics that influence slope stability. Common factors include:\n   - Slope angle\n   - Soil type and composition\n   - Vegetation cover\n   - Drainage conditions\n   - Historical landslide activity\n   - Seismic activity\n\n2. **Assign Weights**: Assign a weight to each characteristic based on its significance. For example, if slope angle is considered the most critical factor, it might be given a higher weight than soil type.\n\n3. **Score Each Characteristic**: Evaluate each characteristic on a standardized scale (e.g., 1 to 5 or 1 to 10), where higher scores indicate greater risk. For instance:\n   - Slope angle: 1 (low risk) to 5 (high risk)\n   - Soil type: 1 (stable) to 5 (unstable)\n\n4. **Calculate Weighted Scores**: Multiply the score for each characteristic by its assigned weight. For example:\n   - Slope angle score = 4 (high risk), weight = 0.4 \u2192 Weighted score = 4 * 0.4 = 1.6\n   - Soil type score = 3 (moderate risk), weight = 0.3 \u2192 Weighted score = 3 * 0.3 = 0.9\n\n5. **Sum the Weighted Scores**: Add all the weighted scores together to get the cumulative risk score. \n\n6. **Interpret the Score**: Establish a threshold to categorize the cumulative risk score into different risk levels (e.g., low, moderate, high). This helps in decision-making regarding slope management and mitigation measures.\n\nBy following these steps, you can systematically assess and quantify the risk associated with slope characteristics, aiding in effective hazard awareness and management.",
+        "latency_s": 4.238170374883339,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa36",
+      "language": "en",
+      "question": "What galvanised steel specifications are required for roof strap connections?",
+      "rag": {
+        "answer": "The specifications for galvanised steel used in roof strap connections are as follows:\n\n- All straps must be 25mm (1\u2019\u2019) x 24 gauge galvanised steel.\n- All nails used must be 50mm (2\u2019\u2019) x 12 gauge galvanised flat heat. \n\nEnsure these specifications are followed for safe and secure roof connections.",
+        "latency_s": 2.0145370410755277,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "When selecting galvanized steel for roof strap connections, it's important to consider several specifications to ensure safety and durability. Here are some key points to keep in mind:\n\n1. **Material Grade**: Use galvanized steel that meets the relevant standards, such as ASTM A653 for hot-dipped galvanized steel sheet. The grade should be appropriate for structural applications, typically G60 or G90 for corrosion resistance.\n\n2. **Thickness**: The thickness of the steel should be sufficient to handle the loads and stresses expected in the roof structure. Common thicknesses range from 1.5 mm to 3 mm, but this should be determined based on engineering calculations.\n\n3. **Coating Weight**: The galvanization process should provide a coating weight that ensures long-term corrosion resistance. A minimum of G60 (Z180) is often recommended for roofing applications.\n\n4. **Connection Design**: Ensure that the design of the roof strap connections complies with local building codes and standards. This includes the type of fasteners used, spacing, and load-bearing capacity.\n\n5. **Welding and Fabrication**: If welding is required, ensure that the galvanized steel is suitable for welding and that proper techniques are used to avoid compromising the galvanization.\n\n6. **Local Standards**: Always check for any local building codes or regulations that may specify additional requirements for galvanized steel in roof strap connections.\n\nBefore proceeding, it is advisable to consult with a structural engineer or a professional familiar with local building practices to ensure compliance and safety.",
+        "latency_s": 3.951185417128727,
+        "keyword_coverage": 0.75,
+        "faithfulness": 0,
+        "relevance": 3,
+        "hallucination_flag": true
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa22",
+      "language": "en",
+      "question": "What is the 'drawdown' effect near river banks and why does it cause landslides?",
+      "rag": {
+        "answer": "The 'drawdown' effect refers to the rapid lowering of water levels in coastal areas or along river banks, which can occur due to tides or fluctuations in river discharge. This process can lead to landslides because it leaves weak river banks unsupported. When the water level drops quickly, the soil and sediment that were previously stabilized by the water become unstable, increasing the risk of underwater landslides. The lack of water support reduces the shear strength of the soil, making it more susceptible to failure, especially if combined with other factors like erosion or heavy rainfall.",
+        "latency_s": 2.219020290998742,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "The 'drawdown' effect near river banks refers to the rapid lowering of water levels in a river or body of water, which can occur due to various reasons such as dam releases, droughts, or heavy water extraction. This sudden change in water level can significantly impact the stability of the soil and sediment along the riverbanks.\n\nWhen water levels drop, the support that the water provides to the soil is removed, leading to a decrease in pore water pressure within the soil. This can cause the soil to become less stable, especially if it is saturated or if the soil structure is weak. The following factors contribute to landslides in this context:\n\n1. **Increased Weight of Soil**: As the water drains away, the soil may become heavier due to the saturation of water, increasing the likelihood of a landslide.\n\n2. **Soil Erosion**: The sudden drop in water can lead to increased erosion along the banks, weakening the soil structure and making it more susceptible to sliding.\n\n3. **Loss of Support**: The water acts as a stabilizing force. When it is removed, the soil may lose its support, leading to a collapse or slide.\n\n4. **Changes in Soil Composition**: The drawdown can alter the moisture content and composition of the soil, affecting its cohesion and stability.\n\nTo mitigate the risk of landslides due to drawdown, it is important to monitor water levels, implement proper land management practices, and maintain vegetation along riverbanks to help stabilize the soil.",
+        "latency_s": 3.2816017922014,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa49",
+      "language": "si",
+      "question": "\u0db1\u0dd2\u0dc0\u0dc3\u0d9a\u0dca \u0dc3\u0daf\u0dc4\u0dcf \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0dc0\u0dc4\u0dbd \u0dc3\u0db8\u0dca\u0db6\u0db1\u0dca\u0db0\u0dad\u0dcf \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0d9a\u0dd4\u0db8\u0db1 \u0db4\u0dd2\u0dba\u0dc0\u0dbb \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dc5 \u0dba\u0dd4\u0dad\u0dd4\u0daf?",
+      "rag": {
+        "answer": "\u0db1\u0dd2\u0dc0\u0dc3\u0d9a\u0dca \u0dc3\u0db3\u0dc4\u0dcf \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0dc0\u0dc4\u0dbd\u0dba\u0d9a\u0dca \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dc5 \u0dba\u0dd4\u0dad\u0dd4 \u0db4\u0dd2\u0dba\u0dc0\u0dbb \u0db4\u0dc4\u0dad \u0db4\u0dbb\u0dd2\u0daf\u0dd2 \u0dc0\u0dda:\n\n1. **\u0dc3\u0dd0\u0dbd\u0dc3\u0dd4\u0db8\u0dca \u0dc3\u0d9a\u0dc3\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8**: \u0dc0\u0dc4\u0dbd\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2 \u0dc3\u0dd0\u0dbd\u0dc3\u0dd4\u0db8\u0d9a\u0dca \u0dc3\u0d9a\u0dc3\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0dc0\u0dc4\u0dbd\u0dba\u0dda \u0d86\u0d9a\u0dcf\u0dbb\u0dba, \u0db4\u0dca\u200d\u0dbb\u0db8\u0dcf\u0dab\u0dba \u0dc3\u0dc4 \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dcf \u0d9a\u0dbb\u0db1 \u0daf\u0dca\u200d\u0dbb\u0dc0\u0dca\u200d\u0dba \u0dad\u0dd3\u0dbb\u0dab\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1.\n\n2. **\u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0daf\u0dca\u200d\u0dbb\u0dc0\u0dca\u200d\u0dba \u0dad\u0ddd\u0dbb\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8**: \u0dc0\u0dc4\u0dbd\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dcf \u0d9a\u0dbb\u0db1 \u0daf\u0dca\u200d\u0dbb\u0dc0\u0dca\u200d\u0dba (\u0d8b\u0daf\u0dcf\u0dc4\u0dbb\u0dab\u0dba\u0d9a\u0dca \u0dbd\u0dd9\u0dc3, \u0dbd\u0ddd\u0dc4, \u0d9a\u0dcf\u0db1\u0dca\u0dad\u0dcf, \u0dc4\u0ddd \u0d9c\u0dbd\u0dca) \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0dc3\u0dc4 \u0daf\u0dd3\u0dbb\u0dca\u0d9d\u0d9a\u0dcf\u0dbd\u0dd3\u0db1 \u0db6\u0dc0\u0da7 \u0dc3\u0dc4\u0dad\u0dd2\u0d9a \u0dc0\u0db1\u0dca\u0db1.\n\n3. **\u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dcf\u0dc0**: \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda\u0daf\u0dd3 \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0d8b\u0db4\u0d9a\u0dbb\u0dab (\u0d8b\u0daf\u0dcf\u0dc4\u0dbb\u0dab\u0dba\u0d9a\u0dca \u0dbd\u0dd9\u0dc3, \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0d9a\u0dd4\u0da9\u0dd4, \u0dc4\u0dd9\u0dbd\u0dca\u0db8\u0da7\u0dca) \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dcf \u0d9a\u0dbb\u0db1\u0dca\u0db1. \n\n4. **\u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0dc0\u0dbd\u0dd2\u0dba**: \u0dc0\u0dc4\u0dbd\u0dba \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda\u0daf\u0dd3 \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2 \u0d9a\u0dca\u200d\u0dbb\u0db8\u0dc0\u0dda\u0daf \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0dc0\u0dc4\u0dbd\u0dba \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2\u0dc0 \u0dc3\u0dc4 \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad\u0dc0 \u0dc3\u0d9a\u0dc3\u0dca \u0dc0\u0dd2\u0dba \u0dba\u0dd4\u0dad\u0dd4\u0dba.\n\n5. **\u0db4\u0dbb\u0dd3\u0d9a\u0dca\u0dc2\u0dcf\u0dc0**: \u0dc0\u0dc4\u0dbd\u0dba \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0db4\u0dc3\u0dd4, \u0d91\u0dba \u0db4\u0dbb\u0dd3\u0d9a\u0dca\u0dc2\u0dcf \u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0dc0\u0dc4\u0dbd\u0dba \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad\u0daf, \u0d9a\u0dd4\u0da9\u0dcf \u0daf\u0ddd\u0dc2 \u0dc4\u0ddd \u0d85\u0da9\u0dd4\u0db4\u0dcf\u0da9\u0dd4 \u0dad\u0dd2\u0db6\u0dda\u0daf \u0dba\u0db1\u0dca\u0db1 \u0dc3\u0ddc\u0dba\u0dcf \u0db6\u0dbd\u0db1\u0dca\u0db1.\n\n6. **\u0db1\u0da9\u0dad\u0dca\u0dad\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8**: \u0dc0\u0dc4\u0dbd\u0dba \u0db1\u0dd2\u0dad\u0dbb \u0db1\u0da9\u0dad\u0dca\u0dad\u0dd4 \u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0dc0\u0dc4\u0dbd\u0dba\u0dda \u0d9a\u0dd2\u0dc3\u0dd2\u0daf\u0dd4 \u0daf\u0ddd\u0dc2\u0dba\u0d9a\u0dca \u0dc4\u0ddd \u0d85\u0da9\u0dd4\u0db4\u0dcf\u0da9\u0dd4 \u0dad\u0dd2\u0db6\u0dda \u0db1\u0db8\u0dca, \u0d92\u0dc0\u0dcf \u0d89\u0d9a\u0dca\u0db8\u0db1\u0dd2\u0db1\u0dca \u0d85\u0dbd\u0dd4\u0dad\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1.\n\n\u0db8\u0dd9\u0db8 \u0db4\u0dd2\u0dba\u0dc0\u0dbb \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0d94\u0db6\u0dda \u0db1\u0dd2\u0dc0\u0dc3\u0dda \u0dc0\u0dc4\u0dbd\u0dba \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0dc3\u0dc4 \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0db6\u0dc0\u0da7 \u0db4\u0dad\u0dca \u0d9a\u0dbb\u0db1\u0dd4 \u0d87\u0dad.",
+        "latency_s": 4.956740749999881,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "\u0db1\u0dd2\u0dc0\u0dc3\u0d9a\u0dca \u0dc3\u0daf\u0dc4\u0dcf \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0dc0\u0dc4\u0dbd\u0dba\u0d9a\u0dca \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0db4\u0dc4\u0dad \u0db4\u0dd2\u0dba\u0dc0\u0dbb \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dc5 \u0dba\u0dd4\u0dad\u0dd4\u0dba:\n\n1. **\u0dc3\u0dd0\u0dbd\u0dc3\u0dd4\u0db8\u0dca \u0dc3\u0d9a\u0dc3\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8**: \u0dc0\u0dc4\u0dbd\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2 \u0dc3\u0dd0\u0dbd\u0dc3\u0dd4\u0db8\u0d9a\u0dca \u0dc3\u0d9a\u0dc3\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0dc0\u0dc4\u0dbd\u0dba\u0dda \u0d86\u0d9a\u0dcf\u0dbb\u0dba, \u0db4\u0dca\u200d\u0dbb\u0db8\u0dcf\u0dab\u0dba \u0dc3\u0dc4 \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dcf \u0d9a\u0dbb\u0db1 \u0daf\u0dca\u200d\u0dbb\u0dc0\u0dca\u200d\u0dba \u0dad\u0dd3\u0dbb\u0dab\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1.\n\n2. **\u0d85\u0db1\u0dd4\u0db8\u0dd0\u0dad\u0dd2\u0dba \u0dbd\u0db6\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8**: \u0db1\u0dd2\u0dc0\u0dcf\u0dc3 \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc3\u0db3\u0dc4\u0dcf \u0d85\u0dc0\u0dc1\u0dca\u200d\u0dba \u0d85\u0db1\u0dd4\u0db8\u0dd0\u0dad\u0dd2\u0d9a\u0db8\u0dca \u0dc3\u0dc4 \u0db6\u0dbd\u0db4\u0dad\u0dca\u200d\u0dbb \u0dbd\u0db6\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8.\n\n3. **\u0daf\u0dd8\u0da9\u0dcf\u0d82\u0d9c \u0dad\u0ddd\u0dbb\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8**: \u0dc0\u0dc4\u0dbd\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dcf \u0d9a\u0dbb\u0db1 \u0daf\u0dca\u200d\u0dbb\u0dc0\u0dca\u200d\u0dba (\u0d8b\u0daf\u0dcf\u0dc4\u0dbb\u0dab\u0dba\u0d9a\u0dca \u0dbd\u0dd9\u0dc3, \u0dbd\u0ddd\u0dc4, \u0d9a\u0dcf\u0db1\u0dca\u0dad\u0dcf, \u0dc4\u0ddd \u0da7\u0dba\u0dd2\u0dbd\u0dca) \u0dad\u0ddd\u0dbb\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8. \u0db8\u0dd9\u0db8 \u0daf\u0dca\u200d\u0dbb\u0dc0\u0dca\u200d\u0dba \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0dc4\u0dcf \u0daf\u0dd3\u0dbb\u0dca\u0d9d\u0d9a\u0dcf\u0dbd\u0dd3\u0db1 \u0dc0\u0dd2\u0dba \u0dba\u0dd4\u0dad\u0dd4\u0dba.\n\n4. **\u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda \u0d9a\u0dcf\u0dbb\u0dca\u0dba\u0dba**: \u0dc0\u0dc4\u0dbd\u0dba \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc3\u0dd4\u0daf\u0dd4\u0dc3\u0dd4 \u0d9a\u0dcf\u0dbb\u0dca\u0dba \u0db8\u0dab\u0dca\u0da9\u0dbd\u0dba\u0d9a\u0dca \u0dad\u0ddd\u0dbb\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8. \u0d9a\u0dcf\u0dbb\u0dca\u0dba \u0db8\u0dab\u0dca\u0da9\u0dbd\u0dba \u0db4\u0dc5\u0db4\u0dd4\u0dbb\u0dd4\u0daf\u0dd4 \u0dc3\u0dc4 \u0dc0\u0dd2\u0dc1\u0dda\u0dc2\u0dd2\u0dad \u0db4\u0dd4\u0dc4\u0dd4\u0dab\u0dd4\u0dc0\u0dbd\u0dd2\u0db1\u0dca \u0dba\u0dd4\u0d9a\u0dca\u0dad \u0dc0\u0dd2\u0dba \u0dba\u0dd4\u0dad\u0dd4\u0dba.\n\n5. **\u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad\u0dad\u0dcf \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0db8\u0dcf\u0dbb\u0dca\u0d9c**: \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda\u0daf\u0dd3 \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad\u0dad\u0dcf \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0db8\u0dcf\u0dbb\u0dca\u0d9c \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0d8b\u0daf\u0dcf\u0dc4\u0dbb\u0dab\u0dba\u0d9a\u0dca \u0dbd\u0dd9\u0dc3, \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0d9a\u0dd4\u0da9\u0dd4, \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0db4\u0daf\u0db1\u0db8\u0dca \u0dc3\u0dc4 \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0d8b\u0db4\u0d9a\u0dbb\u0dab \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dcf \u0d9a\u0dd2\u0dbb\u0dd3\u0db8.\n\n6. **\u0db4\u0dbb\u0dd3\u0d9a\u0dca\u0dc2\u0dcf \u0d9a\u0dd2\u0dbb\u0dd3\u0db8**: \u0dc0\u0dc4\u0dbd\u0dba \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0db4\u0dc3\u0dd4, \u0d91\u0dba \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2\u0dc0 \u0d89\u0daf\u0dd2\u0d9a\u0dbb \u0d87\u0dad\u0dd2\u0daf \u0dba\u0db1\u0dca\u0db1 \u0db4\u0dbb\u0dd3\u0d9a\u0dca\u0dc2\u0dcf \u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0d85\u0dc0\u0dc1\u0dca\u200d\u0dba \u0db1\u0db8\u0dca, \u0dc0\u0dd8\u0dad\u0dca\u0dad\u0dd3\u0dba \u0dc0\u0dd2\u0dc1\u0dda\u0dc2\u0da5\u0dba\u0d9a\u0dd4\u0d9c\u0dda \u0d8b\u0db4\u0daf\u0dd9\u0dc3\u0dca \u0dbd\u0db6\u0dcf \u0d9c\u0db1\u0dca\u0db1.\n\n7. **\u0db1\u0da9\u0dad\u0dca\u0dad\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8**: \u0dc0\u0dc4\u0dbd\u0dba \u0db1\u0dd2\u0dad\u0dbb \u0db1\u0da9\u0dad\u0dca\u0dad\u0dd4 \u0d9a\u0dbb \u0d9c\u0dd0\u0db1\u0dd3\u0db8. \u0dc0\u0dc3\u0dbb\u0d9a\u0da7 \u0dc0\u0dbb\u0d9a\u0dca \u0db4\u0dbb\u0dd3\u0d9a\u0dca\u0dc2\u0dcf \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0dc0\u0dc4\u0dbd\u0dba\u0dda \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dcf\u0dc0 \u0dc3\u0dc4 \u0daf\u0dd2\u0d9c\u0dd4\u0d9a\u0dcf\u0dbd\u0dd3\u0db1\u0dad\u0dca\u0dc0\u0dba \u0dad\u0dc4\u0dc0\u0dd4\u0dbb\u0dd4 \u0d9a\u0dbb \u0d9c\u0db1\u0dca\u0db1.\n\n\u0db8\u0dd9\u0db8 \u0db4\u0dd2\u0dba\u0dc0\u0dbb \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0d94\u0db6\u0dda \u0db1\u0dd2\u0dc0\u0dc3\u0dda \u0dc0\u0dc4\u0dbd\u0dba \u0dc3\u0dd4\u0dbb\u0d9a\u0dca\u0dc2\u0dd2\u0dad \u0dc4\u0dcf \u0dc1\u0d9a\u0dca\u0dad\u0dd2\u0db8\u0dad\u0dca \u0dc0\u0dda.",
+        "latency_s": 6.658136040903628,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa60",
+      "language": "ta",
+      "question": "\u0b9a\u0bb0\u0bbf\u0bb5\u0bbf\u0bb2\u0bcd \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0bae\u0bc6\u0bb2\u0bbf\u0ba4\u0bbe\u0b95\u0bcd\u0b95\u0bc1\u0bb5\u0ba4\u0bc1 \u0b8f\u0ba9\u0bcd \u0b85\u0bb5\u0b9a\u0bbf\u0baf\u0bae\u0bcd?",
+      "rag": {
+        "answer": "\u0b9a\u0bb0\u0bbf\u0bb5\u0bbf\u0bb2\u0bcd \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0bae\u0bc6\u0bb2\u0bbf\u0ba4\u0bbe\u0b95\u0bcd\u0b95\u0bc1\u0bb5\u0ba4\u0bc1 \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0bae\u0bbe\u0ba9\u0ba4\u0bc1, \u0b8f\u0ba9\u0bc6\u0ba9\u0bbf\u0bb2\u0bcd \u0b87\u0ba4\u0bc1 \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bc8 \u0ba8\u0bbf\u0bb2\u0bc8\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc1\u0b95\u0bcd\u0b95 \u0b89\u0ba4\u0bb5\u0bc1\u0b95\u0bbf\u0bb1\u0ba4\u0bc1. \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd, \u0b95\u0bc1\u0bb1\u0bbf\u0baa\u0bcd\u0baa\u0bbe\u0b95 \u0bae\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b95\u0bbe\u0b9f\u0bc1\u0b95\u0bb3\u0bcd, \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0bae\u0bc7\u0bb2\u0bc7 \u0b89\u0bb3\u0bcd\u0bb3 \u0ba8\u0bc0\u0bb0\u0bc8 \u0b89\u0bb1\u0bbf\u0b9e\u0bcd\u0b9a\u0bc1\u0bb5\u0ba4\u0bbf\u0bb2\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1\u0b95\u0bb3\u0bc8 \u0ba4\u0b9f\u0bc1\u0baa\u0bcd\u0baa\u0ba4\u0bbf\u0bb2\u0bcd \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf \u0baa\u0b99\u0bcd\u0b95\u0bc1 \u0bb5\u0b95\u0bbf\u0b95\u0bcd\u0b95\u0bbf\u0ba9\u0bcd\u0bb1\u0ba9. \u0bae\u0bc7\u0bb2\u0bc1\u0bae\u0bcd, \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0ba3\u0bcd \u0b9a\u0bbf\u0ba4\u0bb1\u0bb2\u0bc8\u0b95\u0bcd \u0b95\u0bc1\u0bb1\u0bc8\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd, \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0b89\u0bb1\u0bc1\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bb2\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b89\u0ba4\u0bb5\u0bb5\u0bc1\u0bae\u0bcd \u0b9a\u0bc6\u0baf\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0b95\u0bbf\u0ba9\u0bcd\u0bb1\u0ba9. \u0b87\u0ba4\u0ba9\u0bbe\u0bb2\u0bcd, \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0baa\u0bbf\u0bb1 \u0b87\u0baf\u0bb1\u0bcd\u0b95\u0bc8 \u0baa\u0bc7\u0bb0\u0bbf\u0b9f\u0bb0\u0bcd\u0b95\u0bb3\u0bbf\u0ba9\u0bcd \u0baa\u0bbe\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bc8 \u0b95\u0bc1\u0bb1\u0bc8\u0b95\u0bcd\u0b95 \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bcd.",
+        "latency_s": 2.8075326250400394,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "\u0b9a\u0bb0\u0bbf\u0bb5\u0bbf\u0bb2\u0bcd \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0bae\u0bc6\u0bb2\u0bbf\u0ba4\u0bbe\u0b95\u0bcd\u0b95\u0bc1\u0bb5\u0ba4\u0bc1 \u0baa\u0bb2 \u0b95\u0bbe\u0bb0\u0ba3\u0b99\u0bcd\u0b95\u0bb3\u0bc1\u0b95\u0bcd\u0b95\u0bbe\u0b95 \u0b85\u0bb5\u0b9a\u0bbf\u0baf\u0bae\u0bcd:\n\n1. **\u0b9a\u0bc1\u0bb1\u0bcd\u0bb1\u0bc1\u0b9a\u0bcd\u0b9a\u0bc2\u0bb4\u0bb2\u0bcd \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bc1**: \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0b9a\u0bc1\u0bb1\u0bcd\u0bb1\u0bc1\u0b9a\u0bcd\u0b9a\u0bc2\u0bb4\u0bb2\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0bae\u0bbe\u0ba9\u0bb5\u0bc8. \u0b85\u0bb5\u0bc8 \u0b95\u0bbe\u0bb1\u0bcd\u0bb1\u0bbf\u0bb2\u0bcd \u0b89\u0bb3\u0bcd\u0bb3 \u0b95\u0bbe\u0bb0\u0bcd\u0baa\u0ba9\u0bcd \u0b9f\u0bc8\u0b86\u0b95\u0bcd\u0b9a\u0bc8\u0b9f\u0bcd\u0b9f\u0bc8 \u0b89\u0bb1\u0bbf\u0b9e\u0bcd\u0b9a\u0bbf, \u0b86\u0b95\u0bcd\u0b9a\u0bbf\u0b9c\u0ba9\u0bc8 \u0bb5\u0bc6\u0bb3\u0bbf\u0baf\u0bc7\u0bb1\u0bcd\u0bb1\u0bc1\u0b95\u0bbf\u0ba9\u0bcd\u0bb1\u0ba9.\n\n2. **\u0bae\u0ba3\u0bcd\u0ba3\u0bbf\u0ba9\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0ba4\u0bcd\u0ba4\u0ba9\u0bcd\u0bae\u0bc8**: \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0ba3\u0bcd\u0ba3\u0bbf\u0ba9\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0ba4\u0bcd\u0ba4\u0ba9\u0bcd\u0bae\u0bc8\u0baf\u0bc8 \u0bae\u0bc7\u0bae\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bc1\u0b95\u0bbf\u0ba9\u0bcd\u0bb1\u0ba9. \u0b85\u0bb5\u0bc8 \u0bae\u0ba3\u0bcd \u0b9a\u0bbf\u0ba4\u0bc8\u0bb5\u0bc8 \u0ba4\u0b9f\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0bae\u0ba3\u0bcd\u0ba3\u0bbf\u0ba9\u0bcd \u0b89\u0bb4\u0bc8\u0baa\u0bcd\u0baa\u0bc8 \u0b85\u0ba4\u0bbf\u0b95\u0bb0\u0bbf\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd.\n\n3. **\u0b89\u0baf\u0bbf\u0bb0\u0bbf\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bbf\u0ba9\u0bcd \u0bb5\u0bbe\u0bb4\u0bcd\u0bb5\u0bbf\u0b9f\u0bae\u0bcd**: \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0baa\u0bb2 \u0b89\u0baf\u0bbf\u0bb0\u0bbf\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bb5\u0bbe\u0bb4\u0bcd\u0bb5\u0bbf\u0b9f\u0bae\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0ba9\u0bcd\u0bb1\u0ba9. \u0b85\u0bb5\u0bc8 \u0baa\u0bb1\u0bb5\u0bc8\u0b95\u0bb3\u0bcd, \u0baa\u0bc2\u0b9a\u0bcd\u0b9a\u0bbf\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0baa\u0bbf\u0bb1 \u0b89\u0baf\u0bbf\u0bb0\u0bbf\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b89\u0ba3\u0bb5\u0bc8\u0baf\u0bc1\u0bae\u0bcd \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bc8\u0baf\u0bc1\u0bae\u0bcd \u0bb5\u0bb4\u0b99\u0bcd\u0b95\u0bc1\u0b95\u0bbf\u0ba9\u0bcd\u0bb1\u0ba9.\n\n4. **\u0b85\u0bb4\u0b95\u0bc1\u0bae\u0bcd \u0b85\u0bae\u0bc8\u0ba4\u0bbf\u0baf\u0bc1\u0bae\u0bcd**: \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0b9a\u0bc1\u0bb1\u0bcd\u0bb1\u0bc1\u0b9a\u0bcd\u0b9a\u0bc2\u0bb4\u0bb2\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b85\u0bb4\u0b95\u0bc8\u0baf\u0bc1\u0bae\u0bcd \u0b85\u0bae\u0bc8\u0ba4\u0bbf\u0baf\u0bc8\u0baf\u0bc1\u0bae\u0bcd \u0ba4\u0bb0\u0bc1\u0b95\u0bbf\u0ba9\u0bcd\u0bb1\u0ba9. \u0b87\u0ba4\u0bc1 \u0bae\u0ba9\u0ba8\u0bbf\u0bb2\u0bc8\u0baf\u0bc8 \u0bae\u0bc7\u0bae\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4 \u0b89\u0ba4\u0bb5\u0bc1\u0b95\u0bbf\u0bb1\u0ba4\u0bc1.\n\n5. **\u0bb5\u0bb3\u0b99\u0bcd\u0b95\u0bb3\u0bcd**: \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd, \u0b95\u0bbe\u0baf\u0bcd\u0b95\u0bb1\u0bbf\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0baa\u0bb4\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0baa\u0bcb\u0ba9\u0bcd\u0bb1 \u0baa\u0bb2\u0bcd\u0bb5\u0bc7\u0bb1\u0bc1 \u0bb5\u0bb3\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0bb5\u0bb4\u0b99\u0bcd\u0b95\u0bc1\u0b95\u0bbf\u0ba9\u0bcd\u0bb1\u0ba9, \u0b87\u0ba4\u0bc1 \u0bae\u0ba9\u0bbf\u0ba4\u0bb0\u0bcd\u0b95\u0bb3\u0bbf\u0ba9\u0bcd \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bbe\u0ba9 \u0ba4\u0bc7\u0bb5\u0bc8\u0b95\u0bb3\u0bc8 \u0baa\u0bc2\u0bb0\u0bcd\u0ba4\u0bcd\u0ba4\u0bbf \u0b9a\u0bc6\u0baf\u0bcd\u0b95\u0bbf\u0bb1\u0ba4\u0bc1.\n\n\u0b87\u0ba4\u0ba9\u0bbe\u0bb2\u0bcd, \u0b9a\u0bb0\u0bbf\u0bb5\u0bbf\u0bb2\u0bcd \u0ba4\u0bbe\u0bb5\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0bae\u0bc6\u0bb2\u0bbf\u0ba4\u0bbe\u0b95\u0bcd\u0b95\u0bc1\u0bb5\u0ba4\u0bc1 \u0bae\u0bbf\u0b95\u0bb5\u0bc1\u0bae\u0bcd \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0bae\u0bcd.",
+        "latency_s": 3.7283604159019887,
+        "keyword_coverage": 0.3333333333333333,
+        "faithfulness": 5,
+        "relevance": 4,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa11",
+      "language": "en",
+      "question": "What actions should a family take immediately after heavy rainfall in a landslide-prone area?",
+      "rag": {
+        "answer": "Immediately after heavy rainfall in a landslide-prone area, a family should take the following actions:\n\n1. **Stay Informed**: Monitor local news and weather reports for updates on landslide warnings or alerts.\n\n2. **Assess the Surroundings**: Check for any signs of instability, such as cracks in the ground, leaning trees, or unusual sounds from the slope.\n\n3. **Evacuate if Necessary**: If there are signs of potential landslides or if local authorities issue evacuation orders, leave the area immediately and move to a safer location.\n\n4. **Avoid Risky Areas**: Stay away from steep slopes, cliffs, and areas known for past landslides.\n\n5. **Secure Property**: If safe to do so, secure any loose items around the home that could be swept away or cause further hazards.\n\n6. **Communicate**: Ensure all family members are accounted for and communicate your safety plans with them.\n\n7. **Document Damage**: If safe, take photos of any damage for insurance purposes, but prioritize safety over documentation.\n\n8. **Prepare for Aftermath**: Be ready for potential aftershocks or additional rainfall that could trigger further landslides.\n\nAlways prioritize safety and follow the guidance of local authorities.",
+        "latency_s": 3.2682833338622004,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "After heavy rainfall in a landslide-prone area, a family should take the following immediate actions:\n\n1. **Stay Informed**: Monitor local news and weather updates for any warnings or advisories regarding landslides.\n\n2. **Evacuate if Necessary**: If there are signs of instability, such as cracks in the ground, unusual sounds, or shifting soil, evacuate to a safer location immediately.\n\n3. **Avoid Risky Areas**: Stay away from steep slopes, cliffs, and areas known for previous landslides. Do not attempt to cross flooded areas.\n\n4. **Check for Damage**: Once it is safe, inspect your home and property for any signs of damage or instability. Look for cracks in walls, foundation shifts, or changes in the landscape.\n\n5. **Communicate**: Ensure all family members are accounted for and communicate with neighbors to check on their safety.\n\n6. **Prepare for Further Rain**: If more rain is expected, have an emergency kit ready, including food, water, medications, and important documents.\n\n7. **Report Hazards**: If you notice any landslide activity or potential hazards, report them to local authorities.\n\n8. **Stay Alert**: Continue to monitor conditions and be prepared to evacuate again if necessary.\n\nBy taking these actions, families can enhance their safety and preparedness in the event of a landslide.",
+        "latency_s": 3.1024378340225667,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa09",
+      "language": "en",
+      "question": "What is bio-engineering and how is it used for slope stabilization?",
+      "rag": {
+        "answer": "Bioengineering is the use of plant material, either living or dead, to address environmental issues such as shallow rapid landslides, eroding slopes, and stream banks. It involves the integration of various disciplines, including engineering geology, civil engineering, and landscape architecture, to create effective solutions for slope stabilization.\n\nIn slope stabilization, bioengineering employs vegetation as a structural component rather than just for aesthetic purposes. Plants, particularly deep-rooted species, help reinforce the soil and reduce erosion risks by anchoring the soil with their root systems. Techniques such as direct sowing and broadcasting of seeds, as well as the use of large bamboos, are common methods to establish vegetation on steep or unstable slopes.\n\nThe bioengineering approach is considered economical, eco-friendly, and sustainable, as it often mimics natural processes and utilizes locally available materials with minimal heavy equipment. Properly designed and installed bioengineering systems can become self-repairing, requiring only minor maintenance to keep the vegetation healthy and vigorous.",
+        "latency_s": 4.010985292028636,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "Bio-engineering, also known as ecological engineering, involves the use of living plants and natural materials to solve environmental problems, particularly in the context of soil and water management. It combines principles from biology, ecology, and engineering to create sustainable solutions.\n\nFor slope stabilization, bio-engineering techniques can be used to prevent soil erosion and maintain the integrity of slopes. Here are some common methods:\n\n1. **Vegetative Cover**: Planting grasses, shrubs, and trees on slopes helps to anchor the soil with their root systems. This vegetation not only stabilizes the soil but also reduces surface runoff and erosion.\n\n2. **Live Stakes and Fascines**: These are techniques where live cuttings of plants (like willows) are inserted into the soil. As they grow, their roots help bind the soil together, providing additional stability.\n\n3. **Geotextiles**: Natural fibers or biodegradable materials can be used to create mats that support plant growth while protecting the soil from erosion. These mats can help retain moisture and provide a conducive environment for plants to establish.\n\n4. **Terracing**: Creating terraces on steep slopes can reduce the speed of water runoff and provide flat areas for vegetation to grow, further stabilizing the slope.\n\n5. **Soil Bioengineering Techniques**: This includes using techniques like coir (coconut fiber) mats or other biodegradable materials to reinforce the soil structure while allowing for plant growth.\n\nUsing bio-engineering for slope stabilization is beneficial because it promotes biodiversity, enhances the landscape, and provides a more sustainable solution compared to traditional engineering methods, which may rely heavily on concrete and other non-biodegradable materials.",
+        "latency_s": 4.374337000073865,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa48",
+      "language": "si",
+      "question": "\u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0db8\u0d9c\u0dd2\u0db1\u0dca \u0db4\u0dc3 \u0dc1\u0d9a\u0dca\u0dad\u0dd2\u0db8\u0dad\u0dca \u0d9a\u0dbb\u0db1 \u0d86\u0d9a\u0dcf\u0dbb\u0dba \u0db4\u0dc4\u0daf\u0db1\u0dca\u0db1.",
+      "rag": {
+        "answer": "\u0db8\u0dd9\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dc1\u0dca\u0db1\u0dba\u0da7 \u0dc3\u0db8\u0dca\u0db6\u0db1\u0dca\u0db0 \u0dad\u0ddc\u0dbb\u0dad\u0dd4\u0dbb\u0dd4 \u0db8\u0da7 \u0dbd\u0db6\u0dcf \u0daf\u0dd3 \u0db1\u0dd0\u0dad. \u0d9a\u0dbb\u0dd4\u0dab\u0dcf\u0d9a\u0dbb \u0dc0\u0dd9\u0db1\u0dad\u0dca \u0db4\u0dca\u200d\u0dbb\u0dc1\u0dca\u0db1\u0dba\u0d9a\u0dca \u0d85\u0dc3\u0db1\u0dca\u0db1.",
+        "latency_s": 1.3374047921970487,
+        "keyword_coverage": 0.0,
+        "faithfulness": 5,
+        "relevance": 1,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "\u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0db8\u0d9c\u0dd2\u0db1\u0dca \u0db4\u0dc3 \u0dc1\u0d9a\u0dca\u0dad\u0dd2\u0db8\u0dad\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc3\u0db3\u0dc4\u0dcf \u0db4\u0dc4\u0dad \u0db4\u0dd2\u0dba\u0dc0\u0dbb \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dc5 \u0dc4\u0dd0\u0d9a:\n\n1. **\u0db4\u0dc3 \u0dc3\u0d9a\u0dc3\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8**: \u0db4\u0dc3\u0dd9\u0dc4\u0dd2 \u0db8\u0dd0\u0daf\u0dd2\u0db1\u0dca \u0dc3\u0dc4\u0dd2\u0dad \u0d9a\u0dd4\u0da9\u0dd4, \u0d9a\u0dd4\u0da9\u0dd4 \u0dc3\u0dc4 \u0d85\u0db8\u0dd4\u0daf\u0dca\u200d\u0dbb\u0dc0\u0dca\u200d\u0dba \u0d89\u0dc0\u0dad\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0db4\u0dc3 \u0dc4\u0ddc\u0db3\u0dd2\u0db1\u0dca \u0dc0\u0dcf\u0dad\u0dba \u0d9c\u0db1\u0dca\u0db1\u0dcf \u0dbd\u0dd9\u0dc3 \u0dc3\u0d9a\u0dc3\u0dca \u0d9a\u0dbb\u0db1\u0dca\u0db1.\n\n2. **\u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dad\u0ddd\u0dbb\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8**: \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dad\u0ddd\u0dbb\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8\u0dda\u0daf\u0dd3, \u0db4\u0dc3\u0da7 \u0dc3\u0dd4\u0daf\u0dd4\u0dc3\u0dd4 \u0dc1\u0dcf\u0d9a \u0dc0\u0dbb\u0dca\u0d9c \u0dad\u0ddd\u0dbb\u0dcf \u0d9c\u0db1\u0dca\u0db1. \u0d8b\u0daf\u0dcf\u0dc4\u0dbb\u0dab\u0dba\u0d9a\u0dca \u0dbd\u0dd9\u0dc3, \u0d9a\u0dd4\u0dc5\u0dd4 \u0db6\u0ddd\u0d82\u0da0\u0dd2, \u0d9a\u0dd4\u0dc5\u0dd4 \u0db8\u0dd0\u0dc3\u0dca\u0dc3\u0db1\u0dca, \u0dc4\u0ddd \u0d9a\u0dd4\u0dc5\u0dd4 \u0dc0\u0da7\u0dca\u0da7\u0ddd\u0dbb\u0dd4.\n\n3. **\u0db4\u0dc3\u0da7 \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dc0\uc2ec\u0dd3\u0db8**: \u0dad\u0ddd\u0dbb\u0dcf\u0d9c\u0dad\u0dca \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0db4\u0dc3\u0da7 \u0dc0\u0dc4\u0db1\u0dca\u0db1. \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dc0\u0dc4\u0db1 \u0dc0\u0dd2\u0da7, \u0db4\u0dc3\u0da7 \u0dc4\u0ddc\u0db3\u0dd2\u0db1\u0dca \u0d9c\u0dd0\u0dbd\u0db4\u0dd9\u0db1 \u0dbd\u0dd9\u0dc3 \u0dc0\u0dc4\u0db1\u0dca\u0db1.\n\n4. **\u0da2\u0dbd\u0dba \u0dbd\u0db6\u0dcf \u0daf\u0dd3\u0db8**: \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dc0\u0dc4\u0db1 \u0db4\u0dc3\u0dd4, \u0db4\u0dc3\u0da7 \u0da2\u0dbd\u0dba \u0dbd\u0db6\u0dcf \u0daf\u0dd3\u0db8 \u0d85\u0db8\u0dad\u0d9a \u0db1\u0ddc\u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0da2\u0dbd\u0dba \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba\u0da7 \u0dc3\u0dc4\u0dba \u0dc0\u0db1\u0dca\u0db1.\n\n5. **\u0db4\u0ddd\u0dc2\u0dab\u0dba**: \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0d85\u0dc0\u0dc1\u0dca\u200d\u0dba \u0db4\u0ddd\u0dc2\u0dab\u0dba \u0dbd\u0db6\u0dcf \u0daf\u0dd3\u0db8 \u0dc3\u0db3\u0dc4\u0dcf, \u0db4\u0dc3\u0da7 \u0d9a\u0dd4\u0da9\u0dd4 \u0db4\u0ddc\u0dc4\u0ddc\u0dbb \u0dc4\u0ddd \u0d9a\u0dcf\u0db6\u0db1\u0dd2\u0d9a \u0db4\u0ddc\u0dc4\u0ddc\u0dbb \u0d91\u0d9a\u0dad\u0dd4 \u0d9a\u0dbb\u0db1\u0dca\u0db1.\n\n6. **\u0db4\u0dbb\u0dd3\u0d9a\u0dca\u0dc2\u0dcf \u0d9a\u0dd2\u0dbb\u0dd3\u0db8**: \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba\u0dda\u0daf\u0dd3, \u0db4\u0dc3 \u0dc4\u0dcf \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0db4\u0dbb\u0dd3\u0d9a\u0dca\u0dc2\u0dcf \u0d9a\u0dbb\u0db1\u0dca\u0db1. \u0dbb\u0ddd\u0d9c \u0dc3\u0dc4 \u0d9a\u0dd4\u0db9\u0dd4\u0dbb\u0dd4 \u0dc0\u0dbd\u0da7 \u0dc0\u0dd2\u0dc1\u0dda\u0dc2 \u0d85\u0dc0\u0db0\u0dcf\u0db1\u0dba\u0d9a\u0dca \u0daf\u0dd9\u0db1\u0dca\u0db1.\n\n7. **\u0dc3\u0dd0\u0dbd\u0dc3\u0dd4\u0db8\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8**: \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba\u0dda\u0daf\u0dd3, \u0d85\u0dc0\u0dc1\u0dca\u200d\u0dba \u0db1\u0db8\u0dca \u0d85\u0dbd\u0dd4\u0dad\u0dca \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0dc0\u0dc4\u0db1\u0dca\u0db1.\n\n\u0db8\u0dd9\u0db8 \u0db4\u0dd2\u0dba\u0dc0\u0dbb \u0d85\u0db1\u0dd4\u0d9c\u0db8\u0db1\u0dba \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca, \u0dc1\u0dcf\u0d9a \u0db8\u0dd4\u0dbd\u0dca \u0db8\u0d9c\u0dd2\u0db1\u0dca \u0db4\u0dc3 \u0dc1\u0d9a\u0dca\u0dad\u0dd2\u0db8\u0dad\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc3\u0dc4\u0dba \u0dc0\u0dd2\u0dba \u0dc4\u0dd0\u0d9a.",
+        "latency_s": 5.658284332836047,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa57",
+      "language": "ta",
+      "question": "\u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9 \u0b95\u0bc2\u0bb0\u0bc8 \u0b87\u0ba3\u0bc8\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f \u0b8e\u0ba9\u0bcd\u0ba9 \u0bb5\u0bb4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bc8 \u0baa\u0bbf\u0ba9\u0bcd\u0baa\u0bb1\u0bcd\u0bb1 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd?",
+      "rag": {
+        "answer": "\u0b95\u0bc2\u0bb0\u0bc8 \u0b87\u0ba3\u0bc8\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bc8 \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0b95 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bb5\u0ba4\u0bb1\u0bcd\u0b95\u0bbe\u0ba9 \u0bb5\u0bb4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bcd:\n\n1. **\u0ba4\u0bb0\u0bae\u0bbe\u0ba9 \u0baa\u0bca\u0bb0\u0bc1\u0b9f\u0bcd\u0b95\u0bb3\u0bc8 \u0ba4\u0bc7\u0bb0\u0bcd\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bb5\u0bc1\u0bae\u0bcd**: \u0b95\u0bc2\u0bb0\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bb5\u0ba4\u0bb1\u0bcd\u0b95\u0bbe\u0ba9 \u0baa\u0bca\u0bb0\u0bc1\u0b9f\u0bcd\u0b95\u0bb3\u0bcd \u0ba4\u0bb0\u0bae\u0bbe\u0ba9\u0bb5\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0ba8\u0bc0\u0ba3\u0bcd\u0b9f \u0b95\u0bbe\u0bb2\u0bae\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd \u0bb5\u0b95\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd.\n\n2. **\u0ba4\u0bb0\u0bae\u0bbe\u0ba9 \u0bb5\u0b9f\u0bbf\u0bb5\u0bae\u0bc8\u0baa\u0bcd\u0baa\u0bc1**: \u0b95\u0bc2\u0bb0\u0bc8 \u0bb5\u0b9f\u0bbf\u0bb5\u0bae\u0bc8\u0baa\u0bcd\u0baa\u0bc1 \u0bb5\u0bbe\u0ba9\u0bbf\u0bb2\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b87\u0baf\u0bb1\u0bcd\u0b95\u0bc8 \u0b86\u0baa\u0ba4\u0bcd\u0ba4\u0bc1\u0b95\u0bb3\u0bc8 \u0b8e\u0ba4\u0bbf\u0bb0\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bc1\u0bae\u0bcd \u0bb5\u0b95\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd.\n\n3. **\u0ba8\u0bbf\u0bb1\u0bc1\u0bb5\u0bb2\u0bcd \u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bcd**: \u0b95\u0bc2\u0bb0\u0bc8 \u0b87\u0ba3\u0bc8\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bcd \u0baa\u0bcb\u0ba4\u0bc1, \u0b9a\u0bb0\u0bbf\u0baf\u0bbe\u0ba9 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bbe\u0ba9 \u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bc8 \u0baa\u0bbf\u0ba9\u0bcd\u0baa\u0bb1\u0bcd\u0bb1 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd. \u0b87\u0ba4\u0bc1 \u0b95\u0bc2\u0bb0\u0bc8 \u0b89\u0bb1\u0bc1\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bc1\u0bae\u0bcd.\n\n4. **\u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0b9f\u0bbf \u0b86\u0baf\u0bcd\u0bb5\u0bc1**: \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bbe\u0ba9\u0ba4\u0bcd\u0ba4\u0bbf\u0bb1\u0bcd\u0b95\u0bc1 \u0bae\u0bc1\u0ba9\u0bcd \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0b9f\u0bbf \u0b86\u0baf\u0bcd\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd\u0baf \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd, \u0b87\u0ba4\u0bc1 \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0baa\u0bbf\u0bb1 \u0b86\u0baa\u0ba4\u0bcd\u0ba4\u0bc1\u0b95\u0bb3\u0bc8 \u0b95\u0bc1\u0bb1\u0bc8\u0b95\u0bcd\u0b95 \u0b89\u0ba4\u0bb5\u0bc1\u0bae\u0bcd.\n\n5. **\u0b95\u0bbe\u0bb2\u0ba8\u0bbf\u0bb2\u0bc8 \u0bae\u0bbe\u0bb1\u0bcd\u0bb1\u0ba4\u0bcd\u0ba4\u0bc8 \u0b95\u0bb0\u0bc1\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bcd \u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd**: \u0b95\u0bbe\u0bb2\u0ba8\u0bbf\u0bb2\u0bc8 \u0bae\u0bbe\u0bb1\u0bcd\u0bb1\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0ba4\u0bbe\u0b95\u0bcd\u0b95\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0b95\u0ba3\u0b95\u0bcd\u0b95\u0bbf\u0bb2\u0bcd \u0b95\u0bca\u0ba3\u0bcd\u0b9f\u0bc1, \u0b95\u0bc2\u0bb0\u0bc8 \u0bb5\u0b9f\u0bbf\u0bb5\u0bae\u0bc8\u0baa\u0bcd\u0baa\u0bbf\u0bb2\u0bcd \u0bae\u0bbe\u0bb1\u0bcd\u0bb1\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0b9a\u0bc6\u0baf\u0bcd\u0baf \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd.\n\n6. **\u0ba4\u0bb0\u0bae\u0bbe\u0ba9 \u0ba4\u0bca\u0bb4\u0bbf\u0bb2\u0bbe\u0bb3\u0bb0\u0bcd\u0b95\u0bb3\u0bcd**: \u0b85\u0ba9\u0bc1\u0baa\u0bb5\u0bae\u0bc1\u0bb3\u0bcd\u0bb3 \u0ba4\u0bca\u0bb4\u0bbf\u0bb2\u0bbe\u0bb3\u0bb0\u0bcd\u0b95\u0bb3\u0bc8 \u0bae\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bcd \u0bb5\u0bc7\u0bb2\u0bc8\u0b95\u0bcd\u0b95\u0bc1 \u0b8e\u0b9f\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd, \u0b85\u0bb5\u0bb0\u0bcd\u0b95\u0bb3\u0bcd \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9 \u0bae\u0bc1\u0bb1\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bbe\u0ba9\u0ba4\u0bcd\u0ba4\u0bc8 \u0bae\u0bc7\u0bb1\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3 \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bcd.\n\n7. **\u0baa\u0bb0\u0bbe\u0bae\u0bb0\u0bbf\u0baa\u0bcd\u0baa\u0bc1**: \u0b95\u0b9f\u0bcd\u0b9f\u0baa\u0bcd\u0baa\u0b9f\u0bcd\u0b9f \u0b95\u0bc2\u0bb0\u0bc8 \u0b85\u0b9f\u0bbf\u0b95\u0bcd\u0b95\u0b9f\u0bbf \u0baa\u0bb0\u0bbe\u0bae\u0bb0\u0bbf\u0b95\u0bcd\u0b95\u0baa\u0bcd\u0baa\u0b9f \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd, \u0b87\u0ba4\u0bc1 \u0b85\u0ba4\u0ba9\u0bcd \u0ba8\u0bc0\u0b9f\u0bbf\u0ba4\u0bcd\u0ba4\u0ba9\u0bcd\u0bae\u0bc8\u0baf\u0bc8 \u0b89\u0bb1\u0bc1\u0ba4\u0bbf \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bc1\u0bae\u0bcd.\n\n\u0b87\u0ba8\u0bcd\u0ba4 \u0bb5\u0bb4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bc8 \u0baa\u0bbf\u0ba9\u0bcd\u0baa\u0bb1\u0bcd\u0bb1\u0bc1\u0bb5\u0ba4\u0ba9\u0bcd \u0bae\u0bc2\u0bb2\u0bae\u0bcd, \u0ba8\u0bc0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0baf\u0bbe\u0ba9 \u0b95\u0bc2\u0bb0\u0bc8 \u0b87\u0ba3\u0bc8\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bc8 \u0b89\u0bb0\u0bc1\u0bb5\u0bbe\u0b95\u0bcd\u0b95 \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bcd.",
+        "latency_s": 4.543109541060403,
+        "keyword_coverage": 0.3333333333333333,
+        "faithfulness": 3,
+        "relevance": 4,
+        "hallucination_flag": true
+      },
+      "closed_book": {
+        "answer": "\u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9 \u0b95\u0bc2\u0bb0\u0bc8 \u0b87\u0ba3\u0bc8\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bb5\u0ba4\u0bb1\u0bcd\u0b95\u0bbe\u0ba9 \u0bb5\u0bb4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bcd:\n\n1. **\u0ba4\u0bb0\u0bae\u0bbe\u0ba9 \u0baa\u0bca\u0bb0\u0bc1\u0b9f\u0bcd\u0b95\u0bb3\u0bc8 \u0ba4\u0bc7\u0bb0\u0bcd\u0bb5\u0bc1 \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bb5\u0bc1\u0bae\u0bcd**: \u0b95\u0bc2\u0bb0\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bb5\u0ba4\u0bb1\u0bcd\u0b95\u0bbe\u0ba9 \u0baa\u0bca\u0bb0\u0bc1\u0b9f\u0bcd\u0b95\u0bb3\u0bcd (\u0b9a\u0bc7\u0bb2\u0bc8, \u0b9a\u0bbf\u0bae\u0bc6\u0ba3\u0bcd\u0b9f\u0bcd, \u0bae\u0bb0\u0bae\u0bcd) \u0ba4\u0bb0\u0bae\u0bbe\u0ba9\u0bb5\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0baf\u0bbe\u0ba9\u0bb5\u0bc8 \u0b86\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd.\n\n2. **\u0ba4\u0bb0\u0bae\u0bbe\u0ba9 \u0bb5\u0b9f\u0bbf\u0bb5\u0bae\u0bc8\u0baa\u0bcd\u0baa\u0bc1**: \u0b95\u0bc2\u0bb0\u0bc8 \u0bb5\u0b9f\u0bbf\u0bb5\u0bae\u0bc8\u0baa\u0bcd\u0baa\u0bc1 \u0b9a\u0bb0\u0bbf\u0baf\u0bbe\u0ba9\u0ba4\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd. \u0bae\u0bb4\u0bc8 \u0ba8\u0bc0\u0bb0\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b95\u0bbe\u0bb1\u0bcd\u0bb1\u0bbf\u0ba9\u0bcd \u0b85\u0bb4\u0bc1\u0ba4\u0bcd\u0ba4\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0b8e\u0ba4\u0bbf\u0bb0\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bc1\u0bae\u0bcd \u0bb5\u0b95\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0bb5\u0b9f\u0bbf\u0bb5\u0bae\u0bc8\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd.\n\n3. **\u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bc1 \u0b89\u0baa\u0b95\u0bb0\u0ba3\u0b99\u0bcd\u0b95\u0bb3\u0bcd**: \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bbe\u0ba9\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bcd \u0baa\u0ba3\u0bbf\u0baf\u0bbe\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0baa\u0bcb\u0ba4\u0bc1 \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bc1 \u0b89\u0baa\u0b95\u0bb0\u0ba3\u0b99\u0bcd\u0b95\u0bb3\u0bc8 (\u0b95\u0bc8\u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bcd, \u0b95\u0ba3\u0bcd\u0ba3\u0bbe\u0b9f\u0bbf\u0b95\u0bb3\u0bcd, \u0bb9\u0bc6\u0bb2\u0bcd\u0bae\u0bc6\u0b9f\u0bcd) \u0b85\u0ba3\u0bbf\u0baf \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd.\n\n4. **\u0ba4\u0bb0\u0bae\u0bbe\u0ba9 \u0b85\u0b9f\u0bbf\u0baa\u0bcd\u0baa\u0b9f\u0bc8\u0b95\u0bb3\u0bcd**: \u0b95\u0bc2\u0bb0\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bb5\u0ba4\u0bb1\u0bcd\u0b95\u0bc1 \u0bae\u0bc1\u0ba9\u0bcd \u0b85\u0b9f\u0bbf\u0baa\u0bcd\u0baa\u0b9f\u0bc8\u0b95\u0bb3\u0bcd \u0b89\u0bb1\u0bc1\u0ba4\u0bbf\u0baf\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd. \u0ba8\u0bbf\u0bb2\u0bae\u0bcd \u0b9a\u0bb0\u0bbf\u0baf\u0bbe\u0b95 \u0b9a\u0bc1\u0ba4\u0bcd\u0ba4\u0bae\u0bcd \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bb5\u0bc1\u0bae\u0bcd.\n\n5. **\u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bbe\u0ba9 \u0bb5\u0bbf\u0ba4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bcd**: \u0b89\u0bb3\u0bcd\u0bb3\u0bc2\u0bb0\u0bcd \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bbe\u0ba9 \u0bb5\u0bbf\u0ba4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bc8 \u0baa\u0bbf\u0ba9\u0bcd\u0baa\u0bb1\u0bcd\u0bb1\u0bb5\u0bc1\u0bae\u0bcd. \u0b85\u0bb5\u0bc8 \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bbe\u0ba9\u0ba4\u0bcd\u0ba4\u0bbf\u0bb1\u0bcd\u0b95\u0bc1 \u0b89\u0ba4\u0bb5\u0bc1\u0bae\u0bcd.\n\n6. **\u0bae\u0bb4\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b95\u0bbe\u0bb1\u0bcd\u0bb1\u0bc1 \u0ba8\u0bbf\u0bb2\u0bc8**: \u0b95\u0bc2\u0bb0\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0bae\u0bcd \u0baa\u0bcb\u0ba4\u0bc1 \u0bb5\u0bbe\u0ba9\u0bbf\u0bb2\u0bc8 \u0ba8\u0bbf\u0bb2\u0bc8\u0baf\u0bc8 \u0b95\u0bb5\u0ba9\u0bbf\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd. \u0bae\u0bb4\u0bc8 \u0b85\u0bb2\u0bcd\u0bb2\u0ba4\u0bc1 \u0b95\u0bbe\u0bb1\u0bcd\u0bb1\u0bc1 \u0b85\u0ba4\u0bbf\u0b95\u0bae\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bbe\u0bb2\u0bcd, \u0bb5\u0bc7\u0bb2\u0bc8 \u0ba8\u0bbf\u0bb1\u0bc1\u0ba4\u0bcd\u0ba4\u0bb5\u0bc1\u0bae\u0bcd.\n\n7. **\u0ba4\u0bca\u0bb4\u0bbf\u0bb2\u0bcd\u0ba8\u0bc1\u0b9f\u0bcd\u0baa \u0b89\u0ba4\u0bb5\u0bbf**: \u0ba4\u0bc7\u0bb5\u0bc8\u0baf\u0bbe\u0ba9 \u0baa\u0bcb\u0ba4\u0bc1 \u0ba4\u0bca\u0bb4\u0bbf\u0bb2\u0bcd\u0ba8\u0bc1\u0b9f\u0bcd\u0baa \u0ba8\u0bbf\u0baa\u0bc1\u0ba3\u0bb0\u0bcd\u0b95\u0bb3\u0bbf\u0ba9\u0bcd \u0b89\u0ba4\u0bb5\u0bbf\u0baf\u0bc8 \u0baa\u0bc6\u0bb1\u0bb5\u0bc1\u0bae\u0bcd.\n\n8. **\u0baa\u0bb0\u0bbf\u0b9a\u0bcb\u0ba4\u0ba9\u0bc8**: \u0b95\u0bc2\u0bb0\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f\u0baa\u0bcd\u0baa\u0b9f\u0bcd\u0b9f \u0baa\u0bbf\u0bb1\u0b95\u0bc1, \u0b85\u0ba4\u0ba9\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0ba4\u0bcd\u0ba4\u0ba9\u0bcd\u0bae\u0bc8\u0baf\u0bc8 \u0baa\u0bb0\u0bbf\u0b9a\u0bcb\u0ba4\u0bbf\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd. \u0b8e\u0ba8\u0bcd\u0ba4\u0bb5\u0bca\u0bb0\u0bc1 \u0b95\u0bc1\u0bb1\u0bc8\u0baa\u0bbe\u0b9f\u0bc1\u0b95\u0bb3\u0bcd \u0b87\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bbe\u0bb2\u0bcd, \u0b89\u0b9f\u0ba9\u0bc7 \u0b9a\u0bb0\u0bbf\u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bb5\u0bc1\u0bae\u0bcd.\n\n\u0b87\u0ba8\u0bcd\u0ba4 \u0bb5\u0bb4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bc8 \u0baa\u0bbf\u0ba9\u0bcd\u0baa\u0bb1\u0bcd\u0bb1\u0bc1\u0bb5\u0ba4\u0ba9\u0bcd \u0bae\u0bc2\u0bb2\u0bae\u0bcd, \u0ba8\u0bc0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0baf\u0bbe\u0ba9 \u0b95\u0bc2\u0bb0\u0bc8 \u0b87\u0ba3\u0bc8\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bcd.",
+        "latency_s": 4.385949624935165,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa44",
+      "language": "en",
+      "question": "What factors determine whether a slope stabilization project should use continuum or discrete modelling?",
+      "rag": {
+        "answer": "The choice between continuum and discrete modeling for a slope stabilization project is influenced by several factors:\n\n1. **Scale of the Project**: Larger scale projects may require continuum modeling to capture the overall behavior of the slope, while smaller projects might be adequately represented using discrete modeling.\n\n2. **Material Properties**: The nature of the materials involved, such as their cohesion and internal friction, can dictate the modeling approach. Continuum models are often used for homogeneous materials, while discrete models are better for heterogeneous materials with distinct fractures or joints.\n\n3. **Geometry of the Slope**: The complexity of the slope's geometry can influence the choice. Simple geometries may be modeled effectively with continuum methods, while complex geometries with significant discontinuities may require discrete modeling.\n\n4. **Presence of Discontinuities**: If the slope has significant fractures, joints, or bedding planes, discrete modeling may be more appropriate to accurately represent these features.\n\n5. **External Forces**: The impact of external forces, such as vibrations from earthquakes or changes in water content, may necessitate a specific modeling approach based on how these forces interact with the slope materials.\n\n6. **Desired Accuracy**: The level of detail and accuracy required for the analysis can also determine the modeling choice. Continuum models may provide a broader overview, while discrete models can offer detailed insights into specific failure mechanisms.\n\n7. **Computational Resources**: The availability of computational resources and time can also influence the decision, as some modeling approaches may require more intensive calculations.\n\nIn summary, the decision should be based on the specific characteristics of the slope, the materials involved, and the goals of the stabilization project.",
+        "latency_s": 4.874210458016023,
+        "keyword_coverage": 0.75,
+        "faithfulness": 4,
+        "relevance": 5,
+        "hallucination_flag": true
+      },
+      "closed_book": {
+        "answer": "The choice between continuum and discrete modeling for a slope stabilization project depends on several factors:\n\n1. **Material Properties**: If the slope materials are homogeneous and can be treated as a continuous medium, continuum modeling is appropriate. For heterogeneous materials with distinct phases or layers, discrete modeling may be better.\n\n2. **Scale of the Problem**: For large-scale slopes where the behavior can be averaged out, continuum models are often sufficient. For smaller-scale issues or localized failures, discrete models can capture the complexities better.\n\n3. **Type of Failure Mechanism**: If the failure mechanism involves sliding or block movements, discrete modeling can effectively represent these interactions. Continuum models are more suited for gradual failure mechanisms.\n\n4. **Computational Resources**: Discrete models can be more computationally intensive due to the need to simulate individual particles or blocks. If resources are limited, continuum modeling may be preferred for efficiency.\n\n5. **Desired Accuracy**: If high precision is required in predicting failure modes and stability, discrete modeling may provide more detailed insights. For general assessments, continuum models can suffice.\n\n6. **Project Objectives**: The goals of the project (e.g., design, analysis, risk assessment) can influence the choice. If the focus is on understanding interactions at a micro-level, discrete modeling is advantageous.\n\n7. **Expertise and Tools Available**: The availability of software tools and the expertise of the team can also dictate the choice. Some teams may be more familiar with one approach over the other.\n\nIn summary, the decision should be based on the specific characteristics of the slope, the nature of the materials involved, the scale of the project, and the objectives of the analysis.",
+        "latency_s": 4.0065827909857035,
+        "keyword_coverage": 0.75,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa16",
+      "language": "ta",
+      "question": "\u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bbf\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bc1 \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0b95\u0bcd\u0b95 \u0b8e\u0ba9\u0bcd\u0ba9 \u0ba8\u0b9f\u0bb5\u0b9f\u0bbf\u0b95\u0bcd\u0b95\u0bc8 \u0b8e\u0b9f\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd?",
+      "rag": {
+        "answer": "\u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bbf\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bc1 \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0b95\u0bcd\u0b95 \u0b9a\u0bbf\u0bb2 \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf \u0ba8\u0b9f\u0bb5\u0b9f\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0b95\u0bb3\u0bcd \u0b89\u0bb3\u0bcd\u0bb3\u0ba9:\n\n1. **\u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bc8 \u0b9a\u0bb0\u0bbf\u0baf\u0bbe\u0b95 \u0ba8\u0bbf\u0bb0\u0bcd\u0bb5\u0b95\u0bbf\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd**: \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0bae\u0bc7\u0bb1\u0bcd\u0baa\u0bb0\u0baa\u0bcd\u0baa\u0bbf\u0bb2\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b89\u0bb3\u0bcd\u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bcd \u0ba8\u0bc0\u0bb0\u0bcd \u0b93\u0b9f\u0bcd\u0b9f\u0ba4\u0bcd\u0ba4\u0bc8 \u0b9a\u0bb0\u0bbf\u0baf\u0bbe\u0b95 \u0ba8\u0bbf\u0bb0\u0bcd\u0bb5\u0b95\u0bbf\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd. \u0b87\u0ba4\u0bc1 \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1\u0b95\u0bb3\u0bc8\u0ba4\u0bcd \u0ba4\u0bb5\u0bbf\u0bb0\u0bcd\u0b95\u0bcd\u0b95 \u0b89\u0ba4\u0bb5\u0bc1\u0bae\u0bcd.\n\n2. **\u0bae\u0ba3\u0bcd \u0b89\u0bb1\u0bc1\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bc1\u0ba4\u0bb2\u0bcd**: \u0bae\u0ba3\u0bcd \u0b89\u0bb1\u0bc1\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bc1\u0bae\u0bcd \u0ba4\u0bca\u0bb4\u0bbf\u0bb2\u0bcd\u0ba8\u0bc1\u0b9f\u0bcd\u0baa\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0baa\u0baf\u0ba9\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bbf, \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bc8 \u0b89\u0bb1\u0bc1\u0ba4\u0bbf\u0baf\u0bbe\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd. \u0b87\u0ba4\u0bc1 \u0bae\u0ba3\u0bcd \u0b9a\u0bbf\u0ba4\u0bc8\u0bb5\u0bc1\u0b95\u0bb3\u0bc8 \u0b95\u0bc1\u0bb1\u0bc8\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd.\n\n3. **\u0bae\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b9a\u0bc6\u0b9f\u0bbf\u0b95\u0bb3\u0bcd \u0ba8\u0b9f\u0bc1\u0ba4\u0bb2\u0bcd**: slope \u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0bae\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b9a\u0bc6\u0b9f\u0bbf\u0b95\u0bb3\u0bcd \u0ba8\u0b9f\u0bc1\u0bb5\u0ba4\u0ba9\u0bcd \u0bae\u0bc2\u0bb2\u0bae\u0bcd, \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1\u0b95\u0bb3\u0bc8\u0ba4\u0bcd \u0ba4\u0b9f\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd. \u0b87\u0ba4\u0bc1 \u0ba8\u0bc0\u0bb0\u0bcd \u0b93\u0b9f\u0bcd\u0b9f\u0ba4\u0bcd\u0ba4\u0bc8 \u0b95\u0b9f\u0bcd\u0b9f\u0bc1\u0baa\u0bcd\u0baa\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bc1\u0bae\u0bcd.\n\n4. **\u0b95\u0bb4\u0bbf\u0bb5\u0bc1\u0b95\u0bb3\u0bc8 \u0b85\u0b95\u0bb1\u0bcd\u0bb1\u0bc1\u0ba4\u0bb2\u0bcd**: \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bbf\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bc1 \u0b95\u0bb4\u0bbf\u0bb5\u0bc1\u0b95\u0bb3\u0bc8 \u0b85\u0b95\u0bb1\u0bcd\u0bb1\u0bc1\u0bb5\u0ba4\u0ba9\u0bcd \u0bae\u0bc2\u0bb2\u0bae\u0bcd, \u0ba8\u0bc0\u0bb0\u0bcd \u0b93\u0b9f\u0bcd\u0b9f\u0ba4\u0bcd\u0ba4\u0bc8 \u0ba4\u0b9f\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd.\n\n5. **\u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0ba4\u0bcd\u0ba4\u0bbf\u0bb1\u0bcd\u0b95\u0bbe\u0ba9 \u0ba4\u0bbf\u0b9f\u0bcd\u0b9f\u0bae\u0bbf\u0b9f\u0bb2\u0bcd**: \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd \u0bb5\u0bb0\u0bc1\u0bae\u0bcd \u0baa\u0bcb\u0ba4\u0bc1, \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9 \u0b87\u0b9f\u0b99\u0bcd\u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0ba4\u0b99\u0bcd\u0b95\u0bc1\u0bb5\u0ba4\u0bb1\u0bcd\u0b95\u0bbe\u0ba9 \u0ba4\u0bbf\u0b9f\u0bcd\u0b9f\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0b89\u0bb0\u0bc1\u0bb5\u0bbe\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd.\n\n6. **\u0b85\u0bb1\u0bbf\u0bb5\u0bbf\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0ba4\u0b95\u0bb5\u0bb2\u0bcd\u0b95\u0bb3\u0bcd**: \u0b89\u0bb3\u0bcd\u0bb3\u0bc2\u0bb0\u0bcd \u0b85\u0ba4\u0bbf\u0b95\u0bbe\u0bb0\u0bbf\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b9a\u0bae\u0bc2\u0b95\u0ba4\u0bcd\u0ba4\u0bc1\u0b9f\u0ba9\u0bcd \u0ba4\u0bca\u0b9f\u0bb0\u0bcd\u0baa\u0bbf\u0bb2\u0bcd \u0b87\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bc1, \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd \u0baa\u0bb1\u0bcd\u0bb1\u0bbf\u0baf \u0ba4\u0b95\u0bb5\u0bb2\u0bcd\u0b95\u0bb3\u0bc8\u0baa\u0bcd \u0baa\u0bc6\u0bb1\u0bb5\u0bc1\u0bae\u0bcd.\n\n\u0b87\u0ba8\u0bcd\u0ba4 \u0ba8\u0b9f\u0bb5\u0b9f\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0b95\u0bb3\u0bcd \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bbf\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bc1 \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0ba4\u0bb1\u0bcd\u0b95\u0bbe\u0ba9 \u0b85\u0b9f\u0bbf\u0baa\u0bcd\u0baa\u0b9f\u0bc8\u0baf\u0bbe\u0ba9 \u0bb5\u0bb4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8\u0b95\u0bb3\u0bcd \u0b86\u0b95\u0bc1\u0bae\u0bcd.",
+        "latency_s": 4.73400858300738,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 3,
+        "relevance": 4,
+        "hallucination_flag": true
+      },
+      "closed_book": {
+        "answer": "\u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bbf\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bc1 \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0b95\u0bcd\u0b95 \u0b9a\u0bbf\u0bb2 \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf \u0ba8\u0b9f\u0bb5\u0b9f\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0b95\u0bb3\u0bcd:\n\n1. **\u0bae\u0bc1\u0ba9\u0bcd\u0ba9\u0bb1\u0bbf\u0bb5\u0bbf\u0baa\u0bcd\u0baa\u0bc1**: \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd \u0bb5\u0bb0\u0bc1\u0bae\u0bcd \u0bae\u0bc1\u0ba9\u0bcd, \u0bb5\u0bbe\u0ba9\u0bbf\u0bb2\u0bc8 \u0bae\u0bc1\u0ba9\u0bcd\u0ba9\u0bb1\u0bbf\u0bb5\u0bbf\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bc8 \u0b95\u0bb5\u0ba9\u0bbf\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd. \n\n2. **\u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9 \u0b87\u0b9f\u0bae\u0bcd**: \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd \u0bb5\u0bb0\u0bc1\u0bae\u0bcd \u0baa\u0bcb\u0ba4\u0bc1, \u0b89\u0baf\u0bb0\u0bae\u0bbe\u0ba9 \u0b87\u0b9f\u0b99\u0bcd\u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0b9a\u0bc6\u0bb2\u0bcd\u0bb2\u0bb5\u0bc1\u0bae\u0bcd. \n\n3. **\u0b85\u0bb5\u0b9a\u0bb0\u0b95\u0bcd \u0b95\u0bbf\u0b9f\u0bcd\u0b9f\u0ba4\u0bcd\u0ba4\u0b9f\u0bcd\u0b9f\u0bae\u0bcd**: \u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0b95\u0bc1\u0b9f\u0bc1\u0bae\u0bcd\u0baa\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bb0\u0bc1\u0b9f\u0ba9\u0bcd \u0b92\u0bb0\u0bc1 \u0b85\u0bb5\u0b9a\u0bb0\u0b95\u0bcd \u0b95\u0bbf\u0b9f\u0bcd\u0b9f\u0ba4\u0bcd\u0ba4\u0b9f\u0bcd\u0b9f\u0ba4\u0bcd\u0ba4\u0bc8 \u0b89\u0bb0\u0bc1\u0bb5\u0bbe\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd. \n\n4. **\u0bae\u0bc1\u0ba4\u0ba9\u0bcd\u0bae\u0bc8 \u0ba4\u0bc7\u0bb5\u0bc8\u0b95\u0bb3\u0bcd**: \u0b89\u0ba3\u0bb5\u0bc1, \u0ba8\u0bc0\u0bb0\u0bcd, \u0bae\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bc1\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0baa\u0bbf\u0bb1 \u0ba4\u0bc7\u0bb5\u0bc8\u0b95\u0bb3\u0bc8 \u0bae\u0bc1\u0ba9\u0bcd\u0ba9\u0ba4\u0bbe\u0b95\u0b95\u0bcd \u0b95\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc1\u0b99\u0bcd\u0b95\u0bb3\u0bcd.\n\n5. **\u0bae\u0bbf\u0ba9\u0bcd\u0b9a\u0bbe\u0bb0\u0bae\u0bcd**: \u0bae\u0bbf\u0ba9\u0bcd\u0b9a\u0bbe\u0bb0 \u0b9a\u0bbe\u0ba4\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0b85\u0ba3\u0bc8\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd, \u0ba8\u0bc0\u0bb0\u0bbf\u0bb2\u0bcd \u0bae\u0bc2\u0bb4\u0bcd\u0b95\u0bbf\u0baf \u0bae\u0bbf\u0ba9\u0bcd\u0b9a\u0bbe\u0bb0 \u0b9a\u0bbe\u0ba4\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0ba4\u0bca\u0b9f\u0b95\u0bcd\u0b95avoid \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bb5\u0bc1\u0bae\u0bcd.\n\n6. **\u0bb5\u0bbe\u0b95\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bcd**: \u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0bb5\u0bbe\u0b95\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9 \u0b87\u0b9f\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bcd \u0ba8\u0bbf\u0bb1\u0bc1\u0ba4\u0bcd\u0ba4\u0bb5\u0bc1\u0bae\u0bcd, \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd \u0bb5\u0bb0\u0bc1\u0bae\u0bcd \u0b87\u0b9f\u0b99\u0bcd\u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0ba8\u0bbf\u0bb1\u0bc1\u0ba4\u0bcd\u0ba4 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bbe\u0bae\u0bcd.\n\n7. **\u0ba4\u0b95\u0bb5\u0bb2\u0bcd \u0baa\u0bb0\u0bbf\u0bae\u0bbe\u0bb1\u0bcd\u0bb1\u0bae\u0bcd**: \u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0ba8\u0ba3\u0bcd\u0baa\u0bb0\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b95\u0bc1\u0b9f\u0bc1\u0bae\u0bcd\u0baa\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b89\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0baf\u0bc8\u0baa\u0bcd \u0baa\u0bb1\u0bcd\u0bb1\u0bbf \u0ba4\u0b95\u0bb5\u0bb2\u0bcd \u0b85\u0bb3\u0bbf\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd.\n\n8. **\u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd \u0bae\u0bc1\u0b9f\u0bbf\u0ba8\u0bcd\u0ba4 \u0baa\u0bbf\u0bb1\u0b95\u0bc1**: \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd \u0bae\u0bc1\u0b9f\u0bbf\u0ba8\u0bcd\u0ba4 \u0baa\u0bbf\u0bb1\u0b95\u0bc1, \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0ba9\u0ba4\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd \u0bb5\u0bb0\u0bc8 \u0bb5\u0bc6\u0bb3\u0bbf\u0baf\u0bc7 \u0b9a\u0bc6\u0bb2\u0bcd\u0bb2 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bbe\u0bae\u0bcd. \n\n\u0b87\u0ba8\u0bcd\u0ba4 \u0ba8\u0b9f\u0bb5\u0b9f\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0b95\u0bb3\u0bc8 \u0baa\u0bbf\u0ba9\u0bcd\u0baa\u0bb1\u0bcd\u0bb1\u0bc1\u0bb5\u0ba4\u0ba9\u0bcd \u0bae\u0bc2\u0bb2\u0bae\u0bcd, \u0ba8\u0bc0\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bbf\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bc1 \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0b95\u0bcd\u0b95 \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bc1\u0bae\u0bcd.",
+        "latency_s": 4.35581741691567,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa46",
+      "language": "si",
+      "question": "\u0d9c\u0d82 \u0d89\u0dc0\u0dd4\u0dbb\u0dd4 \u0d86\u0dc3\u0db1\u0dca\u0db1\u0dba\u0dda \u0da2\u0dbd \u0db8\u0da7\u0dca\u0da7\u0db8 \u0dc0\u0dda\u0d9c\u0dba\u0dd9\u0db1\u0dca \u0d85\u0da9\u0dd4\u0dc0\u0dd3\u0db8 \u0db1\u0dcf\u0dba \u0dba\u0dcf\u0db8\u0da7 \u0dc4\u0dda\u0dad\u0dd4 \u0dc0\u0db1\u0dca\u0db1\u0dda \u0d87\u0dba\u0dd2?",
+      "rag": {
+        "answer": "\u0db8\u0dd9\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dc1\u0dca\u0db1\u0dba\u0da7 \u0dc3\u0db8\u0dca\u0db6\u0db1\u0dca\u0db0 \u0dc0\u0dd2\u0dc1\u0dda\u0dc2\u0dd2\u0dad \u0dad\u0ddc\u0dbb\u0dad\u0dd4\u0dbb\u0dd4 \u0db8\u0da7 \u0db1\u0ddc\u0db8\u0dd0\u0dad. \u0db1\u0db8\u0dd4\u0dad\u0dca, \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba\u0dba\u0dd9\u0db1\u0dca \u0da2\u0dbd \u0db8\u0da7\u0dca\u0da7\u0db8 \u0dc0\u0dda\u0d9c\u0dba\u0dd9\u0db1\u0dca \u0d85\u0da9\u0dd4\u0dc0\u0dd3\u0db8\u0dda \u0dc4\u0dda\u0dad\u0dd4 \u0dc0\u0dc1\u0dba\u0dd9\u0db1\u0dca \u0dc0\u0dcf\u0dc3\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0da2\u0dbd\u0dba \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dba, \u0dc0\u0dcf\u0dc3\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0da2\u0dbd \u0dc3\u0db8\u0dca\u0db4\u0dad\u0dca, \u0dc0\u0dcf\u0dc3\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0da2\u0dbd\u0dba \u0db4\u0dd2\u0dbb\u0dd2\u0dc3\u0dd2\u0daf\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0dc0\u0dbd\u0dd2\u0dba, \u0dc3\u0dc4 \u0dc0\u0dcf\u0dc3\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0da2\u0dbd\u0dba \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dcf \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0dc0\u0dbd\u0dd2\u0dba\u0db1\u0dca\u0da7 \u0db6\u0dbd\u0db4\u0dcf\u0db1 \u0db4\u0dcf\u0dbb\u0dd2\u0dc3\u0dbb\u0dd2\u0d9a \u0dc3\u0dcf\u0db0\u0d9a \u0dc0\u0dd0\u0db1\u0dd2 \u0d9a\u0dbb\u0dd4\u0dab\u0dd4 \u0dc3\u0dbd\u0d9a\u0dcf \u0db6\u0dbd\u0db1\u0dca\u0db1 \u0db4\u0dd4\u0dc5\u0dd4\u0dc0\u0db1\u0dca. \n\n\u0d89\u0dad\u0dcf\u0db8\u0dad\u0dca \u0dc0\u0dd0\u0daf\u0d9c\u0dad\u0dca \u0dc0\u0db1\u0dca\u0db1\u0dda, \u0da2\u0dbd \u0db8\u0da7\u0dca\u0da7\u0db8 \u0d85\u0da9\u0dd4\u0dc0\u0dd3\u0db8\u0dda\u0daf\u0dd3 \u0db4\u0dca\u200d\u0dbb\u0daf\u0dda\u0dc1\u0dba\u0dda \u0da2\u0dbd \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dcf\u0dc0 \u0dc3\u0dc4 \u0dc3\u0dde\u0d9b\u0dca\u200d\u0dba\u0dba \u0db4\u0dd2\u0dc5\u0dd2\u0db6\u0db3 \u0d85\u0dc0\u0db0\u0dcf\u0db1\u0dba \u0dba\u0ddc\u0db8\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dba\u0dd2.",
+        "latency_s": 6.096691875020042,
+        "keyword_coverage": 0.3333333333333333,
+        "faithfulness": 5,
+        "relevance": 2,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "\u0d9c\u0d82 \u0d89\u0dc0\u0dd4\u0dbb\u0dd4 \u0d86\u0dc3\u0db1\u0dca\u0db1\u0dba\u0dda \u0da2\u0dbd \u0db8\u0da7\u0dca\u0da7\u0db8 \u0dc0\u0dda\u0d9c\u0dba\u0dd9\u0db1\u0dca \u0d85\u0da9\u0dd4\u0dc0\u0dd3\u0db8\u0dda \u0dc4\u0dda\u0dad\u0dd4 \u0d9a\u0dd2\u0dc4\u0dd2\u0db4\u0dba\u0d9a\u0dca \u0d87\u0dad:\n\n1. **\u0db4\u0dd0\u0dc0\u0dd0\u0dad\u0dca\u0db8 \u0dc3\u0dc4 \u0dc0\u0dcf\u0dc3\u0dba**: \u0d9c\u0d82 \u0db8\u0dcf\u0dbb\u0dca\u0d9c\u0dba\u0dda \u0dc0\u0dcf\u0dc3\u0dba \u0dc3\u0dc4 \u0d9a\u0dd8\u0dc2\u0dd2\u0d9a\u0dbb\u0dca\u0db8 \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0d9a\u0dcf\u0dbb\u0d9a\u0db8\u0dca \u0da2\u0dbd\u0dba \u0d85\u0dc0\u0dc1\u0dda\u0dc2 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc4\u0dda\u0dad\u0dd4 \u0dc0\u0dd2\u0dba \u0dc4\u0dd0\u0d9a.\n\n2. **\u0d85\u0dc0\u0dc3\u0dca\u0dae\u0dcf\u0db4\u0db1\u0dba**: \u0da2\u0dbd\u0dba \u0d9c\u0d82 \u0db8\u0dcf\u0dbb\u0dca\u0d9c\u0dba\u0dda \u0dc3\u0dd2\u0da7 \u0dc0\u0dd9\u0db1\u0dad\u0dca \u0dc3\u0dca\u0dae\u0dcf\u0db1 \u0dc0\u0dbd\u0da7 \u0dba\u0dcf\u0db8, \u0d8b\u0daf\u0dcf\u0dc4\u0dbb\u0dab\u0dba\u0d9a\u0dca \u0dbd\u0dd9\u0dc3 \u0da2\u0dbd\u0dba \u0d9c\u0ddc\u0da9\u0db1\u0dd0\u0d9c\u0dd2\u0dbd\u0dd2 \u0dc4\u0ddd \u0d9a\u0dd8\u0dc2\u0dd2\u0d9a\u0dbb\u0dca\u0db8 \u0dc3\u0db3\u0dc4\u0dcf \u0db7\u0dcf\u0dc0\u0dd2\u0dad\u0dcf \u0d9a\u0dd2\u0dbb\u0dd3\u0db8.\n\n3. **\u0db4\u0dcf\u0dbb\u0dd2\u0dc3\u0dbb\u0dd2\u0d9a \u0dc0\u0dd9\u0db1\u0dc3\u0dca\u0d9a\u0db8\u0dca**: \u0dc0\u0dcf\u0dc3\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0d9a\u0dcf\u0dbb\u0d9a\u0db8\u0dca, \u0dc0\u0dcf\u0dc3\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0dc3\u0d82\u0d9b\u0dca\u200d\u0dba\u0dcf\u0dc0, \u0dc3\u0dc4 \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab\u0dba \u0db8\u0dd9\u0db1\u0dca\u0db8 \u0dc0\u0dcf\u0dc3\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0d9a\u0dcf\u0dbb\u0d9a\u0db8\u0dca \u0da2\u0dbd \u0db8\u0da7\u0dca\u0da7\u0db8\u0da7 \u0db6\u0dbd\u0db4\u0dcf\u0dba\u0dd2.\n\n4. **\u0db4\u0dbb\u0dd2\u0dc3\u0dbb\u0dba \u0dc4\u0dcf \u0d9a\u0dcf\u0dbd\u0d9c\u0dd4\u0dab\u0dba**: \u0dc0\u0dbb\u0dca\u0dc2\u0dcf\u0dc0\u0db1\u0dca\u0d9c\u0dda \u0d85\u0da9\u0dd4 \u0dc0\u0dd3\u0db8 \u0dc4\u0ddd \u0dc0\u0dcf\u0dc3\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0d9a\u0dca\u200d\u0dbb\u0dd2\u0dba\u0dcf\u0d9a\u0dcf\u0dbb\u0d9a\u0db8\u0dca \u0da2\u0dbd \u0db8\u0da7\u0dca\u0da7\u0db8 \u0d85\u0da9\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc4\u0dda\u0dad\u0dd4 \u0dc0\u0dd2\u0dba \u0dc4\u0dd0\u0d9a.\n\n\u0db8\u0dd9\u0db8 \u0dc4\u0dda\u0dad\u0dd4 \u0db1\u0dd2\u0dc3\u0dcf \u0da2\u0dbd \u0db8\u0da7\u0dca\u0da7\u0db8 \u0d85\u0da9\u0dd4\u0dc0\u0dd3\u0db8\u0d9a\u0dca \u0dc3\u0dd2\u0daf\u0dd4\u0dc0\u0db1 \u0db6\u0dc0 \u0dc3\u0dbd\u0d9a\u0dcf \u0db6\u0dbd\u0db1\u0dca\u0db1.",
+        "latency_s": 3.843635000055656,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 2,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa01",
+      "language": "en",
+      "question": "What are the early warning signs of a landslide I should look for around my house?",
+      "rag": {
+        "answer": "The early warning signs of a landslide that you should look for around your house include:\n\n1. **Subsidence or Heaving**: Observing any sinking or bulging on slopes, roads, or pavements.\n2. **Cracks**: Sudden appearance and progressive widening of cracks in the ground or structures.\n3. **Bulging Ground**: Noticing bulging or heaving on the ground surface or road beds.\n4. **Ground Water Seepage**: Sudden appearance of springs, seepage traces, or water logging in areas that were previously dry.\n5. **Changes in Creeks**: Sudden appearance or disappearance of creeks.\n6. **Increased Turbidity**: Noticing increased turbidity in stream water flow.\n7. **Water Oozing**: Sudden oozing or appearance of water on slopes.\n8. **Poor Drainage**: Continuous water logging due to inadequate slope drainage.\n9. **Soil Movement**: Sudden movement of soil masses away from building foundations.\n10. **Leaning Structures**: Tilting or leaning of trees, utility poles, fences, or retaining walls.\n11. **Utility Breakage**: Sudden breakage of water supply lines or other underground utilities.\n\nIf you notice any of these signs, it is important to avoid building on such land and inform local authorities for further advice and safety measures.",
+        "latency_s": 4.706721333088353,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "Early warning signs of a landslide that you should look for around your house include:\n\n1. **Cracks in the Ground**: Look for new cracks or widening of existing cracks in the ground, especially near the foundation of your home or in the yard.\n\n2. **Tilting Trees or Utility Poles**: If trees or utility poles appear to be leaning or tilting, it may indicate ground movement.\n\n3. **Changes in Water Flow**: Notice any changes in the flow of water in streams or drainage systems. Increased water flow or new springs can signal instability.\n\n4. **Soil Movement**: Look for soil that appears to be bulging or sliding downhill, especially on slopes.\n\n5. **Unusual Sounds**: Listen for unusual sounds such as rumbling, cracking, or the sound of falling debris.\n\n6. **Depressions or Sinkholes**: Watch for depressions or sinkholes forming in your yard or nearby areas.\n\n7. **Increased Vegetation Stress**: Observe if plants or trees are wilting or dying, which may indicate changes in soil moisture or stability.\n\n8. **Disturbed Ground**: Check for any disturbed ground or debris flow that may indicate recent movement.\n\nIf you notice any of these signs, it\u2019s important to take them seriously and consider contacting local authorities or a geotechnical expert for further assessment. Always prioritize safety and be prepared to evacuate if necessary.",
+        "latency_s": 3.059393374947831,
+        "keyword_coverage": 0.8,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa28",
+      "language": "en",
+      "question": "Who is the housing manual intended for and what is its purpose?",
+      "rag": {
+        "answer": "The housing manual is intended for house builders, planners, architects, engineers, designers, contractors, and homeowners. Its purpose is to promote hazard-resilient engineering design and construction practices in Sri Lanka, particularly in areas prone to natural hazards. The manual aims to minimize risks associated with building houses in disaster-prone localities and to ensure that some structural elements of houses can withstand extreme events, allowing people to resume their daily activities with minimal interruption. It provides practical recommendations and advice for greater resilience to disasters.",
+        "latency_s": 1.9175980840809643,
+        "keyword_coverage": 0.5,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "The housing manual is typically intended for various stakeholders involved in housing development and management. This includes:\n\n1. **Homeowners**: To provide guidance on building, renovating, and maintaining homes safely and effectively.\n2. **Builders and Contractors**: To ensure compliance with safety standards, building codes, and best practices in construction.\n3. **Architects and Designers**: To offer insights into sustainable design, space utilization, and safety considerations in housing projects.\n4. **Government Officials and Policymakers**: To inform regulations and policies related to housing development and urban planning.\n5. **Community Organizations**: To assist in community development projects and promote safe housing practices.\n\nThe purpose of the housing manual is to provide comprehensive information on best practices, safety standards, and guidelines for constructing and maintaining housing. It aims to promote safe, sustainable, and affordable housing solutions while ensuring compliance with local regulations and enhancing the overall quality of living environments.",
+        "latency_s": 3.593704291852191,
+        "keyword_coverage": 0.25,
+        "faithfulness": 5,
+        "relevance": 4,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa58",
+      "language": "ta",
+      "question": "\u0b87\u0bb2\u0b99\u0bcd\u0b95\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf \u0b87\u0baf\u0bb1\u0bcd\u0b95\u0bc8 \u0baa\u0bc7\u0bb0\u0bbf\u0b9f\u0bb0\u0bcd\u0b95\u0bb3\u0bcd \u0b8e\u0ba9\u0bcd\u0ba9?",
+      "rag": {
+        "answer": "\u0b87\u0bb2\u0b99\u0bcd\u0b95\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf \u0b87\u0baf\u0bb1\u0bcd\u0b95\u0bc8 \u0baa\u0bc7\u0bb0\u0bbf\u0b9f\u0bb0\u0bcd\u0b95\u0bb3\u0bcd \u0b95\u0bc0\u0bb4\u0bcd\u0b95\u0bbe\u0ba3\u0bc1\u0bae\u0bcd \u0bb5\u0b95\u0bc8\u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0b89\u0bb3\u0bcd\u0bb3\u0ba9:\n\n1. **\u0bae\u0ba3\u0bcd \u0b9a\u0bb0\u0bbf\u0bb5\u0bc1\u0b95\u0bb3\u0bcd** - \u0bae\u0bb2\u0bc8\u0baa\u0bcd\u0baa\u0b95\u0bc1\u0ba4\u0bbf\u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0b85\u0ba4\u0bbf\u0b95 \u0bae\u0bb4\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0b9f\u0bbf \u0ba8\u0bc0\u0bb0\u0bcd \u0b95\u0bbe\u0bb0\u0ba3\u0bae\u0bbe\u0b95 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0bae\u0bcd.\n2. **\u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd** - \u0bae\u0bb4\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0ba8\u0bc0\u0bb0\u0bcd\u0bb5\u0bc0\u0bb4\u0bcd\u0b9a\u0bcd\u0b9a\u0bbf\u0b95\u0bb3\u0bcd \u0b95\u0bbe\u0bb0\u0ba3\u0bae\u0bbe\u0b95 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0bae\u0bcd.\n3. **\u0baa\u0bc1\u0baf\u0bb2\u0bcd\u0b95\u0bb3\u0bcd** - \u0b95\u0b9f\u0bb1\u0bcd\u0b95\u0bb0\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0bae\u0bcd \u0baa\u0bc1\u0baf\u0bb2\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b95\u0bbe\u0bb1\u0bcd\u0bb1\u0bbf\u0ba9\u0bcd \u0ba4\u0bbe\u0b95\u0bcd\u0b95\u0bae\u0bcd.\n4. **\u0baa\u0bc2\u0bae\u0bbf \u0b85\u0ba4\u0bbf\u0bb0\u0bcd\u0bb5\u0bc1\u0b95\u0bb3\u0bcd** - \u0ba8\u0bbf\u0bb2\u0ba8\u0b9f\u0bc1\u0b95\u0bcd\u0b95\u0b99\u0bcd\u0b95\u0bb3\u0bcd, \u0b95\u0bc1\u0bb1\u0bbf\u0baa\u0bcd\u0baa\u0bbe\u0b95 \u0b9a\u0bbf\u0bb2 \u0baa\u0b95\u0bc1\u0ba4\u0bbf\u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0bae\u0bcd.\n5. **\u0b85\u0b95\u0bb4\u0bcd\u0bb5\u0bbe\u0bb0\u0bbf\u0b95\u0bb3\u0bcd** - \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0b9f\u0bbf \u0ba8\u0bc0\u0bb0\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0bae\u0ba3\u0bcd \u0b85\u0bae\u0bc8\u0baa\u0bcd\u0baa\u0bbf\u0ba9\u0bcd \u0b95\u0bbe\u0bb0\u0ba3\u0bae\u0bbe\u0b95 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0bae\u0bcd.\n\n\u0b87\u0ba8\u0bcd\u0ba4 \u0baa\u0bc7\u0bb0\u0bbf\u0b9f\u0bb0\u0bcd\u0b95\u0bb3\u0bbe\u0bb2\u0bcd \u0bae\u0b95\u0bcd\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b9a\u0bc1\u0bb1\u0bcd\u0bb1\u0bc1\u0b9a\u0bcd\u0b9a\u0bc2\u0bb4\u0bb2\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0baa\u0bbe\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bcd \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bb2\u0bbe\u0bae\u0bcd. \u0baa\u0bbe\u0ba4\u0bc1\u0b95\u0bbe\u0baa\u0bcd\u0baa\u0bc1 \u0ba8\u0b9f\u0bb5\u0b9f\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0b95\u0bb3\u0bc8 \u0bae\u0bc1\u0ba9\u0bcd\u0ba9\u0bc6\u0b9f\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd.",
+        "latency_s": 2.967985082883388,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 0,
+        "relevance": 3,
+        "hallucination_flag": true
+      },
+      "closed_book": {
+        "answer": "\u0b87\u0bb2\u0b99\u0bcd\u0b95\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0bae\u0bc1\u0b95\u0bcd\u0b95\u0bbf\u0baf \u0b87\u0baf\u0bb1\u0bcd\u0b95\u0bc8 \u0baa\u0bc7\u0bb0\u0bbf\u0b9f\u0bb0\u0bcd\u0b95\u0bb3\u0bcd \u0b95\u0bc0\u0bb4\u0bcd\u0b95\u0bbe\u0ba3\u0bc1\u0bae\u0bcd \u0bb5\u0b95\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0b89\u0bb3\u0bcd\u0bb3\u0ba9:\n\n1. **\u0bae\u0bb4\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd**: \u0baa\u0bb0\u0bc1\u0bb5\u0bae\u0bb4\u0bc8 \u0b95\u0bbe\u0bb2\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bcd \u0b85\u0ba4\u0bbf\u0b95 \u0bae\u0bb4\u0bc8 \u0baa\u0bc6\u0baf\u0bcd\u0baf\u0bc1\u0bae\u0bcd \u0baa\u0bcb\u0ba4\u0bc1, \u0bb5\u0bc6\u0bb3\u0bcd\u0bb3\u0bae\u0bcd \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bb2\u0bbe\u0bae\u0bcd. \u0b87\u0ba4\u0bc1 \u0baa\u0bca\u0ba4\u0bc1\u0bb5\u0bbe\u0b95 \u0ba8\u0ba4\u0bbf\u0b95\u0bb3\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b86\u0bb1\u0bc1\u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0ba8\u0bc0\u0bb0\u0bcd \u0b85\u0ba4\u0bbf\u0b95\u0bb0\u0bbf\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd \u0baa\u0bcb\u0ba4\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0b95\u0bbf\u0bb1\u0ba4\u0bc1.\n\n2. **\u0baa\u0bc1\u0baf\u0bb2\u0bcd\u0b95\u0bb3\u0bcd**: \u0b87\u0bb2\u0b99\u0bcd\u0b95\u0bc8\u0baf\u0bbf\u0ba9\u0bcd \u0b95\u0b9f\u0bb1\u0bcd\u0b95\u0bb0\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0baa\u0bc1\u0baf\u0bb2\u0bcd\u0b95\u0bb3\u0bcd \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bb2\u0bbe\u0bae\u0bcd, \u0b95\u0bc1\u0bb1\u0bbf\u0baa\u0bcd\u0baa\u0bbe\u0b95 \u0bb5\u0b9f\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b95\u0bbf\u0bb4\u0b95\u0bcd\u0b95\u0bc1 \u0baa\u0b95\u0bc1\u0ba4\u0bbf\u0b95\u0bb3\u0bbf\u0bb2\u0bcd. \u0b87\u0ba4\u0bc1 \u0b95\u0b9f\u0bb2\u0bcd \u0ba8\u0bbf\u0bb2\u0bc8\u0bae\u0bc8\u0b95\u0bb3\u0bc8 \u0baa\u0bbe\u0ba4\u0bbf\u0b95\u0bcd\u0b95\u0b95\u0bcd\u0b95\u0bc2\u0b9f\u0bc1\u0bae\u0bcd.\n\n3. **\u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1**: \u0bae\u0bb2\u0bc8\u0baa\u0bcd\u0baa\u0b95\u0bc1\u0ba4\u0bbf\u0b95\u0bb3\u0bbf\u0bb2\u0bcd, \u0b95\u0bc1\u0bb1\u0bbf\u0baa\u0bcd\u0baa\u0bbe\u0b95 \u0bae\u0bb2\u0bc8\u0b95\u0bb3\u0bbf\u0bb2\u0bcd, \u0ba8\u0bbf\u0bb2\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0bb5\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f \u0bb5\u0bbe\u0baf\u0bcd\u0baa\u0bcd\u0baa\u0bc1 \u0b89\u0bb3\u0bcd\u0bb3\u0ba4\u0bc1. \u0b87\u0ba4\u0bc1 \u0b85\u0ba4\u0bbf\u0b95 \u0bae\u0bb4\u0bc8 \u0b85\u0bb2\u0bcd\u0bb2\u0ba4\u0bc1 \u0ba8\u0bbf\u0bb2\u0ba4\u0bcd\u0ba4\u0b9f\u0bbf \u0ba8\u0bc0\u0bb0\u0bcd \u0b85\u0ba4\u0bbf\u0b95\u0bb0\u0bbf\u0b95\u0bcd\u0b95\u0bc1\u0bae\u0bcd \u0baa\u0bcb\u0ba4\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bb2\u0bbe\u0bae\u0bcd.\n\n4. **\u0baa\u0bc2\u0bae\u0bbf \u0b85\u0ba4\u0bbf\u0bb0\u0bcd\u0bb5\u0bc1**: \u0b87\u0bb2\u0b99\u0bcd\u0b95\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0baa\u0bc2\u0bae\u0bbf \u0b85\u0ba4\u0bbf\u0bb0\u0bcd\u0bb5\u0bc1\u0b95\u0bb3\u0bcd \u0b8f\u0bb1\u0bcd\u0baa\u0b9f \u0bb5\u0bbe\u0baf\u0bcd\u0baa\u0bcd\u0baa\u0bc1 \u0b95\u0bc1\u0bb1\u0bc8\u0bb5\u0bbe\u0b95 \u0b87\u0bb0\u0bc1\u0ba8\u0bcd\u0ba4\u0bbe\u0bb2\u0bc1\u0bae\u0bcd, \u0b9a\u0bbf\u0bb2 \u0baa\u0b95\u0bc1\u0ba4\u0bbf\u0b95\u0bb3\u0bbf\u0bb2\u0bcd \u0b87\u0ba4\u0bc1 \u0ba8\u0bbf\u0b95\u0bb4\u0bb2\u0bbe\u0bae\u0bcd.\n\n5. **\u0ba4\u0bc0\u0baa\u0bcd\u0baa\u0bbf\u0b9f\u0bbf\u0baa\u0bcd\u0baa\u0bc1**: \u0bb5\u0ba9\u0baa\u0bcd\u0baa\u0b95\u0bc1\u0ba4\u0bbf\u0b95\u0bb3\u0bbf\u0bb2\u0bcd, \u0b95\u0bc1\u0bb1\u0bbf\u0baa\u0bcd\u0baa\u0bbe\u0b95 \u0b89\u0bb2\u0bb0\u0bcd\u0ba8\u0bcd\u0ba4 \u0baa\u0bb0\u0bc1\u0bb5\u0ba4\u0bcd\u0ba4\u0bbf\u0bb2\u0bcd, \u0ba4\u0bc0\u0baa\u0bcd\u0baa\u0bbf\u0b9f\u0bbf\u0baa\u0bcd\u0baa\u0bc1 \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bb2\u0bbe\u0bae\u0bcd.\n\n\u0b87\u0ba8\u0bcd\u0ba4 \u0baa\u0bc7\u0bb0\u0bbf\u0b9f\u0bb0\u0bcd\u0b95\u0bb3\u0bbe\u0bb2\u0bcd \u0b8f\u0bb1\u0bcd\u0baa\u0b9f\u0bc1\u0bae\u0bcd \u0baa\u0bbe\u0ba4\u0bbf\u0baa\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bc8 \u0b95\u0bc1\u0bb1\u0bc8\u0b95\u0bcd\u0b95, \u0bae\u0bc1\u0ba9\u0bcd\u0ba9\u0bc6\u0b9a\u0bcd\u0b9a\u0bb0\u0bbf\u0b95\u0bcd\u0b95\u0bc8 \u0ba8\u0b9f\u0bb5\u0b9f\u0bbf\u0b95\u0bcd\u0b95\u0bc8\u0b95\u0bb3\u0bc8 \u0b8e\u0b9f\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bc7\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd.",
+        "latency_s": 3.6609280831180513,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa52",
+      "language": "si",
+      "question": "\u0db6\u0dd1\u0dc0\u0dd4\u0db8\u0d9a \u0dc1\u0dcf\u0d9a \u0dc3\u0dd2\u0dc4\u0dd2\u0db1\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0d85\u0dc0\u0dc1\u0dca\u200d\u0dba \u0dc0\u0db1\u0dca\u0db1\u0dda \u0d87\u0dba\u0dd2?",
+      "rag": {
+        "answer": "\u0db8\u0dd9\u0db8 \u0db4\u0dca\u200d\u0dbb\u0dc1\u0dca\u0db1\u0dba\u0da7 \u0dc3\u0db8\u0dca\u0db6\u0db1\u0dca\u0db0 \u0dad\u0ddc\u0dbb\u0dad\u0dd4\u0dbb\u0dd4 \u0db8\u0da7 \u0dbd\u0db6\u0dcf \u0daf\u0dd3 \u0db1\u0dd0\u0dad. \u0d91\u0db6\u0dd0\u0dc0\u0dd2\u0db1\u0dca, \u0db6\u0dd1\u0dc0\u0dd4\u0db8\u0d9a \u0dc1\u0dcf\u0d9a \u0dc3\u0dd2\u0dc4\u0dd2\u0db1\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda \u0d85\u0dc0\u0dc1\u0dca\u200d\u0dba\u0dad\u0dcf\u0dc0\u0dba \u0db4\u0dd2\u0dc5\u0dd2\u0db6\u0db3\u0dc0 \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2 \u0db4\u0dd2\u0dc5\u0dd2\u0dad\u0dd4\u0dbb\u0d9a\u0dca \u0dbd\u0db6\u0dcf \u0daf\u0dd2\u0dba \u0db1\u0ddc\u0dc4\u0dd0\u0d9a.",
+        "latency_s": 1.8189391670748591,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 1,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "\u0db6\u0dd1\u0dc0\u0dd4\u0db8\u0d9a \u0dc1\u0dcf\u0d9a \u0dc3\u0dd2\u0dc4\u0dd2\u0db1\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0d85\u0dc0\u0dc1\u0dca\u200d\u0dba \u0dc0\u0db1\u0dca\u0db1\u0dda, \u0dc1\u0dcf\u0d9a \u0dc0\u0dbd \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba \u0dc3\u0dc4 \u0dc3\u0dde\u0d9b\u0dca\u200d\u0dba\u0dba \u0dbb\u0dd0\u0d9a \u0d9c\u0dd0\u0db1\u0dd3\u0db8 \u0dc3\u0db3\u0dc4\u0dcf\u0dba. \u0db8\u0dd9\u0dc4\u0dd2 \u0db4\u0dca\u200d\u0dbb\u0db0\u0dcf\u0db1 \u0dc4\u0dda\u0dad\u0dd4 \u0d9a\u0dd2\u0dc4\u0dd2\u0db4\u0dba\u0d9a\u0dca \u0d87\u0dad:\n\n1. **\u0d85\u0dc0\u0d9a\u0dcf\u0dc1\u0dba \u0dbd\u0db6\u0dcf \u0daf\u0dd3\u0db8**: \u0dc1\u0dcf\u0d9a \u0dc3\u0dd2\u0dc4\u0dd2\u0db1\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca, \u0dc1\u0dcf\u0d9a \u0d85\u0dad\u0dbb \u0d85\u0dc0\u0d9a\u0dcf\u0dc1\u0dba\u0d9a\u0dca \u0d87\u0dad\u0dd2 \u0d9a\u0dbb\u0dba\u0dd2. \u0db8\u0dd9\u0dba \u0dc1\u0dcf\u0d9a \u0dc0\u0dbd\u0da7 \u0d86\u0dbd\u0ddd\u0d9a\u0dba, \u0dc0\u0dcf\u0dad\u0dba \u0dc3\u0dc4 \u0db4\u0ddd\u0dc2\u0dab\u0dba \u0dbd\u0db6\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8\u0da7 \u0d8b\u0db4\u0d9a\u0dcf\u0dbb\u0dd3 \u0dc0\u0dda.\n\n2. **\u0dc3\u0dde\u0d9b\u0dca\u200d\u0dba\u0dba \u0dbb\u0dd0\u0d9a \u0d9c\u0dd0\u0db1\u0dd3\u0db8**: \u0dc1\u0dcf\u0d9a \u0dc3\u0dd2\u0dc4\u0dd2\u0db1\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca, \u0dbb\u0ddd\u0d9c \u0dc3\u0dc4 \u0d9a\u0dd4\u0db9\u0dd4\u0dbb\u0dd4 \u0d86\u0dc3\u0dcf\u0daf\u0dd2\u0dad\u0dad\u0dcf \u0dc0\u0dc5\u0d9a\u0dca\u0dc0\u0dcf \u0d9c\u0dd0\u0db1\u0dd3\u0db8\u0da7 \u0dc3\u0dc4 \u0dc1\u0dcf\u0d9a \u0dc0\u0dbd \u0dc3\u0dde\u0d9b\u0dca\u200d\u0dba\u0dba \u0dc0\u0dd0\u0da9\u0dd2 \u0daf\u0dd2\u0dba\u0dd4\u0dab\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0d8b\u0db4\u0d9a\u0dcf\u0dbb\u0dd3 \u0dc0\u0dda.\n\n3. **\u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba \u0dc0\u0dd0\u0da9\u0dd2 \u0daf\u0dd2\u0dba\u0dd4\u0dab\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8**: \u0dc1\u0dcf\u0d9a \u0dc0\u0dbd \u0dc1\u0d9a\u0dca\u0dad\u0dd2\u0dba \u0dc0\u0dd0\u0da9\u0dd2 \u0d9a\u0dbb\u0db8\u0dd2\u0db1\u0dca, \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba \u0dc3\u0dc4 \u0db1\u0dd2\u0dc2\u0dca\u0db4\u0dcf\u0daf\u0db1 \u0dc0\u0dd0\u0da9\u0dd2 \u0daf\u0dd2\u0dba\u0dd4\u0dab\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0d8b\u0db4\u0d9a\u0dcf\u0dbb\u0dd3 \u0dc0\u0dda.\n\n4. **\u0dc3\u0db8\u0dad\u0dd4\u0dbd\u0dd2\u0dad \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba**: \u0dc1\u0dcf\u0d9a \u0dc3\u0dd2\u0dc4\u0dd2\u0db1\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca, \u0dc1\u0dcf\u0d9a \u0dc0\u0dbd \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba \u0dc3\u0db8\u0dad\u0dd4\u0dbd\u0dd2\u0dad\u0dc0 \u0dc3\u0dd2\u0daf\u0dd4\u0dc0\u0dd3\u0db8 \u0dc3\u0dc4 \u0dc1\u0dcf\u0d9a \u0dc0\u0dbd \u0dc4\u0dd0\u0da9\u0dba \u0dbb\u0dd0\u0d9a \u0d9c\u0dd0\u0db1\u0dd3\u0db8 \u0db4\u0dc4\u0dc3\u0dd4 \u0dc0\u0dda.\n\n\u0d92 \u0db1\u0dd2\u0dc3\u0dcf, \u0db6\u0dd1\u0dc0\u0dd4\u0db8\u0d9a \u0dc1\u0dcf\u0d9a \u0dc3\u0dd2\u0dc4\u0dd2\u0db1\u0dca \u0d9a\u0dd2\u0dbb\u0dd3\u0db8, \u0dc1\u0dcf\u0d9a \u0dc0\u0dbd \u0dc3\u0dde\u0d9b\u0dca\u200d\u0dba\u0dba \u0dc3\u0dc4 \u0dc0\u0dbb\u0dca\u0db0\u0db1\u0dba \u0dc3\u0db3\u0dc4\u0dcf \u0d89\u0dad\u0dcf \u0dc0\u0dd0\u0daf\u0d9c\u0dad\u0dca \u0dc0\u0dda.",
+        "latency_s": 3.6769324999768287,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa05",
+      "language": "en",
+      "question": "What factors affect the wind forces acting on a house?",
+      "rag": {
+        "answer": "The wind forces acting on a house are affected by several factors, including:\n\n1. **Location and Topography**: The geographical location and the surrounding landscape can influence wind speed and direction.\n2. **Site Exposure**: The level of exposure of the site to winds, whether it is open or sheltered, plays a significant role.\n3. **Surrounding Structures and Vegetation**: The presence of nearby buildings, trees, and other vegetation can either obstruct or channel wind, affecting its impact on the house.\n4. **Proximity and Height of Neighboring Structures**: Taller buildings nearby can create wind shadows or funnel winds, altering the wind forces on the house.\n5. **Density and Type of Vegetation**: Certain types of trees can act as barriers to wind, reducing its effects on the structure.\n6. **Shape, Elevation, and Height of the House**: The design and elevation of the house can influence how wind interacts with it.\n\nUnderstanding these factors can help in planning and designing structures to withstand wind forces effectively.",
+        "latency_s": 4.04343858291395,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "Several factors affect the wind forces acting on a house:\n\n1. **Building Height**: Taller buildings experience higher wind speeds at their upper levels due to the wind profile, which can increase the overall wind forces acting on them.\n\n2. **Building Shape and Design**: The architectural design, including the shape and orientation of the house, can influence how wind flows around it. Aerodynamic shapes can reduce wind pressure, while flat surfaces can increase it.\n\n3. **Surrounding Terrain**: The topography around the house, such as hills, valleys, or open fields, can affect wind patterns. Wind can be funneled or accelerated in certain terrains, increasing forces on structures.\n\n4. **Wind Speed and Direction**: The intensity and direction of the wind are critical. Stronger winds exert greater forces, and the angle at which the wind hits the house can change the pressure distribution.\n\n5. **Surface Roughness**: The presence of nearby trees, buildings, or other obstacles can create turbulence and affect wind speed and direction, impacting the forces on the house.\n\n6. **Roof Design**: The slope and type of roofing material can influence how wind interacts with the house. Steeper roofs may shed wind better than flat roofs.\n\n7. **Openings and Ventilation**: Windows, doors, and vents can create pressure differences, affecting how wind forces are distributed across the structure.\n\n8. **Construction Materials**: The materials used in construction can determine how well a house can withstand wind forces. Stronger materials can better resist damage from high winds.\n\nUnderstanding these factors can help in designing and reinforcing houses to withstand wind forces, especially in areas prone to strong winds or storms.",
+        "latency_s": 4.420083458069712,
+        "keyword_coverage": 0.75,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa39",
+      "language": "en",
+      "question": "What steps should I take to check if my land is in an NBRO-mapped hazardous zone?",
+      "rag": {
+        "answer": "To check if your land is in an NBRO-mapped hazardous zone, follow these steps:\n\n1. **Access Hazard Maps**: Visit the NBRO website (www.nbro.gov.lk/web/index) to access the Landslide Hazard Zonation Maps. Look for maps available at scales of 1:50,000 and 1:10,000 for your specific district.\n\n2. **Identify Your Location**: Locate your land on the hazard map. Ensure you are looking at the correct scale and area that corresponds to your property.\n\n3. **Consult Local Authorities**: Contact your local government authority to inquire if they have additional information or reports regarding landslide risk in your area.\n\n4. **Obtain a Landslide Risk Assessment**: If your land is in a hazardous zone, request a Landslide Risk Assessment Report or recommendations from NBRO before proceeding with any development or construction plans.\n\n5. **Physical Inspection**: Even if your site is marked as a safe zone, conduct a physical inspection to ensure it is hazard-free currently and will remain so in the future.\n\n6. **Engage Specialists**: If necessary, consult with engineering specialists to assess the land and ensure that any construction plans are technically vetted and certified.\n\nBy following these steps, you can effectively determine if your land is in a hazardous zone and take appropriate precautions.",
+        "latency_s": 3.6842788751237094,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "To check if your land is in an NBRO-mapped hazardous zone in Sri Lanka, you can follow these steps:\n\n1. **Visit the NBRO Website**: Go to the National Building Research Organisation (NBRO) official website. They often provide maps and resources related to hazardous zones.\n\n2. **Access Hazard Maps**: Look for sections on the website that provide access to hazard maps, particularly those related to landslides, floods, and other geological hazards.\n\n3. **Identify Your Location**: Use the maps to locate your land. You may need to zoom in on the specific area where your property is situated.\n\n4. **Contact Local Authorities**: If you have difficulty interpreting the maps, contact your local government office or the NBRO directly for assistance. They can provide information specific to your land.\n\n5. **Consult Professionals**: If you are still unsure, consider hiring a land surveyor or a geotechnical engineer who can assess the land and provide expert advice on its safety.\n\n6. **Stay Updated**: Keep an eye on any updates from the NBRO regarding changes in hazard mapping or new assessments in your area.\n\nBy following these steps, you can determine if your land is in a hazardous zone and take appropriate measures to ensure safety.",
+        "latency_s": 3.450410124845803,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa21",
+      "language": "en",
+      "question": "Where can I find official Landslide Hazard Zonation Maps for my district?",
+      "rag": {
+        "answer": "You can find official Landslide Hazard Zonation Maps for your district on the National Building Research Organisation (NBRO) website at www.nbro.gov.lk. The maps are available for download in PDF format and cover various districts, including Nuwara Eliya, Badulla, Kegalle, Ratnapura, Matale, Kandy, Kalutara, Galle, Matara, and Monaragala.",
+        "latency_s": 2.0422280409839004,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "To find official Landslide Hazard Zonation Maps for your district in Sri Lanka, you can follow these steps:\n\n1. **Visit Government Websites**: Check the official website of the Geological Survey and Mines Bureau (GSMB) of Sri Lanka. They often provide resources and maps related to geological hazards, including landslides.\n\n2. **Contact Local Authorities**: Reach out to your district's local government office or the Divisional Secretariat. They may have access to hazard maps or can direct you to the appropriate department.\n\n3. **University Research**: Some universities in Sri Lanka conduct research on geological hazards. You can check with institutions like the University of Peradeniya or the University of Colombo for any published studies or maps.\n\n4. **Disaster Management Centre**: The National Disaster Management Centre (NDMC) may also have resources or can guide you to where you can find the hazard maps.\n\n5. **Community Awareness Programs**: Attend local community meetings or awareness programs on disaster management, where officials may provide information on landslide hazards and related maps.\n\nMake sure to verify the information you receive and consult multiple sources if possible.",
+        "latency_s": 3.694094375008717,
+        "keyword_coverage": 0.75,
+        "faithfulness": 3,
+        "relevance": 5,
+        "hallucination_flag": true
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa29",
+      "language": "en",
+      "question": "What natural hazards affect Sri Lanka according to the housing manual?",
+      "rag": {
+        "answer": "According to the housing manual, the natural hazards that affect Sri Lanka include:\n\n1. Coastal erosion\n2. Drought\n3. Floods\n4. Landslides\n5. Lightning\n6. Sea level rise\n7. Storm surge\n8. Tropical cyclones\n9. Tsunami\n\nThese hazards are significant for planning and disaster risk reduction in the country.",
+        "latency_s": 1.821136583108455,
+        "keyword_coverage": 1.0,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "Sri Lanka is susceptible to several natural hazards, including:\n\n1. **Flooding**: Heavy monsoon rains can lead to river and urban flooding, particularly in low-lying areas.\n\n2. **Landslides**: The hilly regions are prone to landslides, especially during heavy rainfall, which can be exacerbated by deforestation and poor land management.\n\n3. **Drought**: Certain areas, particularly in the dry zone, can experience prolonged periods of drought, affecting water supply and agriculture.\n\n4. **Cyclones**: The coastal regions may be affected by cyclones, which can bring strong winds and heavy rainfall.\n\n5. **Tsunamis**: Being an island nation, Sri Lanka is at risk from tsunamis, particularly following seismic activity in the Indian Ocean.\n\n6. **Earthquakes**: While not as frequent as in some other regions, Sri Lanka can experience earthquakes, particularly in the northern and eastern parts.\n\nTo mitigate these hazards, it's important to have proper planning, early warning systems, and community awareness programs in place.",
+        "latency_s": 2.776930500054732,
+        "keyword_coverage": 1.0,
+        "faithfulness": 3,
+        "relevance": 4,
+        "hallucination_flag": true
+      },
+      "judge_model": "gpt-4o"
+    },
+    {
+      "id": "qa47",
+      "language": "si",
+      "question": "\u0db6\u0dd1\u0dc0\u0dd4\u0db8\u0d9a \u0dbb\u0dd2\u0db4\u0dca-\u0dbb\u0dd0\u0db4\u0dca \u0dad\u0dcf\u0db4\u0dca\u0db4\u0dba\u0d9a\u0dca \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc0\u0da9\u0dcf\u0dad\u0dca \u0dc3\u0dd4\u0daf\u0dd4\u0dc3\u0dd4 \u0d9a\u0dcf\u0dbd\u0dba \u0d9a\u0dd4\u0db8\u0d9a\u0dca\u0daf?",
+      "rag": {
+        "answer": "\u0db6\u0dd1\u0dc0\u0dd4\u0db8\u0d9a \u0dbb\u0dd2\u0db4\u0dca-\u0dbb\u0dd0\u0db4\u0dca \u0dad\u0dcf\u0db4\u0dca\u0db4\u0dba\u0d9a\u0dca \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc0\u0da9\u0dcf\u0dad\u0dca \u0dc3\u0dd4\u0daf\u0dd4\u0dc3\u0dd4 \u0d9a\u0dcf\u0dbd\u0dba \u0dc0\u0dbb\u0dca\u0dc2\u0dcf \u0d9a\u0dcf\u0dbd\u0dba \u0db1\u0ddc\u0dc0\u0db1, \u0dc0\u0dcf\u0dc3\u0dd3\u0db1\u0dca\u0d9c\u0dda \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dcf\u0dc0 \u0dc3\u0dc4\u0dd2\u0dad \u0d9a\u0dcf\u0dbd\u0dba\u0d9a\u0dca \u0dc0\u0dda. \u0dc0\u0dbb\u0dca\u0dc2\u0dcf \u0d9a\u0dcf\u0dbd\u0dba \u0dad\u0dd4\u0dc5 \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda\u0daf\u0dd3 \u0db6\u0dd1\u0dc0\u0dd4\u0db8\u0dca \u0dc3\u0dc4\u0dd2\u0dad \u0db7\u0dd6\u0db8\u0dd2\u0dba\u0d9a\u0dca \u0d85\u0dc3\u0dca\u0dae\u0dd2\u0dbb \u0dc0\u0dd2\u0dba \u0dc4\u0dd0\u0d9a\u0dd2 \u0db6\u0dd0\u0dc0\u0dd2\u0db1\u0dca, \u0dc0\u0dbb\u0dca\u0dc2\u0dcf \u0d9a\u0dcf\u0dbd\u0dba \u0d85\u0dc0\u0dc3\u0db1\u0dca \u0dc0\u0dd6 \u0db4\u0dc3\u0dd4, \u0dc0\u0dd2\u0dba\u0dc5\u0dd2 \u0d9a\u0dcf\u0dbd\u0dba\u0d9a\u0dca \u0dad\u0dd4\u0dc5 \u0db8\u0dd9\u0db8 \u0dc0\u0dca\u200d\u0dba\u0dcf\u0db4\u0dd8\u0dad\u0dd2\u0dba\u0d9a\u0dca \u0d86\u0dbb\u0db8\u0dca\u0db7 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc3\u0dd4\u0daf\u0dd4\u0dc3\u0dd4 \u0dc0\u0dda. \n\n\u0d89\u0dad\u0dcf\u0db8\u0dad\u0dca \u0dc0\u0dd0\u0daf\u0d9c\u0dad\u0dca \u0dc0\u0db1\u0dca\u0db1\u0dda, \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dca \u0d9a\u0da7\u0dba\u0dd4\u0dad\u0dd4 \u0d86\u0dbb\u0db8\u0dca\u0db7 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0db4\u0dd9\u0dbb, \u0db7\u0dd6\u0db8\u0dd2\u0dba \u0dc3\u0dc4\u0dd2\u0dad \u0d86\u0dbb\u0d9a\u0dca\u0dc2\u0dcf\u0dc0 \u0db4\u0dd2\u0dc5\u0dd2\u0db6\u0db3\u0dc0 \u0db1\u0dd2\u0dc0\u0dd0\u0dbb\u0daf\u0dd2 \u0dc0\u0dd2\u0db8\u0dbb\u0dca\u0dc1\u0db1\u0dba\u0d9a\u0dca \u0dc3\u0dd2\u0daf\u0dd4 \u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dba\u0dd2.",
+        "latency_s": 2.816686416976154,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 5,
+        "relevance": 5,
+        "hallucination_flag": false
+      },
+      "closed_book": {
+        "answer": "\u0db6\u0dd1\u0dc0\u0dd4\u0db8\u0d9a \u0dbb\u0dd2\u0db4\u0dca-\u0dbb\u0dd0\u0db4\u0dca \u0dad\u0dcf\u0db4\u0dca\u0db4\u0dba\u0d9a\u0dca \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0da7 \u0dc0\u0da9\u0dcf\u0dad\u0dca \u0dc3\u0dd4\u0daf\u0dd4\u0dc3\u0dd4 \u0d9a\u0dcf\u0dbd\u0dba \u0dc0\u0dbb\u0dca\u0dc2\u0dcf \u0d9a\u0dcf\u0dbd\u0dba \u0db1\u0ddc\u0dc0\u0db1, \u0dc0\u0dd2\u0dba\u0dc5\u0dd2 \u0dc3\u0dc4 \u0dc3\u0dd4\u0dc5\u0d9f\u0d9a\u0dca \u0d87\u0dad\u0dd2 \u0d9a\u0dcf\u0dbd\u0dba\u0d9a\u0dca \u0dc0\u0dda. \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba\u0dba\u0dd9\u0db1\u0dca, \u0dc0\u0dbb\u0dca\u0dc2\u0dcf \u0dc3\u0db8\u0dba\u0dda\u0daf\u0dd3 \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dd9\u0db1\u0dca \u0dc0\u0dc5\u0d9a\u0dd2\u0db1\u0dd4 \u0d87\u0dad, \u0d91\u0dba \u0dad\u0dcf\u0db4\u0dca\u0db4\u0dba\u0dda \u0d9c\u0dd4\u0dab\u0dcf\u0dad\u0dca\u0db8\u0d9a\u0db7\u0dcf\u0dc0\u0dba\u0da7 \u0dc4\u0dcf\u0db1\u0dd2 \u0d9a\u0dbb\u0db1\u0dd4 \u0d87\u0dad. \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8\u0dda\u0daf\u0dd3, \u0daf\u0dd2\u0db1\u0d9a \u0d8b\u0dc2\u0dca\u0dab\u0dad\u0dca\u0dc0\u0dba \u0dc3\u0dcf\u0db8\u0dcf\u0db1\u0dca\u200d\u0dba\u0dba\u0dd9\u0db1\u0dca 10\u00b0C (50\u00b0F) \u0da7 \u0dc0\u0dd0\u0da9\u0dd2 \u0dc0\u0dd2\u0dba \u0dba\u0dd4\u0dad\u0dd4\u0dba. \n\n\u0d89\u0dad\u0dd2\u0db1\u0dca, \u0dc0\u0dd2\u0dba\u0dc5\u0dd2 \u0d9a\u0dcf\u0dbd\u0dba\u0d9a\u0dca, \u0dc0\u0dd2\u0dc1\u0dda\u0dc2\u0dba\u0dd9\u0db1\u0dca \u0dc0\u0dc3\u0db1\u0dca\u0dad\u0dba \u0dc3\u0dc4 \u0d9c\u0dd2\u0db8\u0dca\u0dc4\u0dcf\u0db1 \u0d9a\u0dcf\u0dbd\u0dba\u0dda\u0daf\u0dd3 \u0d89\u0daf\u0dd2\u0d9a\u0dd2\u0dbb\u0dd3\u0db8 \u0dc0\u0da9\u0dcf\u0dad\u0dca \u0dc3\u0dd4\u0daf\u0dd4\u0dc3\u0dd4 \u0dc0\u0dda.",
+        "latency_s": 2.7452865839004517,
+        "keyword_coverage": 0.6666666666666666,
+        "faithfulness": 3,
+        "relevance": 5,
+        "hallucination_flag": true
+      },
+      "judge_model": "gpt-4o"
+    }
+  ]
+}

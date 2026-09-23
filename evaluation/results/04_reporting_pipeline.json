@@ -1,88 +1,92 @@
 {
   "intent_detection": {
-    "tp": 7,
-    "fn": 11,
-    "tn": 20,
+    "tp": 12,
+    "fn": 17,
+    "tn": 60,
     "fp": 0,
     "precision": 1.0,
-    "recall": 0.3888888888888889,
-    "f1": 0.56,
+    "recall": 0.41379310344827586,
+    "f1": 0.5853658536585366,
     "latency": {
-      "n": 38,
-      "mean": 6.013090330127038e-06,
-      "stdev": 7.0556903904545654e-06,
+      "n": 89,
+      "mean": 9.177516873800352e-06,
+      "stdev": 1.6170984080322194e-05,
       "min": 1.6600824892520905e-07,
-      "max": 2.2042077034711838e-05,
+      "max": 8.216709829866886e-05,
       "p50": 4.998873919248581e-07,
-      "p90": 1.4707911759614944e-05,
-      "p95": 1.679197885096073e-05,
-      "p99": 2.2042077034711838e-05
+      "p90": 2.6708003133535385e-05,
+      "p95": 4.333304241299629e-05,
+      "p99": 7.504085078835487e-05,
+      "ci95_mean_lo": 6.098907147900442e-06,
+      "ci95_mean_hi": 1.2767336362700784e-05
     }
   },
   "extraction": {
-    "n_items": 18,
+    "n_items": 29,
     "field_accuracy": {
-      "report_domain": 0.7777777777777778,
-      "hazard_type": 0.7222222222222222,
+      "report_domain": 0.7931034482758621,
+      "hazard_type": 0.7931034482758621,
       "has_location": 1.0,
-      "people_at_risk": 0.8333333333333334,
-      "ongoing": 0.9444444444444444
+      "people_at_risk": 0.6896551724137931,
+      "ongoing": 0.9310344827586207
     },
-    "exact_match_rate": 0.5,
+    "exact_match_rate": 0.4827586206896552,
     "latency": {
-      "n": 18,
-      "mean": 1.8268978078978964,
-      "stdev": 0.22451652373227649,
-      "min": 1.5879093329422176,
-      "max": 2.4418352500069886,
-      "p50": 1.7528902080375701,
-      "p90": 2.0159376659430563,
-      "p95": 2.149859542027116,
-      "p99": 2.4418352500069886
+      "n": 29,
+      "mean": 1.7209120516761625,
+      "stdev": 0.3072055638079708,
+      "min": 1.4426299999468029,
+      "max": 2.9718754589557648,
+      "p50": 1.635097875026986,
+      "p90": 1.9460227498784661,
+      "p95": 2.196517667034641,
+      "p99": 2.9718754589557648,
+      "ci95_mean_lo": 1.6285779395558198,
+      "ci95_mean_hi": 1.8449900646629775
     },
     "stage_timings": [
       {
         "id": "e01",
-        "extract_s": 2.2726132080424577,
-        "rainfall_s": 0.5854143749456853,
-        "score_s": 0.0018434999510645866
+        "extract_s": 1.6704909999389201,
+        "rainfall_s": 0.5930830419529229,
+        "score_s": 0.0018855000380426645
       },
       {
         "id": "e02",
-        "extract_s": 1.8141970001161098,
-        "rainfall_s": 0.552829209016636,
-        "score_s": 0.0015518330037593842
+        "extract_s": 1.6052365000359714,
+        "rainfall_s": 0.5562073749024421,
+        "score_s": 0.0007646249141544104
       },
       {
         "id": "e03",
-        "extract_s": 2.046292917104438,
-        "rainfall_s": 1.0409858077764511e-06,
-        "score_s": 6.045820191502571e-05
+        "extract_s": 1.7892419169656932,
+        "rainfall_s": 2.2079329937696457e-06,
+        "score_s": 7.095793262124062e-05
       },
       {
         "id": "e04",
-        "extract_s": 2.7082346249371767,
-        "rainfall_s": 0.5514954579994082,
-        "score_s": 0.0013031659182161093
+        "extract_s": 1.6087352910544723,
+        "rainfall_s": 0.552778041921556,
+        "score_s": 0.0010035829618573189
       },
       {
         "id": "e05",
-        "extract_s": 2.3792039579711854,
-        "rainfall_s": 1.209089532494545e-06,
-        "score_s": 6.516603752970695e-05
+        "extract_s": 1.718327125068754,
+        "rainfall_s": 2.7080532163381577e-06,
+        "score_s": 0.00018004211597144604
       },
       {
         "id": "e06",
-        "extract_s": 2.559232542058453,
-        "rainfall_s": 0.6113632498309016,
-        "score_s": 0.0032738340087234974
+        "extract_s": 1.6401798331644386,
+        "rainfall_s": 0.6299731668550521,
+        "score_s": 0.02069870801642537
       }
     ],
     "per_item": [
       {
         "id": "e01",
         "language": "en",
-        "latency_s": 1.8970580419991165,
+        "latency_s": 2.1861052920576185,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "landslide",
@@ -106,7 +110,7 @@
       {
         "id": "e02",
         "language": "en",
-        "latency_s": 2.149859542027116,
+        "latency_s": 1.7499451672192663,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "flood",
@@ -115,7 +119,7 @@
           "description": "Water is rising fast on the main road in Kelaniya and it's entering houses right now.",
           "people_at_risk": true,
           "ongoing": true,
-          "hazard_scale": "major",
+          "hazard_scale": "moderate",
           "infrastructure_damage": true
         },
         "checks": {
@@ -130,13 +134,13 @@
       {
         "id": "e03",
         "language": "en",
-        "latency_s": 1.7146225420292467,
+        "latency_s": 1.4717319579795003,
         "extracted": {
           "report_domain": "infrastructure",
           "hazard_type": "drainage",
           "category": "drain blockage",
           "location_text": null,
-          "description": "The drain near the street is blocked and overflowing after the rain.",
+          "description": "The drain near our street is blocked and overflowing after the rain.",
           "people_at_risk": false,
           "ongoing": true,
           "hazard_scale": "minor",
@@ -154,7 +158,7 @@
       {
         "id": "e04",
         "language": "en",
-        "latency_s": 1.6192311248742044,
+        "latency_s": 1.5855251250322908,
         "extracted": {
           "report_domain": "infrastructure",
           "hazard_type": "other",
@@ -178,11 +182,11 @@
       {
         "id": "e05",
         "language": "en",
-        "latency_s": 1.6269673751667142,
+        "latency_s": 1.5659894158598036,
         "extracted": {
           "report_domain": "safety",
           "hazard_type": "landslide",
-          "category": "hillside excavation",
+          "category": "unsafe excavation",
           "location_text": null,
           "description": "Excavation into the hillside near the river appears unsafe.",
           "people_at_risk": false,
@@ -202,23 +206,23 @@
       {
         "id": "e06",
         "language": "en",
-        "latency_s": 1.7517560839187354,
+        "latency_s": 2.196517667034641,
         "extracted": {
           "report_domain": "infrastructure",
           "hazard_type": "other",
           "category": "tilted pole, wall crack",
           "location_text": "Galle",
           "description": "A tilted electricity pole and a crack in the wall were observed.",
-          "people_at_risk": false,
+          "people_at_risk": true,
           "ongoing": true,
-          "hazard_scale": "minor",
+          "hazard_scale": "unknown",
           "infrastructure_damage": true
         },
         "checks": {
           "report_domain": false,
           "hazard_type": false,
           "has_location": true,
-          "people_at_risk": true,
+          "people_at_risk": false,
           "ongoing": true
         },
         "exact_match": false
@@ -226,7 +230,7 @@
       {
         "id": "e07",
         "language": "en",
-        "latency_s": 1.7060070000588894,
+        "latency_s": 1.612311749951914,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "flood",
@@ -250,7 +254,7 @@
       {
         "id": "e08",
         "language": "en",
-        "latency_s": 1.5879093329422176,
+        "latency_s": 1.9460227498784661,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "landslide",
@@ -274,7 +278,7 @@
       {
         "id": "e09",
         "language": "en",
-        "latency_s": 1.8271577088162303,
+        "latency_s": 1.4426299999468029,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "unknown",
@@ -298,13 +302,13 @@
       {
         "id": "e10",
         "language": "en",
-        "latency_s": 2.0159376659430563,
+        "latency_s": 1.7481870830524713,
         "extracted": {
           "report_domain": "infrastructure",
           "hazard_type": "drainage",
           "category": "culvert damage",
           "location_text": "Kegalle",
-          "description": "The culvert near the bridge in Kegalle is broken and the road surface has washed away.",
+          "description": "A culvert near the bridge in Kegalle is broken and the road surface has washed away.",
           "people_at_risk": false,
           "ongoing": true,
           "hazard_scale": "moderate",
@@ -322,13 +326,13 @@
       {
         "id": "e11",
         "language": "si",
-        "latency_s": 1.5940540409646928,
+        "latency_s": 2.9718754589557648,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "landslide",
           "category": "slope crack",
           "location_text": "Ratnapura",
-          "description": "There is a large slope crack near Ratnapura, and it is currently worsening.",
+          "description": "There is a large slope crack near Ratnapura, and it is currently happening.",
           "people_at_risk": true,
           "ongoing": true,
           "hazard_scale": "moderate",
@@ -346,13 +350,13 @@
       {
         "id": "e12",
         "language": "si",
-        "latency_s": 2.4418352500069886,
+        "latency_s": 1.6913601669948548,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "flood",
           "category": "water intrusion",
-          "location_text": "\u0d9a\u0dd0\u0dbd\u0dab\u0dd2",
-          "description": "Water levels are rising in Kelaniya, causing water to enter houses.",
+          "location_text": "\u0d9a\u0dd0\u0dbd\u0dab\u0dd2\u0dba",
+          "description": "The water level in Kelaniya is rising, and water is entering houses.",
           "people_at_risk": true,
           "ongoing": true,
           "hazard_scale": "moderate",
@@ -370,13 +374,13 @@
       {
         "id": "e13",
         "language": "ta",
-        "latency_s": 1.838025167118758,
+        "latency_s": 1.7944815419614315,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "flood",
           "category": "water intrusion",
           "location_text": "\u0b95\u0bb3\u0ba9\u0bbf",
-          "description": "Water levels are rising rapidly in Kalani, and water is entering houses.",
+          "description": "Water levels are rising rapidly in Kalani, and water is entering homes.",
           "people_at_risk": true,
           "ongoing": true,
           "hazard_scale": "moderate",
@@ -394,13 +398,13 @@
       {
         "id": "e14",
         "language": "ta",
-        "latency_s": 2.0008672091644257,
+        "latency_s": 1.5073819998651743,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "landslide",
-          "category": "slope crack",
+          "category": "unknown",
           "location_text": "\u0baa\u0ba4\u0bc1\u0bb3\u0bc8",
-          "description": "A landslide is observed near a slope crack in Badulla, currently happening.",
+          "description": "A landslide is observed near an explosion in Badulla, currently happening.",
           "people_at_risk": false,
           "ongoing": true,
           "hazard_scale": "unknown",
@@ -418,10 +422,10 @@
       {
         "id": "e15",
         "language": "en",
-        "latency_s": 1.7528902080375701,
+        "latency_s": 1.4693364158738405,
         "extracted": {
           "report_domain": "infrastructure",
-          "hazard_type": "unknown",
+          "hazard_type": "other",
           "category": "bridge damage",
           "location_text": "Avissawella",
           "description": "The bridge near Avissawella looks damaged after yesterday's rain.",
@@ -442,7 +446,7 @@
       {
         "id": "e16",
         "language": "en",
-        "latency_s": 1.7609945409931242,
+        "latency_s": 1.6001464580185711,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "landslide",
@@ -466,7 +470,7 @@
       {
         "id": "e17",
         "language": "en",
-        "latency_s": 1.9795105420053005,
+        "latency_s": 1.5260643339715898,
         "extracted": {
           "report_domain": "safety",
           "hazard_type": "landslide",
@@ -490,7 +494,7 @@
       {
         "id": "e18",
         "language": "en",
-        "latency_s": 1.6194771660957485,
+        "latency_s": 1.4688623750116676,
         "extracted": {
           "report_domain": "hazard",
           "hazard_type": "flood",
@@ -510,6 +514,270 @@
           "ongoing": true
         },
         "exact_match": false
+      },
+      {
+        "id": "e19",
+        "language": "en",
+        "latency_s": 1.7670798329636455,
+        "extracted": {
+          "report_domain": "hazard",
+          "hazard_type": "landslide",
+          "category": "hillside sliding",
+          "location_text": "Ratnapura",
+          "description": "A large section of the hillside near Ratnapura town is visibly sliding down onto the road, causing people to run away.",
+          "people_at_risk": true,
+          "ongoing": true,
+          "hazard_scale": "major",
+          "infrastructure_damage": true
+        },
+        "checks": {
+          "report_domain": true,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": true,
+          "ongoing": true
+        },
+        "exact_match": true
+      },
+      {
+        "id": "e20",
+        "language": "en",
+        "latency_s": 1.8553612080868334,
+        "extracted": {
+          "report_domain": "infrastructure",
+          "hazard_type": "drainage",
+          "category": "drain blockage",
+          "location_text": "Colombo",
+          "description": "The stormwater drain outside the house in Colombo has been blocked for days, but there is no immediate danger.",
+          "people_at_risk": true,
+          "ongoing": true,
+          "hazard_scale": "minor",
+          "infrastructure_damage": true
+        },
+        "checks": {
+          "report_domain": true,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": false,
+          "ongoing": false
+        },
+        "exact_match": false
+      },
+      {
+        "id": "e21",
+        "language": "en",
+        "latency_s": 1.667302249930799,
+        "extracted": {
+          "report_domain": "safety",
+          "hazard_type": "unknown",
+          "category": "excavation",
+          "location_text": "Kelaniya",
+          "description": "Excavation is taking place next to the riverbank without safety barriers, which appears to be illegal.",
+          "people_at_risk": true,
+          "ongoing": true,
+          "hazard_scale": "unknown",
+          "infrastructure_damage": false
+        },
+        "checks": {
+          "report_domain": false,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": false,
+          "ongoing": true
+        },
+        "exact_match": false
+      },
+      {
+        "id": "e22",
+        "language": "en",
+        "latency_s": 1.5321713748853654,
+        "extracted": {
+          "report_domain": "infrastructure",
+          "hazard_type": "other",
+          "category": "slope crack",
+          "location_text": "Kandy",
+          "description": "A fresh, widening crack has been observed in the compound wall next to the house.",
+          "people_at_risk": false,
+          "ongoing": true,
+          "hazard_scale": "unknown",
+          "infrastructure_damage": true
+        },
+        "checks": {
+          "report_domain": false,
+          "hazard_type": false,
+          "has_location": true,
+          "people_at_risk": true,
+          "ongoing": true
+        },
+        "exact_match": false
+      },
+      {
+        "id": "e23",
+        "language": "en",
+        "latency_s": 1.8282775830011815,
+        "extracted": {
+          "report_domain": "hazard",
+          "hazard_type": "flood",
+          "category": "flooding",
+          "location_text": "Matara",
+          "description": "Heavy flooding near the hospital in Matara, with water still rising and several homes affected.",
+          "people_at_risk": true,
+          "ongoing": true,
+          "hazard_scale": "major",
+          "infrastructure_damage": false
+        },
+        "checks": {
+          "report_domain": true,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": true,
+          "ongoing": true
+        },
+        "exact_match": true
+      },
+      {
+        "id": "e24",
+        "language": "en",
+        "latency_s": 1.635097875026986,
+        "extracted": {
+          "report_domain": "unknown",
+          "hazard_type": "unknown",
+          "category": null,
+          "location_text": null,
+          "description": "User wants to submit a report but does not know the exact place name.",
+          "people_at_risk": false,
+          "ongoing": false,
+          "hazard_scale": "unknown",
+          "infrastructure_damage": false
+        },
+        "checks": {
+          "report_domain": true,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": true,
+          "ongoing": true
+        },
+        "exact_match": true
+      },
+      {
+        "id": "e25",
+        "language": "en",
+        "latency_s": 1.6459069999400526,
+        "extracted": {
+          "report_domain": "infrastructure",
+          "hazard_type": "drainage",
+          "category": "culvert collapse",
+          "location_text": "Hambantota",
+          "description": "The culvert under the main road in Hambantota collapsed after the rain, causing traffic diversion.",
+          "people_at_risk": true,
+          "ongoing": false,
+          "hazard_scale": "minor",
+          "infrastructure_damage": true
+        },
+        "checks": {
+          "report_domain": true,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": false,
+          "ongoing": true
+        },
+        "exact_match": false
+      },
+      {
+        "id": "e26",
+        "language": "si",
+        "latency_s": 1.6262251660227776,
+        "extracted": {
+          "report_domain": "hazard",
+          "hazard_type": "landslide",
+          "category": "rock fall",
+          "location_text": "Matal\u00e9",
+          "description": "Rocks are falling from a cliff near Matal\u00e9, blocking the road.",
+          "people_at_risk": true,
+          "ongoing": true,
+          "hazard_scale": "moderate",
+          "infrastructure_damage": true
+        },
+        "checks": {
+          "report_domain": true,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": false,
+          "ongoing": true
+        },
+        "exact_match": false
+      },
+      {
+        "id": "e27",
+        "language": "si",
+        "latency_s": 1.5200067081023008,
+        "extracted": {
+          "report_domain": "hazard",
+          "hazard_type": "flood",
+          "category": "flooding",
+          "location_text": "Hambantota",
+          "description": "Flood water is increasing in the Hambantota area, near the school.",
+          "people_at_risk": true,
+          "ongoing": true,
+          "hazard_scale": "moderate",
+          "infrastructure_damage": false
+        },
+        "checks": {
+          "report_domain": true,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": true,
+          "ongoing": true
+        },
+        "exact_match": true
+      },
+      {
+        "id": "e28",
+        "language": "ta",
+        "latency_s": 1.7322076670825481,
+        "extracted": {
+          "report_domain": "hazard",
+          "hazard_type": "landslide",
+          "category": "road blockage",
+          "location_text": "\u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bb3\u0bc8",
+          "description": "A landslide has occurred in Matale, blocking the road. The situation is happening now.",
+          "people_at_risk": true,
+          "ongoing": true,
+          "hazard_scale": "moderate",
+          "infrastructure_damage": true
+        },
+        "checks": {
+          "report_domain": true,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": false,
+          "ongoing": true
+        },
+        "exact_match": false
+      },
+      {
+        "id": "e29",
+        "language": "ta",
+        "latency_s": 1.5623378749005497,
+        "extracted": {
+          "report_domain": "hazard",
+          "hazard_type": "flood",
+          "category": "water rise",
+          "location_text": "Ambanthota",
+          "description": "Flood water is rising near the school.",
+          "people_at_risk": true,
+          "ongoing": true,
+          "hazard_scale": "unknown",
+          "infrastructure_damage": false
+        },
+        "checks": {
+          "report_domain": true,
+          "hazard_type": true,
+          "has_location": true,
+          "people_at_risk": true,
+          "ongoing": true
+        },
+        "exact_match": true
       }
     ]
   }

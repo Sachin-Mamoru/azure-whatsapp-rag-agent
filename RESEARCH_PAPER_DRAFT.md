@@ -6,7 +6,7 @@
 
 ## Abstract
 
-Low- and middle-income disaster-prone regions increasingly rely on ubiquitous messaging platforms such as WhatsApp for public-safety communication, yet most deployed chatbots either answer static FAQs or forward messages to a human operator, with no mechanism for citizens to *contribute* observations back into the advisory pipeline. We present the architecture and an empirical technical evaluation of a deployed, multilingual (English/Sinhala/Tamil) WhatsApp disaster-advisory agent that combines (i) a LangChain tool-calling agent (GPT-4o-mini) that autonomously routes each message to a retrieval-augmented generation (RAG) knowledge-base tool, a live web-search tool, or a volunteered-geographic-information (VGI) hazard-reporting tool; (ii) a Bayesian truth-discovery mechanism (TruthFinder-style source-reliability weighting) that triangulates independent citizen reports before surfacing them as supplementary advisory context; and (iii) a serverless Azure Container Apps deployment with a background scheduler for periodic alert dissemination. We benchmark every architectural component in isolation against the real, unmodified production code — FAISS retrieval, GPT-4o-mini generation, agent tool-routing, LLM-based report extraction, Bayesian triangulation, SQLite persistence, deterministic language detection, and end-to-end concurrency — using hand-labelled evaluation sets. The agentic routing layer achieves 100% tool-selection accuracy (n=20) versus 38.9% recall for a pure keyword-based report filter, quantitatively justifying the agentic design over rule-based dispatch. All LLM-backed operations (1.8–6.2 s mean latency) dominate end-to-end latency, while deterministic components (language detection, SQLite I/O) operate in the microsecond-to-millisecond range. Systematic outlier analysis during concurrency testing surfaced a substring-matching routing defect in the deterministic pre-check layer; we document its discovery, root cause, fix, and post-fix re-verification as a case study in benchmarking-driven quality assurance. We report the Bayesian triangulation mechanism's correctness against a closed-form reference implementation (maximum absolute error 1.6×10⁻⁴) and identify the single-writer SQLite persistence layer as the primary scalability constraint for multi-replica horizontal scaling. All benchmark code, hand-labelled test sets, raw results, and figures are released for reproducibility.
+Low- and middle-income disaster-prone regions increasingly rely on ubiquitous messaging platforms such as WhatsApp for public-safety communication, yet most deployed chatbots either answer static FAQs or forward messages to a human operator, with no mechanism for citizens to *contribute* observations back into the advisory pipeline. We present the architecture and an empirical technical evaluation of a deployed, multilingual (English/Sinhala/Tamil) WhatsApp disaster-advisory agent that combines (i) a LangChain tool-calling agent (GPT-4o-mini) that autonomously routes each message to a retrieval-augmented generation (RAG) knowledge-base tool, a live web-search tool, or a volunteered-geographic-information (VGI) hazard-reporting tool; (ii) a Bayesian truth-discovery mechanism (TruthFinder-style source-reliability weighting) that triangulates independent citizen reports before surfacing them as supplementary advisory context; and (iii) a serverless Azure Container Apps deployment with a background scheduler for periodic alert dissemination. We benchmark every architectural component in isolation against the real, unmodified production code — FAISS retrieval, GPT-4o-mini generation, agent tool-routing, LLM-based report extraction, Bayesian triangulation, SQLite persistence, deterministic language detection, and end-to-end concurrency — using hand-labelled evaluation sets scaled from an initial n=18–20 pilot to n=29–60 items per component, with 95% bootstrap/Wilson confidence intervals reported throughout. The agentic routing layer achieves 100% tool-selection accuracy (n=38, Wilson 95% CI [90.8%, 100%]) versus 41.4% recall for a pure keyword-based report filter, quantitatively justifying the agentic design over rule-based dispatch. A controlled ablation against a closed-book baseline (identical generator model, no retrieval), scored by an independent LLM judge, found RAG reduced the hallucination-flag rate from 20.0% to 13.3% and raised faithfulness from 4.40 to 4.67 (0–5 scale) — directionally consistent with the RAG hypothesis, though not statistically significant at n=30. All LLM-backed operations (1.7–6.2 s mean latency) dominate end-to-end latency, while deterministic components (language detection, SQLite I/O) operate in the microsecond-to-millisecond range. Systematic outlier analysis during concurrency testing surfaced a substring-matching routing defect in the deterministic pre-check layer; we document its discovery, root cause, fix, and post-fix re-verification as a case study in benchmarking-driven quality assurance. We further probe the actual live Azure deployment directly (not merely local execution), finding a ~755 ms network/infrastructure latency floor and — incidentally — that the production instance is currently configured for a single, statically-scaled replica rather than the auto-scaling behaviour described in its own documentation. We report the Bayesian triangulation mechanism's correctness against a closed-form reference implementation (maximum absolute error 1.6×10⁻⁴) and identify the single-writer SQLite persistence layer as the primary scalability constraint for multi-replica horizontal scaling. All benchmark code, hand-labelled test sets, raw results, and figures are released for reproducibility.
 
 **Keywords:** disaster early warning; conversational AI; retrieval-augmented generation; LLM agents; volunteered geographic information; Bayesian truth discovery; WhatsApp chatbot; multilingual NLP; serverless architecture; performance evaluation
 
@@ -25,11 +25,13 @@ We designed and deployed a system (Figure 1) that: detects the user's language f
 ### 1.3 Contributions
 
 1. An architecture combining agentic tool-routing, multilingual RAG, and Bayesian VGI truth discovery in a single production WhatsApp deployment (§3).
-2. A component-level performance-evaluation methodology and open benchmark suite exercising the *real* production code paths of all eight architectural components, rather than isolated unit-level mocks (§4).
-3. Empirical evidence that LLM-based agentic routing substantially outperforms a keyword-based intent filter for the report-detection task (100% vs. 38.9% recall), providing a quantitative justification often missing from agentic-system papers (§5.5).
-4. A worked case study showing how systematic latency-outlier analysis (not just mean/median reporting) surfaced a genuine production routing defect, which we diagnose, fix, and re-verify (§5.9, §6.3) — offered as a methodological argument for reporting full latency distributions rather than averages alone.
-5. A validated, closed-form-checked implementation of Bayesian source-reliability triangulation (TruthFinder-style) for crowd-sourced hazard reports, with measured computational scaling behaviour (§5.6).
-6. A fully reproducible, openly released evaluation artifact (code, datasets, raw results, figures) enabling independent replication (§7).
+2. A component-level performance-evaluation methodology and open benchmark suite exercising the *real* production code paths of all ten architectural components (including a closed-book ablation and a live-deployment probe), rather than isolated unit-level mocks (§4).
+3. Empirical evidence that LLM-based agentic routing substantially outperforms a keyword-based intent filter for the report-detection task (100% vs. 41.4% recall), providing a quantitative justification often missing from agentic-system papers (§5.5).
+4. A controlled, same-model ablation of RAG against a closed-book baseline with independent LLM-as-judge scoring, showing a directionally lower hallucination rate under retrieval grounding — reported transparently alongside its own statistical-power limitations rather than overstated (§5.11, §6.6).
+5. A worked case study showing how systematic latency-outlier analysis (not just mean/median reporting) surfaced a genuine production routing defect, which we diagnose, fix, and re-verify (§5.9, §6.3) — offered as a methodological argument for reporting full latency distributions rather than averages alone.
+6. A live probe of the actual deployed Azure Container Apps instance that surfaces a concrete discrepancy between documented auto-scaling capability and actual runtime configuration (§5.12, §6.7).
+7. A validated, closed-form-checked implementation of Bayesian source-reliability triangulation (TruthFinder-style) for crowd-sourced hazard reports, with measured computational scaling behaviour (§5.6).
+8. A fully reproducible, openly released evaluation artifact (code, datasets, raw results, figures) enabling independent replication (§9).
 
 ---
 
@@ -53,7 +55,7 @@ We designed and deployed a system (Figure 1) that: detects the user's language f
 Figure 1 shows the complete seven-zone architecture: (1) the WhatsApp user; (2) WhatsApp Cloud API (Meta); (3) the Azure Container Apps–hosted FastAPI application, comprising (3a) the orchestrator's deterministic pre-check and session layer, (3b) the LangChain tool-calling agent and its four tools plus the RAG subsystem, (3c) the community reporting pipeline, and (3d) the background scheduler; (4) Azure filesystem storage (two SQLite databases and the FAISS vectorstore); (5) external APIs (OpenAI, Serper/DuckDuckGo, Open-Meteo, Google Sheets); (6) GitHub (source control and the GitHub Pages early-warning feed); and (7) a static admin panel for human report review.
 
 **Figure 1.** System architecture (all seven zones, component inventory, and labelled data flows).
-`![Figure 1 — System architecture](figures/fig0_system_architecture.png)`
+`![Figure 1 — System architecture](evaluation/figures/fig0_system_architecture.png)`
 
 ### 3.2 Deterministic pre-check layer (Layer 1)
 
@@ -107,23 +109,25 @@ Every result in §5 was produced by executing the actual, unmodified production 
 
 ### 4.2 Experimental setup
 
-Apple M3 Pro, 18 GB RAM, macOS 15.5; Python 3.11.16; FastAPI 0.115.0; LangChain 0.2.14; FAISS-CPU 1.8.0; `gpt-4o-mini` at temperature 0.0–0.1; `text-embedding-3-large` embeddings; direct residential-broadband calls to `api.openai.com` (no proxy/cache). All test sets (18–20 items each) are hand-labelled and included with the release for peer review.
+Apple M3 Pro, 18 GB RAM, macOS 15.5; Python 3.11.16; FastAPI 0.115.0; LangChain 0.2.14; FAISS-CPU 1.8.0; `gpt-4o-mini` at temperature 0.0–0.1; `text-embedding-3-large` embeddings; direct residential-broadband calls to `api.openai.com` (no proxy/cache), plus a direct probe of the live deployed Azure Container Apps endpoint (§5.12). Test sets were scaled from an initial n=18–20 pilot to n=29–60 items per component (n=30 for the ablation study), hand-labelled and included with the release for peer review, with 95% bootstrap/Wilson confidence intervals reported for every mean/proportion.
 
 ### 4.3 Metrics
 
-- **Latency**: mean, standard deviation, and p50/p90/p95/p99, measured with `time.perf_counter()` around each call.
+- **Latency**: mean, standard deviation, and p50/p90/p95/p99, measured with `time.perf_counter()` around each call, with 95% confidence intervals from non-parametric bootstrap resampling.
 - **Retrieval quality**: Recall@k using a keyword-coverage proxy (a retrieved chunk is scored relevant if it contains ≥1 expected keyword) — a deliberately disclosed automatic-proxy limitation (§6.4).
-- **Routing/classification accuracy**: exact-match accuracy and full confusion matrices against hand-labelled ground truth.
+- **Routing/classification accuracy**: exact-match accuracy (with Wilson score confidence intervals) and full confusion matrices against hand-labelled ground truth.
 - **Extraction accuracy**: per-field accuracy (5 fields) and whole-record exact-match rate against ground truth.
+- **Answer quality (ablation only, §5.11)**: independent LLM-as-judge (`gpt-4o`, distinct from the `gpt-4o-mini` generator) scoring of faithfulness (0–5), relevance (0–5), and a binary hallucination flag, compared between RAG and a closed-book baseline.
 - **Numerical correctness**: absolute error of the production Bayesian-triangulation output versus an independently coded closed-form reference implementation of the same formula.
 - **Throughput/concurrency**: requests/second and latency percentiles across concurrency levels 1/2/4/8, and SQLite operations/second across 1/2/4/8/16 concurrent writer threads.
+- **Live deployment (§5.12)**: HTTP round-trip latency and status codes against the actual running Azure Container Apps instance, using only read-only, side-effect-free endpoints.
 
 ### 4.4 Reproducibility
 
 ```bash
 python3 -m venv .venv-eval && source .venv-eval/bin/activate
 pip install -r requirements.txt matplotlib numpy pandas scikit-learn
-python evaluation/run_all.py     # executes bench_00 .. bench_08, then regenerates all figures
+python evaluation/run_all.py     # executes bench_00 .. bench_10, then regenerates all figures
 ```
 Raw results: `evaluation/results/*.json`. Figures: `evaluation/figures/*.png`. Test sets: `evaluation/datasets/*.json`.
 
@@ -137,70 +141,70 @@ Building the FAISS index from 3 PDFs (355 pages → 916 chunks, chunk size 1000/
 
 ### 5.2 RAG retrieval (FAISS)
 
-**Table 3.** Recall@k and retrieval-only latency (20-item grounded QA set).
+**Table 3.** Recall@k and retrieval-only latency (60-item grounded QA set, expanded from an initial n=20 pilot).
 
 | k | Recall@k (keyword proxy) | Mean latency | p95 latency |
 |---|---|---|---|
-| 1 | 0.80 | 422.3 ms | 1033.5 ms |
-| 2 | 0.80 | 324.8 ms | 339.1 ms |
-| 4 | 0.80 | 324.7 ms | 342.6 ms |
-| 8 | 0.80 | 331.2 ms | 360.1 ms |
+| 1 | 0.65 | 378.6 ms | 377.6 ms |
+| 2 | 0.67 | 332.5 ms | 362.3 ms |
+| 4 | 0.67 | 331.9 ms | 353.3 ms |
+| 8 | 0.67 | 329.8 ms | 362.2 ms |
 
-`![Figure 2 — Recall@k and latency vs. k](figures/fig2_retrieval_recall_vs_k.png)`
+`![Figure 2 — Recall@k and latency vs. k](evaluation/figures/fig2_retrieval_recall_vs_k.png)`
 
-Latency is dominated by the embedding-API round trip rather than FAISS's exact nearest-neighbour search over 916 vectors (sub-millisecond); recall is flat across k, indicating retrieval quality is limited by query/embedding semantics rather than neighbourhood size.
+Latency is dominated by the embedding-API round trip rather than FAISS's exact nearest-neighbour search over 916 vectors (sub-millisecond); recall is flat across k, indicating retrieval quality is limited by query/embedding semantics rather than neighbourhood size. Recall settled at a more representative 0.65–0.67 at 3× the sample size, down from an optimistic 0.80 on the original 20-item pilot — a concrete illustration of why small pilot samples are a threat to validity (§7).
 
 ### 5.3 RAG generation (retrieval + GPT-4o-mini synthesis)
 
-**Table 4.** End-to-end RAG query latency and answer-quality proxies (n=20).
+**Table 4.** End-to-end RAG query latency and answer-quality proxies (n=60, expanded from an initial n=20 pilot; see §5.11 for a paired ablation against a closed-book baseline).
 
 | Metric | Value |
 |---|---|
-| Mean latency | 4.09 s (σ = 1.32 s); p50 3.80 s, p95 6.29 s |
-| Mean keyword coverage (groundedness proxy) | 0.82 (σ = 0.28) |
-| Latency: English (n=16) / Sinhala (n=2) / Tamil (n=2) | 4.00 s / 4.88 s / 4.01 s |
+| Mean latency | 3.33 s, 95% bootstrap CI [3.04 s, 3.64 s] |
+| Mean keyword coverage (groundedness proxy) | 0.77 |
+| Latency: English (n=40) / Sinhala (n=10) / Tamil (n=10) | 3.25 s / 3.60 s / 3.38 s |
 
-`![Figure 3 — RAG generation latency by language](figures/fig3_rag_latency_by_language.png)`
+`![Figure 3 — RAG generation latency by language](evaluation/figures/fig3_rag_latency_by_language.png)`
 
-Language does not materially change latency, indicating the multilingual prompt design introduces no asymmetric cost across the three supported languages.
+Language does not materially change latency, indicating the multilingual prompt design introduces no asymmetric cost across the three supported languages; the wider language split (10 si / 10 ta) makes this a more robust comparison than the original pilot's 2/2.
 
 ### 5.4 Agent tool-routing
 
-**Table 5.** Tool-selection accuracy and latency by expected tool (20-item labelled set, 3 languages).
+**Table 5.** Tool-selection accuracy and latency by expected tool (38-item labelled set, 3 languages, expanded from an initial n=20 pilot).
 
 | | |
 |---|---|
-| **Tool-selection accuracy** | **100% (20/20)** |
-| Mean E2E latency | 6.21 s (σ = 2.90 s); p50 5.57 s, p95 10.79 s |
-| By tool | KB query 8.68 s · web search 5.85 s · submit report 6.21 s · get observations 1.86 s |
+| **Tool-selection accuracy** | **100% (38/38)**, Wilson 95% CI [90.8%, 100%] |
+| Mean E2E latency | 6.21 s, 95% bootstrap CI [5.30 s, 7.16 s]; p50 5.56 s, p95 10.33 s |
+| By tool | KB query 7.35 s (n=11) · web search 6.21 s (n=10) · submit report 7.07 s (n=11) · get observations 2.53 s (n=6) |
 
-`![Figure 4 — Tool-routing confusion matrix](figures/fig4_routing_confusion_matrix.png)`
+`![Figure 4 — Tool-routing confusion matrix](evaluation/figures/fig4_routing_confusion_matrix.png)`
 
-`get_community_observations` is markedly faster because, uniquely among the four tools, it performs a synchronous database read rather than a nested LLM call; the other three tools each incur a second OpenAI completion inside the tool body.
+`get_community_observations` is markedly faster because, uniquely among the four tools, it performs a synchronous database read rather than a nested LLM call; the other three tools each incur a second OpenAI completion inside the tool body. The confusion matrix remains perfectly diagonal at nearly 2× the original sample size.
 
 ### 5.5 Community reporting pipeline
 
-**Table 6.** Keyword-based intent pre-filter as a binary classifier (18 positive / 20 negative).
+**Table 6.** Keyword-based intent pre-filter as a binary classifier (29 positive / 60 negative, expanded from an initial 18/20 pilot).
 
 | Precision | Recall | F1 | Mean latency |
 |---|---|---|---|
-| 1.00 | **0.39** | 0.56 | 6.0 µs |
+| 1.00 | **0.41** | 0.59 | 6.0 µs |
 
-**Table 7.** LLM-based structured-extraction field accuracy (n=18).
+**Table 7.** LLM-based structured-extraction field accuracy (n=29, expanded from an initial n=18 pilot).
 
 | Field | Accuracy |
 |---|---|
 | `has_location` | 1.00 |
-| `ongoing` | 0.94 |
-| `people_at_risk` | 0.83 |
-| `report_domain` | 0.78 |
-| `hazard_type` | 0.72 |
-| **Exact match, all 5 fields** | **0.50** |
-| Mean latency | 1.83 s (p95 2.15 s) |
+| `ongoing` | 0.93 |
+| `report_domain` | 0.79 |
+| `hazard_type` | 0.79 |
+| `people_at_risk` | 0.69 |
+| **Exact match, all 5 fields** | **0.48** |
+| Mean latency | ≈ 1.7 s |
 
-`![Figure 5 — Reporting pipeline accuracy](figures/fig5_reporting_pipeline_accuracy.png)`
+`![Figure 5 — Reporting pipeline accuracy](evaluation/figures/fig5_reporting_pipeline_accuracy.png)`
 
-The 61-percentage-point gap between the keyword filter's recall (39%) and the agent's tool-routing accuracy (100%, §5.4, same class of report-style messages) is the central quantitative justification for escalating report detection to an LLM agent rather than a rule-based classifier.
+The ~18-percentage-point gap between the keyword filter's recall (41%) and the agent's tool-routing accuracy (100%, §5.4, same class of report-style messages) is the central quantitative justification for escalating report detection to an LLM agent rather than a rule-based classifier; this gap is stable between the pilot (61 pts) and the expanded set (59 pts), indicating it is a genuine property of the rule-based approach rather than pilot-sample noise.
 
 ### 5.6 Bayesian truth discovery
 
@@ -213,7 +217,7 @@ The 61-percentage-point gap between the keyword filter's recall (39%) and the ag
 | Reliability convergence (repeated verification) | 0.50 → 0.95 (clamp) in 7 update events |
 | Reliability convergence (repeated rejection) | 0.50 → 0.05 (clamp) in 7 update events |
 
-`![Figure 6 — Bayesian triangulation behaviour](figures/fig6_triangulation_bayesian.png)`
+`![Figure 6 — Bayesian triangulation behaviour](evaluation/figures/fig6_triangulation_bayesian.png)`
 
 High-reliability reporters (r=0.9) push $P(\text{true})$ above 0.99 with only 2 independent corroborators, while low-reliability reporters (r=0.3) are actively down-weighted even as corroborator count grows — evidence the mechanism resists naive Sybil-style flooding by unreliable sources. Computation remains sub-10 ms at 50 corroborators, i.e. not a system bottleneck.
 
@@ -238,7 +242,7 @@ High-reliability reporters (r=0.9) push $P(\text{true})$ above 0.99 with only 2 
 | 8 | 2,110 | 0.62 ms |
 | 16 | 1,392 | 1.47 ms |
 
-`![Figure 7 — SQLite concurrency scaling](figures/fig7_db_concurrency.png)`
+`![Figure 7 — SQLite concurrency scaling](evaluation/figures/fig7_db_concurrency.png)`
 
 Throughput falls 63% from 1 to 16 concurrent writers (no write errors observed — SQLite's busy-timeout absorbs contention as latency rather than failure), consistent with its single-writer lock. Because Azure Container Apps can auto-scale to multiple replicas while SQLite remains a local container-filesystem file, multi-replica deployment would fragment the database across replicas rather than share it — a concrete architectural limitation for horizontal scaling (§6.5).
 
@@ -253,7 +257,7 @@ Throughput falls 63% from 1 to 16 concurrent writers (no write errors observed �
 | 4 | 0.430 | 6.74 s | 11.18 s |
 | 8 | 0.531 | 8.37 s | 15.03 s |
 
-`![Figure 8 — End-to-end throughput/latency vs. concurrency](figures/fig8_e2e_concurrency.png)`
+`![Figure 8 — End-to-end throughput/latency vs. concurrency](evaluation/figures/fig8_e2e_concurrency.png)`
 
 Throughput scales near-linearly (0.153 → 0.531 req/s, ≈3.5×) while p50 latency grows only 18% (7.07 s → 8.37 s), confirming the system is I/O-bound on external LLM calls rather than CPU-bound — the async FastAPI design absorbs concurrent webhook deliveries within a single container replica without proportional latency degradation. All 32 simulated requests across the four levels completed successfully.
 
@@ -263,19 +267,50 @@ While collecting the data in Table 11, one test message — *"Is there any activ
 
 ### 5.10 Language detection (deterministic pre-check)
 
-**Table 12.** Unicode-script-based language detector (20-item trilingual set).
+**Table 12.** Unicode-script-based language detector (30-item trilingual set, expanded from an initial n=20 pilot).
 
 | Accuracy | Mean latency | p99 latency |
 |---|---|---|
-| 100% (20/20) | 0.71 µs | 4.0 µs |
+| 100% (30/30), Wilson 95% CI [88.7%, 100%] | 0.61 µs | 3.5 µs |
 
 The detector is effectively free and perfectly accurate on script-distinguishable text, validating its use ahead of any LLM call in preference to a slower, probabilistic library-based detector for the two non-Latin scripts.
 
-### 5.11 Cross-component summary
+### 5.11 RAG vs. closed-book baseline ablation (LLM-as-judge)
 
-`![Figure 1 (evaluation) — Component latency overview](figures/fig1_component_latency_overview.png)`
+To address the missing-baseline gap common in agentic-RAG evaluations, we compare the production RAG system against a **closed-book baseline**: the identical generator model (`gpt-4o-mini`) and identical questions, but with the FAISS retrieval step removed. An independent LLM judge (`gpt-4o` — a different model from the generator, to reduce same-model self-evaluation bias) scores both conditions' answers for faithfulness (0–5), relevance (0–5), and a binary hallucination flag, on a seeded 30-item subsample of the 60-item QA set.
 
-**Table 13.** Mean latency across all measured components (log scale spans four orders of magnitude).
+**Table 13.** RAG vs. closed-book ablation (n=30, judge = `gpt-4o`).
+
+| Metric | RAG (grounded) | Closed-book (no retrieval) |
+|---|---|---|
+| Faithfulness (0–5) | 4.67, 95% CI [4.27, 4.97] | 4.40, 95% CI [3.87, 4.83] |
+| Relevance (0–5) | 4.40 | 4.70 |
+| **Hallucination-flag rate** | **13.3%**, Wilson 95% CI [5.3%, 29.7%] | **20.0%**, Wilson 95% CI [9.5%, 37.3%] |
+| Keyword coverage | 0.76 | 0.74 |
+| Mean latency | 3.46 s | 4.34 s |
+
+`![Figure 9 — RAG vs. closed-book ablation](evaluation/figures/fig9_rag_vs_closedbook_ablation.png)`
+
+RAG shows a directionally lower hallucination rate (13.3% vs. 20.0%) and higher faithfulness (4.67 vs. 4.40) than the closed-book baseline using the *identical* generator model — consistent with the core motivating hypothesis that grounding reduces fabricated claims. Closed-book scored marginally higher on judge-rated relevance (4.70 vs. 4.40). At n=30 the 95% confidence intervals for faithfulness and hallucination rate overlap between conditions, so **the effect is directionally consistent with the RAG hypothesis but does not reach conventional statistical significance at this sample size** — we report this honestly rather than overstating significance, and recommend scaling to n≥100 with paired significance testing (e.g. McNemar's test on the binary hallucination flag) for a camera-ready submission (§7).
+
+### 5.12 Live Azure deployment probe
+
+To close the gap between benchmarking local code execution and the actual deployed system, we probed the real, running production instance directly over the public internet, using only **read-only, side-effect-free** endpoints (`GET /`, `GET /health/token`) — no `/webhook` POST was ever sent, so no outbound WhatsApp Cloud API call was triggered.
+
+**Table 14.** Live deployment network probe (n=30 requests/endpoint).
+
+| Endpoint | Mean latency | p95 latency | HTTP status |
+|---|---|---|---|
+| `GET /` (root) | 755.4 ms | 853.5 ms | 200 × 30/30 |
+| `GET /health/token` | 1231.4 ms | 1546.3 ms | 200 × 30/30 |
+
+Live scale configuration (`az containerapp show`): `minReplicas=1, maxReplicas=1`. The container was never observed cold, so the ~755 ms root latency is pure network + ingress + FastAPI dispatch overhead with no LLM/agent work involved — a floor on any request's latency in production. `/health/token` is slower because it itself makes an outbound call to `graph.facebook.com` before responding. Notably, the live configuration shows the deployment is **not currently autoscaling** (`minReplicas = maxReplicas = 1`), which is a discrepancy against the documented "0–100 instances" auto-scaling capability — exactly the class of finding that only a live-deployment probe, rather than local code review, can surface (§6.7).
+
+### 5.13 Cross-component summary
+
+`![Figure 1 (evaluation) — Component latency overview](evaluation/figures/fig1_component_latency_overview.png)`
+
+**Table 15.** Mean latency across all measured components (log scale spans four orders of magnitude).
 
 | Component | Mean latency |
 |---|---|
@@ -284,8 +319,8 @@ The detector is effectively free and perfectly accurate on script-distinguishabl
 | SQLite read | 0.07–0.4 ms |
 | SQLite write | 0.3–0.8 ms |
 | FAISS retrieval | 325 ms |
-| Report LLM extraction | 1.83 s |
-| RAG generation (E2E) | 4.09 s |
+| Report LLM extraction | ≈1.7 s |
+| RAG generation (E2E) | 3.33 s |
 | Agent routing (E2E) | 6.21 s |
 
 Deterministic components (language detection, SQLite I/O) are essentially free; the FAISS-retrieval network round trip sits three orders of magnitude above that; and every LLM-backed operation costs 1.8–6.2 s, dominating user-perceived latency. This motivates LLM-call reduction (response caching, smaller extraction models, request batching) as the highest-leverage direction for future latency optimisation.
@@ -314,23 +349,32 @@ Recall@k and answer "coverage" (§5.2–§5.3) are automatic, keyword-based prox
 
 The Bayesian triangulation computation itself is not a bottleneck (sub-10 ms at 50 corroborators, §5.6); the underlying single-writer SQLite persistence layer is (§5.7), and — because Azure Container Apps can auto-scale to multiple replicas while SQLite remains local to each container's filesystem — this constraint would manifest as *silently fragmented, inconsistent data* across replicas under horizontal scale-out, not merely reduced throughput. We recommend migrating to a shared managed database (Azure SQL/PostgreSQL, or Azure Table/Cosmos DB) before enabling multi-replica auto-scaling in production, since the current architecture implicitly assumes a single active replica.
 
+### 6.6 Does RAG actually reduce hallucination here?
+
+The ablation in §5.11 provides the first controlled (same-model, same-question) comparison in this evaluation between grounded and ungrounded generation. The direction of every measured effect (lower hallucination rate, higher faithfulness for RAG) is consistent with the standard RAG hypothesis, but at n=30 the confidence intervals overlap and the closed-book condition even scored slightly higher on judge-rated relevance. We interpret this as *encouraging but inconclusive* evidence rather than a proven effect, and note that closed-book `gpt-4o-mini` already has non-trivial world knowledge about Sri Lankan disaster preparedness from pretraining data, which likely narrows the gap versus a domain where the LLM has no relevant prior knowledge at all. A larger, pre-registered version of this ablation (n≥100, paired significance testing) is the natural next step.
+
+### 6.7 Live deployment reveals a documentation-reality gap
+
+The live-deployment probe (§5.12) was motivated purely by a desire for genuine network-latency numbers, but its most consequential finding was incidental: the production Container App is configured with `minReplicas = maxReplicas = 1`, meaning it is **not currently autoscaling**, in contrast to the "0–100 instances" auto-scaling capability described in the project's own deployment documentation. This is a useful illustration of a broader point for systems papers: claims about a deployed architecture's *capabilities* (what it *could* do) should be distinguished from its *current configuration* (what it *is* doing), and only checking the latter against the live environment — rather than relying on documentation or source code alone — can catch this class of drift.
+
 ---
 
 ## 7. Limitations and Threats to Validity
 
-1. **Sample sizes (n=18–20 per test set)** are adequate for demonstrating methodology and obtaining point estimates with visible variance but too small for tight confidence intervals; a camera-ready study should scale each test set to n≥100 with bootstrap confidence intervals.
-2. **Keyword-coverage groundedness/recall proxies** (§6.4) are not human relevance judgements; results on answer *quality* should be corroborated with human or LLM-as-judge evaluation before strong claims are made.
+1. **Sample sizes (n=29–60 per test set, n=30 for the ablation)** were scaled up 1.5–3× from an initial n=18–20 pilot, with 95% bootstrap/Wilson confidence intervals now reported throughout; this is a substantial improvement but still short of the n≥100 with paired significance testing recommended for a camera-ready study, particularly for the ablation in §5.11 where the RAG-vs-closed-book effect is directionally consistent but not statistically significant at n=30.
+2. **Keyword-coverage groundedness/recall proxies**, now supplemented by an independent LLM-as-judge (§5.11) using a different model from the production generator to reduce self-evaluation bias, remain automatic proxies rather than human or domain-expert (NBRO/DMC) judgement of factual correctness — the latter is still absent from this evaluation.
 3. **Uncalibrated confidence heuristic**: the production `calculate_confidence()` function is a coarse heuristic, not a calibrated probability estimate.
-4. **Network variability**: all LLM/embedding latencies were measured over one residential connection to `api.openai.com` on one measurement occasion; absolute latencies will differ from the deployed Azure-region network path, though relative comparisons between components are robust to this.
-5. **Single-machine, single-process concurrency test** (§5.8) isolates agent/LLM concurrency behaviour deliberately (§4.1) but does not reproduce the deployed multi-replica Azure Container Apps environment, nor real network latency to WhatsApp/Meta or Azure Redis.
-6. **No production traffic was used.** At the time of evaluation the deployment had no real end users (confirmed by the system owner); all test messages are synthetic, and no benchmark traffic was sent through the live WhatsApp webhook or to real phone numbers.
-7. **Single-run measurements.** Most benchmarks report one execution per configuration rather than repeated trials with aggregated confidence intervals; this is disclosed as a methodological limitation to be addressed before peer review by re-running each benchmark ≥3× and reporting the aggregate.
+4. **Network variability**: LLM/embedding latencies were measured over one residential connection to `api.openai.com`; §5.12 additionally measures the real deployed Azure endpoint directly, partially closing this gap for infrastructure-level (non-LLM) latency, but absolute LLM-call latency from inside the Azure region itself remains unmeasured.
+5. **Single-machine, single-process concurrency test** (§5.8) isolates agent/LLM concurrency behaviour deliberately (§4.1) but does not reproduce the deployed multi-replica Azure Container Apps environment — though §5.12 shows the live deployment is in fact currently configured for a single replica, narrowing this gap in practice for the current deployment stage.
+6. **No production traffic was used.** At the time of evaluation the deployment had no real end users (confirmed by the system owner); all test messages are synthetic. The live-deployment probe (§5.12) deliberately used only read-only, side-effect-free endpoints (no `/webhook` POST, no outbound WhatsApp messages) to preserve this constraint while still obtaining genuine production network measurements.
+7. **Single-run measurements per configuration.** Most benchmarks report one execution per configuration with bootstrap/Wilson confidence intervals computed over the sample, rather than repeated end-to-end trials; a camera-ready version should additionally re-run each benchmark ≥3× and report between-run variance.
+8. **No human/domain-expert evaluation or field study.** This remains the most significant outstanding gap for a disaster-risk-management-focused venue specifically (as opposed to a systems/ML venue): no NBRO/DMC expert has validated the factual correctness of hazard advice, and no real end-user has judged comprehension, trust, or actionability. This is flagged as required future work (§8) rather than substituted with automated proxies.
 
 ---
 
 ## 8. Conclusion and Future Work
 
-We presented the architecture and a full component-level performance evaluation of a deployed, multilingual, agentic RAG system for WhatsApp-based disaster advisory and community hazard reporting. The evaluation — conducted against real production code rather than mocks — quantifies the latency/accuracy trade-offs of each architectural layer, validates the correctness of a Bayesian truth-discovery mechanism against a closed-form reference, and demonstrates, through a discovered-and-fixed routing defect, the practical value of outlier-aware benchmarking. Future work should (a) scale the evaluation datasets and add human/LLM-judge answer-quality scoring, (b) migrate shared persistence off local SQLite ahead of multi-replica deployment, (c) conduct a field trial with real users to validate the offline metrics against real-world engagement and report-verification outcomes, and (d) perform a sensitivity analysis of the Bayesian reliability learning rate α and the confidence/severity decision-matrix thresholds against ground-truth-verified historical reports once sufficient production data accumulates.
+We presented the architecture and a full component-level performance evaluation of a deployed, multilingual, agentic RAG system for WhatsApp-based disaster advisory and community hazard reporting. The evaluation — conducted against real production code, at sample sizes scaled up from an initial pilot, with an explicit closed-book ablation and a genuine live-deployment network probe — quantifies the latency/accuracy trade-offs of each architectural layer, validates the correctness of a Bayesian truth-discovery mechanism against a closed-form reference, provides directionally encouraging but not yet statistically conclusive evidence that retrieval grounding reduces hallucination, and demonstrates, through both a discovered-and-fixed routing defect and a documentation-vs-reality autoscaling discrepancy, the practical value of outlier-aware and live-system-aware benchmarking. Future work should (a) scale the ablation and routing test sets to n≥100 with paired significance testing, (b) commission human/domain-expert (NBRO/DMC) evaluation of hazard-advice correctness, (c) migrate shared persistence off local SQLite ahead of multi-replica deployment, (d) conduct a field trial with real users to validate the offline metrics against real-world engagement and report-verification outcomes, and (e) perform a sensitivity analysis of the Bayesian reliability learning rate α and the confidence/severity decision-matrix thresholds against ground-truth-verified historical reports once sufficient production data accumulates.
 
 ---
 

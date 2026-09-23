@@ -18,5 +18,15 @@
   {"id": "l17", "language": "ta", "text": "இன்று கொழும்பில் வெள்ளம் உள்ளதா?"},
   {"id": "l18", "language": "en", "text": "register"},
   {"id": "l19", "language": "si", "text": "ලියාපදිංචි වන්න"},
-  {"id": "l20", "language": "ta", "text": "பதிவு செய்"}
+  {"id": "l20", "language": "ta", "text": "பதிவு செய்"},
+  {"id": "l21", "language": "en", "text": "stop"},
+  {"id": "l22", "language": "si", "text": "නතර"},
+  {"id": "l23", "language": "ta", "text": "நிறுத்து"},
+  {"id": "l24", "language": "en", "text": "What is the wind speed forecast for tomorrow?"},
+  {"id": "l25", "language": "si", "text": "බෑවුමක රිප්-රැප් තාප්පයක් ඉදිකිරීමට වඩාත් සුදුසු කාලය කුමක්ද?"},
+  {"id": "l26", "language": "ta", "text": "தாவர வேர்கள் மண்ணை எவ்வாறு பலப்படுத்துகின்றன?"},
+  {"id": "l27", "language": "en", "text": "menu please"},
+  {"id": "l28", "language": "si", "text": "භාෂාව"},
+  {"id": "l29", "language": "ta", "text": "மொழி"},
+  {"id": "l30", "language": "en", "text": "Thank you for the help"}
 ]

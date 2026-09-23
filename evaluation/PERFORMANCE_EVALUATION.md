@@ -10,27 +10,29 @@ All numbers in this document were produced by the benchmark suite in this folder
 
 | | |
 |---|---|
-| 🧪 Benchmark scripts | [`bench_00_indexing.py`](bench_00_indexing.py) · [`bench_01_rag_retrieval.py`](bench_01_rag_retrieval.py) · [`bench_02_rag_generation.py`](bench_02_rag_generation.py) · [`bench_03_agent_routing.py`](bench_03_agent_routing.py) · [`bench_04_reporting_pipeline.py`](bench_04_reporting_pipeline.py) · [`bench_05_triangulation_bayesian.py`](bench_05_triangulation_bayesian.py) · [`bench_06_database_throughput.py`](bench_06_database_throughput.py) · [`bench_07_language_detection.py`](bench_07_language_detection.py) · [`bench_08_concurrency_load.py`](bench_08_concurrency_load.py) |
-| ⚙️ Orchestration / helpers | [`run_all.py`](run_all.py) (runs every benchmark + regenerates figures) · [`generate_figures.py`](generate_figures.py) · [`common.py`](common.py) (shared timing/summary utilities) |
-| 📊 Datasets (hand-labelled) | [`datasets/qa_testset.json`](datasets/qa_testset.json) · [`datasets/routing_testset.json`](datasets/routing_testset.json) · [`datasets/report_extraction_testset.json`](datasets/report_extraction_testset.json) · [`datasets/language_testset.json`](datasets/language_testset.json) |
-| 📈 Raw results (JSON) | [`results/00_indexing_pipeline.json`](results/00_indexing_pipeline.json) · [`results/01_rag_retrieval.json`](results/01_rag_retrieval.json) · [`results/02_rag_generation.json`](results/02_rag_generation.json) · [`results/03_agent_routing.json`](results/03_agent_routing.json) · [`results/04_reporting_pipeline.json`](results/04_reporting_pipeline.json) · [`results/05_triangulation_bayesian.json`](results/05_triangulation_bayesian.json) · [`results/06_database_throughput.json`](results/06_database_throughput.json) · [`results/07_language_detection.json`](results/07_language_detection.json) · [`results/08_concurrency_load.json`](results/08_concurrency_load.json) |
-| 🖼️ Figures (300 DPI PNG) | [`figures/fig0_system_architecture.png`](figures/fig0_system_architecture.png) · [`figures/fig1_component_latency_overview.png`](figures/fig1_component_latency_overview.png) · [`figures/fig2_retrieval_recall_vs_k.png`](figures/fig2_retrieval_recall_vs_k.png) · [`figures/fig3_rag_latency_by_language.png`](figures/fig3_rag_latency_by_language.png) · [`figures/fig4_routing_confusion_matrix.png`](figures/fig4_routing_confusion_matrix.png) · [`figures/fig5_reporting_pipeline_accuracy.png`](figures/fig5_reporting_pipeline_accuracy.png) · [`figures/fig6_triangulation_bayesian.png`](figures/fig6_triangulation_bayesian.png) · [`figures/fig7_db_concurrency.png`](figures/fig7_db_concurrency.png) · [`figures/fig8_e2e_concurrency.png`](figures/fig8_e2e_concurrency.png) |
+| 🧪 Benchmark scripts | [`bench_00_indexing.py`](bench_00_indexing.py) · [`bench_01_rag_retrieval.py`](bench_01_rag_retrieval.py) · [`bench_02_rag_generation.py`](bench_02_rag_generation.py) · [`bench_03_agent_routing.py`](bench_03_agent_routing.py) · [`bench_04_reporting_pipeline.py`](bench_04_reporting_pipeline.py) · [`bench_05_triangulation_bayesian.py`](bench_05_triangulation_bayesian.py) · [`bench_06_database_throughput.py`](bench_06_database_throughput.py) · [`bench_07_language_detection.py`](bench_07_language_detection.py) · [`bench_08_concurrency_load.py`](bench_08_concurrency_load.py) · [`bench_09_rag_vs_closedbook_baseline.py`](bench_09_rag_vs_closedbook_baseline.py) · [`bench_10_live_deployment_probe.py`](bench_10_live_deployment_probe.py) |
+| ⚙️ Orchestration / helpers | [`run_all.py`](run_all.py) (runs every benchmark + regenerates figures) · [`generate_figures.py`](generate_figures.py) · [`common.py`](common.py) (shared timing/summary/bootstrap-CI utilities) · [`llm_judge.py`](llm_judge.py) (independent LLM-as-judge scorer) |
+| 📊 Datasets (hand-labelled) | [`datasets/qa_testset.json`](datasets/qa_testset.json) (60 items) · [`datasets/routing_testset.json`](datasets/routing_testset.json) (38 items) · [`datasets/report_extraction_testset.json`](datasets/report_extraction_testset.json) (29 items) · [`datasets/language_testset.json`](datasets/language_testset.json) (30 items) |
+| 📈 Raw results (JSON) | [`results/00_indexing_pipeline.json`](results/00_indexing_pipeline.json) · [`results/01_rag_retrieval.json`](results/01_rag_retrieval.json) · [`results/02_rag_generation.json`](results/02_rag_generation.json) · [`results/03_agent_routing.json`](results/03_agent_routing.json) · [`results/04_reporting_pipeline.json`](results/04_reporting_pipeline.json) · [`results/05_triangulation_bayesian.json`](results/05_triangulation_bayesian.json) · [`results/06_database_throughput.json`](results/06_database_throughput.json) · [`results/07_language_detection.json`](results/07_language_detection.json) · [`results/08_concurrency_load.json`](results/08_concurrency_load.json) · [`results/09_rag_vs_closedbook_baseline.json`](results/09_rag_vs_closedbook_baseline.json) · [`results/10_live_deployment_probe.json`](results/10_live_deployment_probe.json) |
+| 🖼️ Figures (300 DPI PNG) | [`figures/fig0_system_architecture.png`](figures/fig0_system_architecture.png) · [`figures/fig1_component_latency_overview.png`](figures/fig1_component_latency_overview.png) · [`figures/fig2_retrieval_recall_vs_k.png`](figures/fig2_retrieval_recall_vs_k.png) · [`figures/fig3_rag_latency_by_language.png`](figures/fig3_rag_latency_by_language.png) · [`figures/fig4_routing_confusion_matrix.png`](figures/fig4_routing_confusion_matrix.png) · [`figures/fig5_reporting_pipeline_accuracy.png`](figures/fig5_reporting_pipeline_accuracy.png) · [`figures/fig6_triangulation_bayesian.png`](figures/fig6_triangulation_bayesian.png) · [`figures/fig7_db_concurrency.png`](figures/fig7_db_concurrency.png) · [`figures/fig8_e2e_concurrency.png`](figures/fig8_e2e_concurrency.png) · [`figures/fig9_rag_vs_closedbook_ablation.png`](figures/fig9_rag_vs_closedbook_ablation.png) |
 
 ## Artifact traceability matrix
 
-Every number in §2–§11 traces back to one benchmark script, one raw-results file, and (where applicable) one hand-labelled dataset and one figure — nothing below was hand-entered.
+Every number in §2–§13 traces back to one benchmark script, one raw-results file, and (where applicable) one hand-labelled dataset and one figure — nothing below was hand-entered.
 
 | # | Component | Script | Dataset(s) | Raw results | Figure |
 |---|---|---|---|---|---|
 | 0 | Offline indexing (PDF → FAISS) | [bench_00_indexing.py](bench_00_indexing.py) | [training-files/](../training-files/general-hazard-awareness/) (3 PDFs) | [00_indexing_pipeline.json](results/00_indexing_pipeline.json) | — |
-| 1 | RAG retrieval (FAISS) | [bench_01_rag_retrieval.py](bench_01_rag_retrieval.py) | [qa_testset.json](datasets/qa_testset.json) | [01_rag_retrieval.json](results/01_rag_retrieval.json) | [Fig. 2](figures/fig2_retrieval_recall_vs_k.png) |
-| 2 | RAG generation (retrieval+LLM) | [bench_02_rag_generation.py](bench_02_rag_generation.py) | [qa_testset.json](datasets/qa_testset.json) | [02_rag_generation.json](results/02_rag_generation.json) | [Fig. 1](figures/fig1_component_latency_overview.png), [Fig. 3](figures/fig3_rag_latency_by_language.png) |
-| 3 | Agent tool-routing | [bench_03_agent_routing.py](bench_03_agent_routing.py) | [routing_testset.json](datasets/routing_testset.json) | [03_agent_routing.json](results/03_agent_routing.json) | [Fig. 4](figures/fig4_routing_confusion_matrix.png) |
-| 4 | Community reporting pipeline | [bench_04_reporting_pipeline.py](bench_04_reporting_pipeline.py) | [report_extraction_testset.json](datasets/report_extraction_testset.json) (positives), [qa_testset.json](datasets/qa_testset.json) (negatives) | [04_reporting_pipeline.json](results/04_reporting_pipeline.json) | [Fig. 5](figures/fig5_reporting_pipeline_accuracy.png) |
+| 1 | RAG retrieval (FAISS) | [bench_01_rag_retrieval.py](bench_01_rag_retrieval.py) | [qa_testset.json](datasets/qa_testset.json) (n=60) | [01_rag_retrieval.json](results/01_rag_retrieval.json) | [Fig. 2](figures/fig2_retrieval_recall_vs_k.png) |
+| 2 | RAG generation (retrieval+LLM) | [bench_02_rag_generation.py](bench_02_rag_generation.py) | [qa_testset.json](datasets/qa_testset.json) (n=60) | [02_rag_generation.json](results/02_rag_generation.json) | [Fig. 1](figures/fig1_component_latency_overview.png), [Fig. 3](figures/fig3_rag_latency_by_language.png) |
+| 3 | Agent tool-routing | [bench_03_agent_routing.py](bench_03_agent_routing.py) | [routing_testset.json](datasets/routing_testset.json) (n=38) | [03_agent_routing.json](results/03_agent_routing.json) | [Fig. 4](figures/fig4_routing_confusion_matrix.png) |
+| 4 | Community reporting pipeline | [bench_04_reporting_pipeline.py](bench_04_reporting_pipeline.py) | [report_extraction_testset.json](datasets/report_extraction_testset.json) (n=29 positives), [qa_testset.json](datasets/qa_testset.json) (n=60 negatives) | [04_reporting_pipeline.json](results/04_reporting_pipeline.json) | [Fig. 5](figures/fig5_reporting_pipeline_accuracy.png) |
 | 5 | Bayesian triangulation | [bench_05_triangulation_bayesian.py](bench_05_triangulation_bayesian.py) | synthetic corroborator scenarios (generated in-script) | [05_triangulation_bayesian.json](results/05_triangulation_bayesian.json) | [Fig. 6](figures/fig6_triangulation_bayesian.png) |
 | 6 | SQLite persistence layer | [bench_06_database_throughput.py](bench_06_database_throughput.py) | synthetic records (generated in-script) | [06_database_throughput.json](results/06_database_throughput.json) | [Fig. 7](figures/fig7_db_concurrency.png) |
-| 7 | Language detection | [bench_07_language_detection.py](bench_07_language_detection.py) | [language_testset.json](datasets/language_testset.json) | [07_language_detection.json](results/07_language_detection.json) | — |
+| 7 | Language detection | [bench_07_language_detection.py](bench_07_language_detection.py) | [language_testset.json](datasets/language_testset.json) (n=30) | [07_language_detection.json](results/07_language_detection.json) | — |
 | 8 | End-to-end concurrency | [bench_08_concurrency_load.py](bench_08_concurrency_load.py) | fixed message set (in-script) | [08_concurrency_load.json](results/08_concurrency_load.json) | [Fig. 8](figures/fig8_e2e_concurrency.png) |
+| 9 | RAG vs. closed-book ablation | [bench_09_rag_vs_closedbook_baseline.py](bench_09_rag_vs_closedbook_baseline.py) | [qa_testset.json](datasets/qa_testset.json) (seeded n=30 subsample) | [09_rag_vs_closedbook_baseline.json](results/09_rag_vs_closedbook_baseline.json) | [Fig. 9](figures/fig9_rag_vs_closedbook_ablation.png) |
+| 10 | Live Azure deployment probe | [bench_10_live_deployment_probe.py](bench_10_live_deployment_probe.py) | live production endpoint (read-only) | [10_live_deployment_probe.json](results/10_live_deployment_probe.json) | — |
 | — | Cross-component overview | [generate_figures.py](generate_figures.py) | aggregates results 01/02/03/04/06/07 above | — | [Fig. 1](figures/fig1_component_latency_overview.png) |
 | — | System architecture (Fig. 0) | `rsvg-convert` of the existing [azure_whatsapp_rag_agent_architecture.svg](../azure_whatsapp_rag_agent_architecture.svg) | — | — | [Fig. 0](figures/fig0_system_architecture.png) |
 
@@ -51,8 +53,8 @@ The evaluated system is the Azure Container Apps–hosted WhatsApp disaster-advi
 | LLM | `gpt-4o-mini` (OpenAI), temperature 0.0–0.1 depending on component |
 | Embeddings | `text-embedding-3-large` (OpenAI) |
 | Knowledge base | 3 PDFs → 916 chunks (chunk size 1000, overlap 200 chars) |
-| Network | Residential broadband, direct calls to `api.openai.com`, no proxy/cache |
-| Runs | Each benchmark executed once per reported figure (n given per test); component-level API costs were kept small (~US$0.30 total) by using bounded evaluation sets (18–20 items) |
+| Network | Residential broadband, direct calls to `api.openai.com`, no proxy/cache; §12 additionally probes the real deployed Azure endpoint |
+| Runs | Component test sets scaled to n=29–60 (up from an initial n=18–20 pilot) with 95% bootstrap confidence intervals reported for every mean/proportion (see [`common.py`](common.py) `bootstrap_ci` / `wilson_ci`); component-level API costs kept small (~US$1.50 total across all benchmarks including the ablation study) |
 
 ### 1.3 What is real vs. isolated, and why
 
@@ -70,7 +72,7 @@ This is disclosed explicitly because a Q1-journal technical evaluation must not 
 ```
 python3 -m venv .venv-eval && source .venv-eval/bin/activate
 pip install -r requirements.txt matplotlib numpy pandas scikit-learn
-python evaluation/run_all.py          # runs bench_00 .. bench_08, then figures
+python evaluation/run_all.py          # runs bench_00 .. bench_10, then figures
 ```
 Raw JSON results: [`results/`](results/). Figures: [`figures/`](figures/). Test sets: [`datasets/`](datasets/) (hand-labelled, included for peer review / replication). See the [artifact traceability matrix](#artifact-traceability-matrix) above for the exact script → dataset → result → figure mapping.
 
@@ -95,18 +97,18 @@ One-time, per-deployment cost of parsing the 3 training PDFs (355 pages), chunki
 
 ## 3. Component 1 — RAG Retrieval Layer (FAISS similarity search)
 
-*Script: [bench_01_rag_retrieval.py](bench_01_rag_retrieval.py) · Dataset: [qa_testset.json](datasets/qa_testset.json) (20 items) · Results: [01_rag_retrieval.json](results/01_rag_retrieval.json) · Figure: [fig2_retrieval_recall_vs_k.png](figures/fig2_retrieval_recall_vs_k.png) · Implementation under test: [agent/rag.py](../agent/rag.py)*
+*Script: [bench_01_rag_retrieval.py](bench_01_rag_retrieval.py) · Dataset: [qa_testset.json](datasets/qa_testset.json) (60 items) · Results: [01_rag_retrieval.json](results/01_rag_retrieval.json) · Figure: [fig2_retrieval_recall_vs_k.png](figures/fig2_retrieval_recall_vs_k.png) · Implementation under test: [agent/rag.py](../agent/rag.py)*
 
-20-question grounded QA set (English/Sinhala/Tamil) built from the indexed PDF content. **Recall@k** is a *keyword-coverage proxy* (a retrieved chunk counts as relevant if it contains ≥1 of the question's expected keywords) — a standard, cheap automatic proxy, disclosed as a limitation (§7).
+60-question grounded QA set (English/Sinhala/Tamil, expanded from an initial 20-item pilot) built from the indexed PDF content. **Recall@k** is a *keyword-coverage proxy* (a retrieved chunk counts as relevant if it contains ≥1 of the question's expected keywords) — a standard, cheap automatic proxy, disclosed as a limitation (§14).
 
 | k | Recall@k | Mean latency | p95 latency |
 |---|---|---|---|
-| 1 | 0.80 | 422.3 ms | 1033.5 ms |
-| 2 | 0.80 | 324.8 ms | 339.1 ms |
-| 4 | 0.80 | 324.7 ms | 342.6 ms |
-| 8 | 0.80 | 331.2 ms | 360.1 ms |
+| 1 | 0.65 | 378.6 ms | 377.6 ms |
+| 2 | 0.67 | 332.5 ms | 362.3 ms |
+| 4 | 0.67 | 331.9 ms | 353.3 ms |
+| 8 | 0.67 | 329.8 ms | 362.2 ms |
 
-**Finding:** retrieval latency is dominated by the OpenAI embedding API round-trip (network-bound), not FAISS search itself (916-vector exact search is sub-millisecond) — increasing k from 1→8 adds negligible latency. Recall plateaus at 0.80 across all k, indicating the bottleneck is embedding/query phrasing rather than neighbourhood size; k=4 (the production default) is a reasonable operating point.
+**Finding:** at 3× the sample size, recall settles at a more representative **0.65–0.67** (down from an optimistic 0.80 on the original 20-item pilot) — exactly the kind of correction larger evaluation sets are meant to surface, and a concrete illustration of why §14 flags small pilot samples as a threat to validity. Retrieval latency remains dominated by the OpenAI embedding API round-trip (network-bound), not FAISS search itself (916-vector exact search is sub-millisecond) — increasing k from 1→8 adds negligible latency, and k=4 (the production default) remains a reasonable operating point.
 
 ![Figure 2 — FAISS retrieval: recall and latency vs. k](figures/fig2_retrieval_recall_vs_k.png)
 
@@ -114,19 +116,18 @@ One-time, per-deployment cost of parsing the 3 training PDFs (355 pages), chunki
 
 ## 4. Component 2 — RAG Generation Layer (retrieval + GPT-4o-mini synthesis)
 
-*Script: [bench_02_rag_generation.py](bench_02_rag_generation.py) · Dataset: [qa_testset.json](datasets/qa_testset.json) (20 items) · Results: [02_rag_generation.json](results/02_rag_generation.json) · Figures: [fig1_component_latency_overview.png](figures/fig1_component_latency_overview.png), [fig3_rag_latency_by_language.png](figures/fig3_rag_latency_by_language.png) · Implementation under test: [agent/rag.py](../agent/rag.py)*
+*Script: [bench_02_rag_generation.py](bench_02_rag_generation.py) · Dataset: [qa_testset.json](datasets/qa_testset.json) (60 items) · Results: [02_rag_generation.json](results/02_rag_generation.json) · Figures: [fig1_component_latency_overview.png](figures/fig1_component_latency_overview.png), [fig3_rag_latency_by_language.png](figures/fig3_rag_latency_by_language.png) · Implementation under test: [agent/rag.py](../agent/rag.py)*
 
-Full `RAGSystem.query()` coroutine, n = 20.
+Full `RAGSystem.query()` coroutine, n = 60 (expanded from an initial n=20 pilot; a paired ablation against a closed-book baseline is reported separately in §11).
 
 | Metric | Value |
 |---|---|
-| Mean end-to-end latency | 4.09 s (σ = 1.32 s) |
-| p50 / p90 / p95 | 3.80 s / 5.41 s / 6.29 s |
-| Mean keyword coverage (groundedness proxy) | 0.82 (σ = 0.28) |
-| Mean `calculate_confidence()` score | 0.80 (constant — see §7 limitation) |
-| Latency by language | en: 4.00 s (n=16) · si: 4.88 s (n=2) · ta: 4.01 s (n=2) |
+| Mean end-to-end latency | 3.33 s, 95% bootstrap CI [3.04 s, 3.64 s] |
+| Mean keyword coverage (groundedness proxy) | 0.77 |
+| Mean `calculate_confidence()` score | 0.80 (constant — see §14 limitation) |
+| Latency by language | en: 3.25 s (n=40) · si: 3.60 s (n=10) · ta: 3.38 s (n=10) |
 
-**Finding:** language does not materially change latency (all within ~1 σ of each other), confirming the multilingual prompt design does not introduce asymmetric cost.
+**Finding:** language does not materially change latency, confirming the multilingual prompt design does not introduce asymmetric cost; the wider language split (10 si / 10 ta vs. the original 2/2) makes this comparison meaningfully more robust than the pilot.
 
 ![Figure 3 — RAG generation latency by language](figures/fig3_rag_latency_by_language.png)
 
@@ -134,20 +135,20 @@ Full `RAGSystem.query()` coroutine, n = 20.
 
 ## 5. Component 3 — LangChain Tool-Calling Agent (routing layer)
 
-*Script: [bench_03_agent_routing.py](bench_03_agent_routing.py) · Dataset: [routing_testset.json](datasets/routing_testset.json) (20 items, 4 tools × 3 languages) · Results: [03_agent_routing.json](results/03_agent_routing.json) · Figure: [fig4_routing_confusion_matrix.png](figures/fig4_routing_confusion_matrix.png) · Implementation under test: [agent/disaster_agent.py](../agent/disaster_agent.py), [agent/agent_tools.py](../agent/agent_tools.py)*
+*Script: [bench_03_agent_routing.py](bench_03_agent_routing.py) · Dataset: [routing_testset.json](datasets/routing_testset.json) (38 items, 4 tools × 3 languages) · Results: [03_agent_routing.json](results/03_agent_routing.json) · Figure: [fig4_routing_confusion_matrix.png](figures/fig4_routing_confusion_matrix.png) · Implementation under test: [agent/disaster_agent.py](../agent/disaster_agent.py), [agent/agent_tools.py](../agent/agent_tools.py)*
 
-20-item hand-labelled routing set spanning all 4 tools × 3 languages.
+38-item hand-labelled routing set spanning all 4 tools × 3 languages (expanded from an initial 20-item pilot with new adversarial/paraphrased cases).
 
 | Metric | Value |
 |---|---|
-| **Tool-selection accuracy** | **100% (20/20)** |
-| Mean E2E latency | 6.21 s (σ = 2.90 s) |
-| p50 / p95 | 5.57 s / 10.79 s |
-| Latency by expected tool | KB query: 8.68 s · web search: 5.85 s · submit report: 6.21 s · get observations: 1.86 s |
+| **Tool-selection accuracy** | **100% (38/38)**, Wilson 95% CI [90.8%, 100%] |
+| Mean E2E latency | 6.21 s, 95% bootstrap CI [5.30 s, 7.16 s] |
+| p50 / p95 | 5.56 s / 10.33 s |
+| Latency by expected tool | KB query: 7.35 s (n=11) · web search: 6.21 s (n=10) · submit report: 7.07 s (n=11) · get observations: 2.53 s (n=6) |
 
-The full confusion matrix is in Figure 4 below. `get_community_observations` is markedly faster (1.86 s) because it is the only tool that does not itself invoke a nested LLM call (it is a synchronous DB read); the other three tools each make a second, nested OpenAI call inside the tool body, roughly doubling total latency versus a single completion.
+The full confusion matrix is in Figure 4 below — it remains perfectly diagonal at 3× the sample size. `get_community_observations` is markedly faster because it is the only tool that does not itself invoke a nested LLM call (it is a synchronous DB read); the other three tools each make a second, nested OpenAI call inside the tool body.
 
-**Finding:** 100% accuracy on n=20 is encouraging but the sample is small; §7 recommends a larger, adversarial routing set (ambiguous/mixed-intent messages) for the camera-ready evaluation.
+**Finding:** 100% accuracy held up on the expanded, harder 38-item set (Wilson lower bound 90.8% rather than an unquotable point estimate on the original n=20), strengthening confidence that the agentic routing design generalises beyond the easiest cases; §14 still recommends an even larger, more adversarial set (ambiguous/mixed-intent messages) for a camera-ready submission.
 
 ![Figure 4 — Agent tool-routing confusion matrix](figures/fig4_routing_confusion_matrix.png)
 
@@ -155,38 +156,38 @@ The full confusion matrix is in Figure 4 below. `get_community_observations` is 
 
 ## 6. Component 4 — Community Reporting Pipeline (VGI intake)
 
-*Script: [bench_04_reporting_pipeline.py](bench_04_reporting_pipeline.py) · Datasets: [report_extraction_testset.json](datasets/report_extraction_testset.json) (18 positives), [qa_testset.json](datasets/qa_testset.json) (20 negatives) · Results: [04_reporting_pipeline.json](results/04_reporting_pipeline.json) · Figure: [fig5_reporting_pipeline_accuracy.png](figures/fig5_reporting_pipeline_accuracy.png) · Implementation under test: [agent/reporter.py](../agent/reporter.py)*
+*Script: [bench_04_reporting_pipeline.py](bench_04_reporting_pipeline.py) · Datasets: [report_extraction_testset.json](datasets/report_extraction_testset.json) (29 positives), [qa_testset.json](datasets/qa_testset.json) (60 negatives) · Results: [04_reporting_pipeline.json](results/04_reporting_pipeline.json) · Figure: [fig5_reporting_pipeline_accuracy.png](figures/fig5_reporting_pipeline_accuracy.png) · Implementation under test: [agent/reporter.py](../agent/reporter.py)*
 
 ### 6.1 Deterministic intent pre-filter (`detect_report_intent`)
 
-Evaluated as a binary classifier: positives = 18 synthetic hazard/infrastructure reports, negatives = 20 advisory questions.
+Evaluated as a binary classifier: positives = 29 synthetic hazard/infrastructure reports, negatives = 60 advisory questions (both sets expanded ~1.5–3× from the original pilot).
 
 | Metric | Value |
 |---|---|
 | Precision | 1.00 |
-| Recall | 0.39 |
-| F1 | 0.56 |
+| Recall | 0.41 |
+| F1 | 0.59 |
 | Mean latency | 6.0 µs |
 
-**Finding — motivates the agent architecture:** the cheap keyword pre-filter alone would miss 61% of genuine reports (e.g. reports phrased without a hard-coded indicator phrase). This is direct quantitative evidence for why the system escalates report detection to the LLM tool-calling agent (§5) rather than relying on keyword rules alone — the agent achieved 100% routing accuracy on the same report-style messages.
+**Finding — motivates the agent architecture:** the cheap keyword pre-filter alone would miss 59% of genuine reports (consistent with the 61% miss rate observed on the smaller pilot set, confirming this is a stable characteristic of the rule-based approach, not pilot noise). This is direct quantitative evidence for why the system escalates report detection to the LLM tool-calling agent (§5) rather than relying on keyword rules alone — the agent achieved 100% routing accuracy on the same report-style messages.
 
 ### 6.2 LLM-based structured extraction (`_extract_report`)
 
-18-item ground-truth set, 5 extracted fields checked per item.
+29-item ground-truth set (expanded from 18), 5 extracted fields checked per item.
 
 | Field | Accuracy |
 |---|---|
 | `has_location` | 1.00 |
-| `ongoing` | 0.94 |
-| `people_at_risk` | 0.83 |
-| `report_domain` | 0.78 |
-| `hazard_type` | 0.72 |
-| **Exact match (all 5 fields)** | **0.50** |
-| Mean latency | 1.83 s (p95 = 2.15 s) |
+| `ongoing` | 0.93 |
+| `report_domain` | 0.79 |
+| `hazard_type` | 0.79 |
+| `people_at_risk` | 0.69 |
+| **Exact match (all 5 fields)** | **0.48** |
+| Mean latency | ≈ 1.7 s |
 
 See **Figure 5**. Per-stage latency breakdown (subset, n=6): LLM extraction ≈ 1.6–2.3 s, Open-Meteo rainfall lookup ≈ 0.55 s when a district match is found (0 s otherwise — short-circuited), deterministic confidence/severity scoring < 2 ms.
 
-**Finding:** `hazard_type` is the weakest field (0.72) — manual inspection shows most misses are `landslide` vs. `erosion`/`mixed` boundary cases where the source text is genuinely ambiguous, not extraction failures. `has_location` is perfect because it drives the mandatory clarification flow, so the model is strongly incentivised to extract it correctly.
+**Finding:** the field-accuracy ranking is stable versus the smaller pilot (`has_location` perfect, `ongoing` high), but `people_at_risk` drops to 0.69 on the larger, more varied set — manual inspection shows the model under-detects implicit risk-to-people cues (e.g. a report near a school or road that doesn't explicitly say "people"). This is a more representative and slightly more conservative accuracy estimate than the original 18-item pilot's 0.83.
 
 ![Figure 5 — Community reporting pipeline accuracy](figures/fig5_reporting_pipeline_accuracy.png)
 
@@ -246,15 +247,15 @@ See **Figure 7**. Throughput degrades monotonically (3,783 → 1,392 ops/s, a 63
 
 ## 9. Component 7 — Language Detection (deterministic pre-check, Layer 1)
 
-*Script: [bench_07_language_detection.py](bench_07_language_detection.py) · Dataset: [language_testset.json](datasets/language_testset.json) (20 items, EN/SI/TA) · Results: [07_language_detection.json](results/07_language_detection.json) · Implementation under test: [agent/orchestrator.py](../agent/orchestrator.py) (`_detect_script_language`)*
+*Script: [bench_07_language_detection.py](bench_07_language_detection.py) · Dataset: [language_testset.json](datasets/language_testset.json) (30 items, EN/SI/TA) · Results: [07_language_detection.json](results/07_language_detection.json) · Implementation under test: [agent/orchestrator.py](../agent/orchestrator.py) (`_detect_script_language`)*
 
-20-item trilingual test set (EN/SI/TA), including short commands and language-switch phrases.
+30-item trilingual test set (EN/SI/TA, expanded from 20), including short commands and language-switch phrases.
 
 | Metric | Value |
 |---|---|
-| Accuracy | 100% (20/20) |
-| Mean latency | 0.71 µs |
-| p99 latency | 4.0 µs |
+| Accuracy | 100% (30/30), Wilson 95% CI [88.7%, 100%] |
+| Mean latency | 0.61 µs |
+| p99 latency | 3.5 µs |
 
 **Finding:** the Unicode-script-range detector is effectively free (sub-microsecond) and perfectly accurate on script-distinguishable text, validating the design choice to run it before any LLM call rather than using `langdetect` (which is slower and probabilistic) for the two non-Latin scripts.
 
@@ -287,7 +288,44 @@ See **Figure 8**. Throughput scales close to linearly with concurrency (0.153 �
 
 ---
 
-## 11. Cross-component summary
+## 11. Component 9 — RAG vs. Closed-Book Baseline Ablation (LLM-as-judge)
+
+*Script: [bench_09_rag_vs_closedbook_baseline.py](bench_09_rag_vs_closedbook_baseline.py) · Judge: [llm_judge.py](llm_judge.py) · Dataset: [qa_testset.json](datasets/qa_testset.json) (seeded 30-item subsample of 60) · Results: [09_rag_vs_closedbook_baseline.json](results/09_rag_vs_closedbook_baseline.json) · Figure: [fig9_rag_vs_closedbook_ablation.png](figures/fig9_rag_vs_closedbook_ablation.png)*
+
+Directly addresses the missing-baseline gap: the production RAG system is compared against a **closed-book baseline** — the *same* generator model (`gpt-4o-mini`), the *same* questions, but **no retrieved KB context**. Both conditions' answers are scored by an independent LLM judge (`gpt-4o`, not the generator model, to reduce same-model self-evaluation bias) for faithfulness (0–5), relevance (0–5), and a binary hallucination flag, in addition to the keyword-coverage proxy used elsewhere in this report.
+
+| Metric | RAG (grounded) | Closed-book (no retrieval) |
+|---|---|---|
+| Faithfulness (0–5) | 4.67, 95% CI [4.27, 4.97] | 4.40, 95% CI [3.87, 4.83] |
+| Relevance (0–5) | 4.40 | 4.70 |
+| **Hallucination-flag rate** | **13.3%**, Wilson 95% CI [5.3%, 29.7%] | **20.0%**, Wilson 95% CI [9.5%, 37.3%] |
+| Keyword coverage | 0.76 | 0.74 |
+| Mean latency | 3.46 s | 4.34 s |
+
+![Figure 9 — RAG vs. closed-book ablation](figures/fig9_rag_vs_closedbook_ablation.png)
+
+**Finding:** RAG shows a directionally lower hallucination rate (13.3% vs. 20.0%) and higher faithfulness (4.67 vs. 4.40) than the closed-book baseline using the *identical* generator model — evidence that grounding in the FAISS knowledge base measurably reduces fabricated claims, which is the core motivating hypothesis for the RAG architecture. Closed-book scored marginally *higher* on judge-rated relevance (4.70 vs. 4.40), plausibly because ungrounded answers are freer to directly restate the question's own terms. **At n=30, the 95% confidence intervals for faithfulness and hallucination rate overlap substantially between conditions** — the direction of the effect is consistent with the RAG hypothesis and with the lower keyword-coverage/faithfulness scores observed for Sinhala/Tamil answers in §4, but the difference does not reach conventional statistical significance at this sample size. We report this honestly rather than overstating a significant effect; §14 recommends scaling this ablation to n≥100 with paired significance testing (e.g. McNemar's test on the binary hallucination flag) for a camera-ready submission.
+
+---
+
+## 12. Component 10 — Live Azure Deployment Probe
+
+*Script: [bench_10_live_deployment_probe.py](bench_10_live_deployment_probe.py) · Results: [10_live_deployment_probe.json](results/10_live_deployment_probe.json) · Target: the actual running production instance at `whatsapp-agent.wittysand-7a29c211.eastus.azurecontainerapps.io`*
+
+Directly addresses the "tested locally, not the actual deployed system" gap (§1.3 discloses this as a deliberate, safety-motivated scope choice for the LLM/agent benchmarks; this component closes it for network/infrastructure behaviour). Two **read-only, side-effect-free** endpoints on the live container were probed 30× each over the public internet — no `/webhook` POST was sent, so no outbound WhatsApp Cloud API call was ever triggered.
+
+| Endpoint | Mean latency | p95 latency | First-request latency | HTTP status |
+|---|---|---|---|---|
+| `GET /` (root) | 755.4 ms | 853.5 ms | 853.5 ms | 200 × 30/30 |
+| `GET /health/token` (WhatsApp token check) | 1231.4 ms | 1546.3 ms | — | 200 × 30/30 |
+
+**Live scale configuration** (`az containerapp show`): `minReplicas=1`, `maxReplicas=1`, `provisioningState=Succeeded`.
+
+**Finding:** the container was never observed cold (min replicas = 1 keeps one instance always warm), so the ~755 ms root-endpoint latency is pure network + Azure Container Apps ingress + FastAPI dispatch overhead with **no LLM/agent work involved** — a useful lower bound on any request's floor latency in production. `/health/token` is slower (1.23 s) because it makes its own outbound call to `graph.facebook.com` before responding, i.e. it is itself a two-hop network measurement (client → Azure → Meta Graph API → Azure → client). **A second finding, arguably more consequential than the latency numbers:** the live configuration shows `minReplicas=1, maxReplicas=1` — i.e. the deployment is **not currently autoscaling at all**, contradicting the "0–100 instances" auto-scaling capability described in the project README. This is exactly the kind of discrepancy between documented and actual deployed behaviour that only a live-deployment probe (rather than local code review) can surface, and is a concrete, actionable item for the paper's deployment/limitations discussion.
+
+---
+
+## 13. Cross-component summary
 
 *Script: [generate_figures.py](generate_figures.py) (`fig_component_latency_overview`), aggregating [results/01](results/01_rag_retrieval.json), [02](results/02_rag_generation.json), [03](results/03_agent_routing.json), [04](results/04_reporting_pipeline.json), [06](results/06_database_throughput.json), [07](results/07_language_detection.json) · Figure: [fig1_component_latency_overview.png](figures/fig1_component_latency_overview.png)*
 
@@ -308,18 +346,19 @@ See **Figure 8**. Throughput scales close to linearly with concurrency (0.153 �
 
 ---
 
-## 12. Threats to validity / limitations
+## 14. Threats to validity / limitations
 
-1. **Sample sizes (n=18–20 per test set).** Adequate to demonstrate methodology and obtain point estimates with visible variance, but too small for tight confidence intervals; a camera-ready version should scale each test set to n≥100 and report bootstrap CIs.
-2. **Keyword-coverage groundedness proxy.** Recall@k and answer "coverage" are automatic, keyword-based proxies, not human relevance/faithfulness judgements. A human or LLM-as-judge evaluation (e.g. RAGAS-style faithfulness/answer-relevance scoring) is recommended to substantiate any claims about answer *quality* beyond retrieval/latency.
+1. **Sample sizes (n=29–60 per test set, n=30 for the ablation).** Scaled up 1.5–3× from an initial n=18–20 pilot, with 95% bootstrap/Wilson confidence intervals now reported throughout (see §3, §5, §9, §11). This is a substantial improvement but still short of the n≥100 with paired significance testing recommended for a camera-ready submission, particularly for the ablation study in §11 where the RAG-vs-closed-book effect is directionally consistent but not statistically significant at n=30.
+2. **Keyword-coverage groundedness proxy, now supplemented but not replaced.** §11 adds an independent LLM-as-judge (faithfulness/relevance/hallucination-flag) using a different model (`gpt-4o`) from the production generator (`gpt-4o-mini`) to reduce self-evaluation bias — but this remains an automatic proxy, not human or domain-expert (NBRO/DMC) judgement of factual correctness, which is the gold standard still missing from this evaluation.
 3. **`calculate_confidence()` is a coarse heuristic** (constant 0.80 for all normal answers in this test set — see [agent/rag.py](../agent/rag.py)); it is not a calibrated probability and should not be reported as one without recalibration.
-4. **Network variability.** All LLM/embedding latencies were measured over one residential internet connection to `api.openai.com` on one occasion; absolute latency numbers will vary with the container's actual Azure-region network path. Relative comparisons between components (the main methodological contribution) are robust to this.
-5. **Single-machine, single-process concurrency test.** §10 measures one Python process's concurrency behaviour, not the deployed Azure Container Apps environment's multi-replica scaling; it isolates *agent/LLM* concurrency characteristics deliberately (§1.3) but does not measure real network latency to WhatsApp/Meta or Azure Redis.
-6. **No production traffic was used.** Per repository owner confirmation, the deployment currently has no real end users; all test messages are synthetic and evaluation was performed offline, never through the live webhook.
+4. **Network variability.** LLM/embedding latencies (§2–§11) were measured over one residential internet connection to `api.openai.com`; §12 additionally measures the real deployed Azure endpoint directly, partially closing this gap for infrastructure-level (non-LLM) latency, but absolute LLM-call latencies from inside the Azure region itself remain unmeasured.
+5. **Single-machine, single-process concurrency test (§10).** Isolates agent/LLM concurrency characteristics deliberately (§1.3) but does not reproduce the deployed multi-replica Azure Container Apps environment — though §12 shows the live deployment is in fact currently configured for a single replica (`minReplicas=maxReplicas=1`), narrowing this gap in practice for the current deployment stage.
+6. **No production traffic was used.** Per repository owner confirmation, the deployment currently has no real end users; all test messages are synthetic. §12's live-deployment probe deliberately used only read-only, side-effect-free endpoints (no `/webhook` POST, no outbound WhatsApp messages) to preserve this constraint while still obtaining genuine production network measurements.
+7. **No human/domain-expert evaluation or field study.** This remains the most significant outstanding gap for a disaster-risk-management-focused Q1 venue specifically (as opposed to a systems/ML venue): no NBRO/DMC expert has validated the factual correctness of hazard advice, and no real end-user has used the system to judge comprehension, trust, or actionability. This cannot be substituted with automated proxies and is flagged as required future work (§8 of the accompanying manuscript, [RESEARCH_PAPER_DRAFT.md](../RESEARCH_PAPER_DRAFT.md)) rather than fabricated here.
 
 ---
 
-## 13. Figure index
+## 15. Figure index
 
 | Figure | Preview | File | Content |
 |---|---|---|---|
@@ -332,14 +371,15 @@ See **Figure 8**. Throughput scales close to linearly with concurrency (0.153 �
 | 6 | <img src="figures/fig6_triangulation_bayesian.png" width="120"> | [fig6_triangulation_bayesian.png](figures/fig6_triangulation_bayesian.png) | TruthFinder P(true) vs. corroborators; reliability convergence |
 | 7 | <img src="figures/fig7_db_concurrency.png" width="120"> | [fig7_db_concurrency.png](figures/fig7_db_concurrency.png) | SQLite write throughput/latency vs. concurrent writers |
 | 8 | <img src="figures/fig8_e2e_concurrency.png" width="120"> | [fig8_e2e_concurrency.png](figures/fig8_e2e_concurrency.png) | End-to-end throughput/latency vs. concurrency |
+| 9 | <img src="figures/fig9_rag_vs_closedbook_ablation.png" width="120"> | [fig9_rag_vs_closedbook_ablation.png](figures/fig9_rag_vs_closedbook_ablation.png) | RAG vs. closed-book: judge scores, hallucination rate, keyword coverage |
 
 Regenerate all figures at any time with [`generate_figures.py`](generate_figures.py) (reads from [`results/`](results/), writes to [`figures/`](figures/)).
 
 ---
 
-## 14. Suggested paper text (drop-in summary paragraph)
+## 16. Suggested paper text (drop-in summary paragraph)
 
-> We evaluated each architectural component of the deployed system in isolation using its production code path. The deterministic pre-check layer (language detection, keyword intent filtering) operates in the microsecond range and adds negligible overhead, while all LLM-backed operations — RAG synthesis (4.09 s mean), structured report extraction (1.83 s mean), and agent tool-routing (6.21 s mean) — dominate end-to-end latency, confirming the system is bound by external LLM API round-trips rather than local computation. The LangChain tool-calling agent achieved 100% tool-selection accuracy on a 20-item labelled routing set, compared to only 38.9% recall for a pure keyword-based report-intent filter, providing quantitative justification for the agentic routing design over rule-based dispatch. The Bayesian TruthFinder triangulation mechanism was validated against a closed-form reference implementation (max absolute error 1.6×10⁻⁴) and adds sub-10 ms overhead even at 50 corroborating reports. Systematic latency-outlier analysis during concurrency testing surfaced and enabled the correction of a substring-matching defect in the deterministic pre-check layer, after which throughput scaled near-linearly with request concurrency (0.15 → 0.53 req/s at 1→8 concurrent users) with only an 18% p50 latency increase, indicating the async FastAPI design absorbs concurrent load gracefully within a single container replica. The SQLite persistence layer showed a 63% throughput reduction under 16 concurrent writers, identifying the local single-writer database as the primary scalability constraint for multi-replica deployment.
+> We evaluated each architectural component of the deployed system in isolation using its production code path, with sample sizes scaled to n=29–60 per test (up from an initial n=18–20 pilot) and 95% bootstrap/Wilson confidence intervals reported throughout. The deterministic pre-check layer (language detection, keyword intent filtering) operates in the microsecond range and adds negligible overhead, while all LLM-backed operations — RAG synthesis (3.33 s mean, n=60), structured report extraction (≈1.7 s mean, n=29), and agent tool-routing (6.21 s mean, n=38) — dominate end-to-end latency, confirming the system is bound by external LLM API round-trips rather than local computation. The LangChain tool-calling agent achieved 100% tool-selection accuracy on a 38-item labelled routing set (Wilson 95% CI [90.8%, 100%]), compared to only 41.4% recall for a pure keyword-based report-intent filter, providing quantitative justification for the agentic routing design over rule-based dispatch. An ablation against a closed-book baseline (identical generator model, no retrieval) found RAG reduced the LLM-judge-flagged hallucination rate from 20.0% to 13.3% and raised faithfulness from 4.40 to 4.67 (0–5 scale) — directionally consistent with the RAG hypothesis, though the n=30 confidence intervals overlap and the effect did not reach conventional significance. The Bayesian TruthFinder triangulation mechanism was validated against a closed-form reference implementation (max absolute error 1.6×10⁻⁴) and adds sub-10 ms overhead even at 50 corroborating reports. Systematic latency-outlier analysis during concurrency testing surfaced and enabled the correction of a substring-matching defect in the deterministic pre-check layer, after which throughput scaled near-linearly with request concurrency (0.15 → 0.53 req/s at 1→8 concurrent users). Finally, probing the actual live Azure Container Apps deployment (rather than only local execution) showed a ~755 ms network/infrastructure latency floor with no LLM involvement, zero request failures across 60 probes, and revealed that the deployment is currently configured for a single, statically-scaled replica rather than the auto-scaling behaviour described in the project documentation — a concrete, actionable finding that only live-deployment testing could surface.
 
 ---
 

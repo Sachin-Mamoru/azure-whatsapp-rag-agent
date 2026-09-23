@@ -1,29 +1,33 @@
 {
-  "n_queries": 20,
+  "n_queries": 60,
   "latency": {
-    "n": 20,
-    "mean": 4.092247068800498,
-    "stdev": 1.3219486485933485,
-    "min": 2.1037238750141114,
-    "max": 7.304831875022501,
-    "p50": 3.795171125093475,
-    "p90": 5.414920875104144,
-    "p95": 6.290948957903311,
-    "p99": 7.304831875022501
+    "n": 60,
+    "mean": 3.3298333103302866,
+    "stdev": 1.190821394645321,
+    "min": 1.5046260838862509,
+    "max": 6.530598583165556,
+    "p50": 3.0472067079972476,
+    "p90": 4.966582833090797,
+    "p95": 5.315419749822468,
+    "p99": 6.302401874912903,
+    "ci95_mean_lo": 3.0375136256140345,
+    "ci95_mean_hi": 3.635648540853678
   },
   "keyword_coverage": {
-    "n": 20,
-    "mean": 0.8166666666666667,
-    "stdev": 0.2791486639914064,
+    "n": 60,
+    "mean": 0.7716666666666666,
+    "stdev": 0.2961825542826478,
     "min": 0.0,
     "max": 1.0,
     "p50": 1.0,
     "p90": 1.0,
     "p95": 1.0,
-    "p99": 1.0
+    "p99": 1.0,
+    "ci95_mean_lo": 0.6944444444444444,
+    "ci95_mean_hi": 0.8444444444444444
   },
   "confidence": {
-    "n": 20,
+    "n": 60,
     "mean": 0.8,
     "stdev": 0.0,
     "min": 0.8,
@@ -31,96 +35,104 @@
     "p50": 0.8,
     "p90": 0.8,
     "p95": 0.8,
-    "p99": 0.8
+    "p99": 0.8,
+    "ci95_mean_lo": 0.8,
+    "ci95_mean_hi": 0.8
   },
   "latency_by_language": {
+    "ta": {
+      "n": 10,
+      "mean": 3.3795454915612937,
+      "stdev": 1.1411775093877816,
+      "min": 1.8431287079583853,
+      "max": 5.315419749822468,
+      "p50": 2.8801442498806864,
+      "p90": 4.675823249854147,
+      "p95": 5.315419749822468,
+      "p99": 5.315419749822468,
+      "ci95_mean_lo": 2.748907170863822,
+      "ci95_mean_hi": 4.061120658228174
+    },
     "en": {
-      "n": 16,
-      "mean": 4.003722239678609,
-      "stdev": 1.3101742213337848,
-      "min": 2.1037238750141114,
-      "max": 7.304831875022501,
-      "p50": 3.795171125093475,
-      "p90": 5.414920875104144,
-      "p95": 5.414920875104144,
-      "p99": 7.304831875022501
+      "n": 40,
+      "mean": 3.2495938894571736,
+      "stdev": 1.021084330732743,
+      "min": 1.5505128751974553,
+      "max": 5.998323875013739,
+      "p50": 3.142400207929313,
+      "p90": 4.570073875132948,
+      "p95": 4.966582833090797,
+      "p99": 5.998323875013739,
+      "ci95_mean_lo": 2.9292755311587824,
+      "ci95_mean_hi": 3.5603184560372028
     },
     "si": {
-      "n": 2,
-      "mean": 4.8838988119969144,
-      "stdev": 1.9898693992798677,
-      "min": 3.4768486660905182,
-      "max": 6.290948957903311,
-      "p50": 3.4768486660905182,
-      "p90": 6.290948957903311,
-      "p95": 6.290948957903311,
-      "p99": 6.290948957903311
-    },
-    "ta": {
-      "n": 2,
-      "mean": 4.00879395857919,
-      "stdev": 1.4500857377319267,
-      "min": 2.9834285001270473,
-      "max": 5.034159417031333,
-      "p50": 2.9834285001270473,
-      "p90": 5.034159417031333,
-      "p95": 5.034159417031333,
-      "p99": 5.034159417031333
+      "n": 10,
+      "mean": 3.6010788125917315,
+      "stdev": 1.8337817949083164,
+      "min": 1.5046260838862509,
+      "max": 6.530598583165556,
+      "p50": 2.9388566249981523,
+      "p90": 6.302401874912903,
+      "p95": 6.530598583165556,
+      "p99": 6.530598583165556,
+      "ci95_mean_lo": 2.5806709337048233,
+      "ci95_mean_hi": 4.7342547459062185
     }
   },
   "per_query": [
     {
       "id": "qa01",
       "language": "en",
-      "latency_s": 7.304831875022501,
+      "latency_s": 5.998323875013739,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 1255
+      "answer_len_chars": 1233
     },
     {
       "id": "qa02",
       "language": "en",
-      "latency_s": 3.6016781670041382,
+      "latency_s": 3.762405541026965,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 841
+      "answer_len_chars": 810
     },
     {
       "id": "qa03",
       "language": "en",
-      "latency_s": 5.414920875104144,
+      "latency_s": 4.966582833090797,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 1476
+      "answer_len_chars": 1557
     },
     {
       "id": "qa04",
       "language": "en",
-      "latency_s": 3.1913888750132173,
+      "latency_s": 2.4817160421516746,
       "confidence": 0.8,
       "keyword_coverage": 0.0,
-      "answer_len_chars": 980
+      "answer_len_chars": 761
     },
     {
       "id": "qa05",
       "language": "en",
-      "latency_s": 3.795171125093475,
+      "latency_s": 4.039440624881536,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 729
+      "answer_len_chars": 1049
     },
     {
       "id": "qa06",
       "language": "en",
-      "latency_s": 3.6180554579477757,
+      "latency_s": 3.2351038749329746,
       "confidence": 0.8,
       "keyword_coverage": 0.5,
-      "answer_len_chars": 1013
+      "answer_len_chars": 1037
     },
     {
       "id": "qa07",
       "language": "en",
-      "latency_s": 3.4414696251042187,
+      "latency_s": 3.004748750012368,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
       "answer_len_chars": 674
@@ -128,106 +140,426 @@
     {
       "id": "qa08",
       "language": "en",
-      "latency_s": 4.470092417206615,
+      "latency_s": 3.6171145408879966,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 1341
+      "answer_len_chars": 1596
     },
     {
       "id": "qa09",
       "language": "en",
-      "latency_s": 4.742768625030294,
+      "latency_s": 3.6254434580914676,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 1372
+      "answer_len_chars": 1239
     },
     {
       "id": "qa10",
       "language": "en",
-      "latency_s": 5.1050692920107394,
+      "latency_s": 3.259332749992609,
       "confidence": 0.8,
       "keyword_coverage": 0.6666666666666666,
-      "answer_len_chars": 1307
+      "answer_len_chars": 1398
     },
     {
       "id": "qa11",
       "language": "en",
-      "latency_s": 4.249909792095423,
+      "latency_s": 4.5089883748441935,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 1240
+      "answer_len_chars": 1351
     },
     {
       "id": "qa12",
       "language": "en",
-      "latency_s": 4.893145750043914,
+      "latency_s": 4.53702887496911,
       "confidence": 0.8,
       "keyword_coverage": 0.75,
-      "answer_len_chars": 1165
+      "answer_len_chars": 1184
     },
     {
       "id": "qa13",
       "language": "si",
-      "latency_s": 3.4768486660905182,
+      "latency_s": 4.14048545784317,
       "confidence": 0.8,
       "keyword_coverage": 0.3333333333333333,
-      "answer_len_chars": 455
+      "answer_len_chars": 530
     },
     {
       "id": "qa14",
       "language": "si",
-      "latency_s": 6.290948957903311,
+      "latency_s": 6.530598583165556,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 829
+      "answer_len_chars": 996
     },
     {
       "id": "qa15",
       "language": "ta",
-      "latency_s": 2.9834285001270473,
+      "latency_s": 3.74221312510781,
       "confidence": 0.8,
-      "keyword_coverage": 0.6666666666666666,
-      "answer_len_chars": 451
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 534
     },
     {
       "id": "qa16",
       "language": "ta",
-      "latency_s": 5.034159417031333,
+      "latency_s": 4.675823249854147,
       "confidence": 0.8,
-      "keyword_coverage": 0.6666666666666666,
-      "answer_len_chars": 883
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 969
     },
     {
       "id": "qa17",
       "language": "en",
-      "latency_s": 2.647060916060582,
+      "latency_s": 3.2373968749307096,
       "confidence": 0.8,
       "keyword_coverage": 0.75,
-      "answer_len_chars": 713
+      "answer_len_chars": 727
     },
     {
       "id": "qa18",
       "language": "en",
-      "latency_s": 2.1037238750141114,
+      "latency_s": 2.595778207993135,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 557
+      "answer_len_chars": 576
     },
     {
       "id": "qa19",
       "language": "en",
-      "latency_s": 2.5705972919240594,
+      "latency_s": 2.8857747081201524,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 747
+      "answer_len_chars": 866
     },
     {
       "id": "qa20",
       "language": "en",
-      "latency_s": 2.9096718751825392,
+      "latency_s": 3.142400207929313,
       "confidence": 0.8,
       "keyword_coverage": 1.0,
-      "answer_len_chars": 846
+      "answer_len_chars": 831
+    },
+    {
+      "id": "qa21",
+      "language": "en",
+      "latency_s": 1.8033053330145776,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 340
+    },
+    {
+      "id": "qa22",
+      "language": "en",
+      "latency_s": 3.7287027079146355,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 1080
+    },
+    {
+      "id": "qa23",
+      "language": "en",
+      "latency_s": 2.0513535840436816,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 231
+    },
+    {
+      "id": "qa24",
+      "language": "en",
+      "latency_s": 3.8539731660857797,
+      "confidence": 0.8,
+      "keyword_coverage": 0.75,
+      "answer_len_chars": 1154
+    },
+    {
+      "id": "qa25",
+      "language": "en",
+      "latency_s": 3.44413770805113,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 1174
+    },
+    {
+      "id": "qa26",
+      "language": "en",
+      "latency_s": 2.3987854160368443,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 663
+    },
+    {
+      "id": "qa27",
+      "language": "en",
+      "latency_s": 2.917191417189315,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 526
+    },
+    {
+      "id": "qa28",
+      "language": "en",
+      "latency_s": 2.338268124964088,
+      "confidence": 0.8,
+      "keyword_coverage": 0.25,
+      "answer_len_chars": 586
+    },
+    {
+      "id": "qa29",
+      "language": "en",
+      "latency_s": 2.2566888330038637,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 315
+    },
+    {
+      "id": "qa30",
+      "language": "en",
+      "latency_s": 4.570073875132948,
+      "confidence": 0.8,
+      "keyword_coverage": 0.8,
+      "answer_len_chars": 1057
+    },
+    {
+      "id": "qa31",
+      "language": "en",
+      "latency_s": 1.5505128751974553,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 196
+    },
+    {
+      "id": "qa32",
+      "language": "en",
+      "latency_s": 4.6876327090431005,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 1391
+    },
+    {
+      "id": "qa33",
+      "language": "en",
+      "latency_s": 2.5075487908907235,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 824
+    },
+    {
+      "id": "qa34",
+      "language": "en",
+      "latency_s": 2.0988369579426944,
+      "confidence": 0.8,
+      "keyword_coverage": 0.75,
+      "answer_len_chars": 523
+    },
+    {
+      "id": "qa35",
+      "language": "en",
+      "latency_s": 3.243712665978819,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 1389
+    },
+    {
+      "id": "qa36",
+      "language": "en",
+      "latency_s": 2.212143833981827,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 305
+    },
+    {
+      "id": "qa37",
+      "language": "en",
+      "latency_s": 1.9696823328267783,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 469
+    },
+    {
+      "id": "qa38",
+      "language": "en",
+      "latency_s": 2.5165402500424534,
+      "confidence": 0.8,
+      "keyword_coverage": 0.75,
+      "answer_len_chars": 598
+    },
+    {
+      "id": "qa39",
+      "language": "en",
+      "latency_s": 4.546339625027031,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 1431
+    },
+    {
+      "id": "qa40",
+      "language": "en",
+      "latency_s": 3.046122708823532,
+      "confidence": 0.8,
+      "keyword_coverage": 0.75,
+      "answer_len_chars": 1015
+    },
+    {
+      "id": "qa41",
+      "language": "en",
+      "latency_s": 2.2872012502048165,
+      "confidence": 0.8,
+      "keyword_coverage": 0.75,
+      "answer_len_chars": 478
+    },
+    {
+      "id": "qa42",
+      "language": "en",
+      "latency_s": 3.0472067079972476,
+      "confidence": 0.8,
+      "keyword_coverage": 0.75,
+      "answer_len_chars": 816
+    },
+    {
+      "id": "qa43",
+      "language": "en",
+      "latency_s": 2.9896406249608845,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 1007
+    },
+    {
+      "id": "qa44",
+      "language": "en",
+      "latency_s": 5.020574541063979,
+      "confidence": 0.8,
+      "keyword_coverage": 0.75,
+      "answer_len_chars": 1844
+    },
+    {
+      "id": "qa45",
+      "language": "si",
+      "latency_s": 3.0545102921314538,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 332
+    },
+    {
+      "id": "qa46",
+      "language": "si",
+      "latency_s": 2.9388566249981523,
+      "confidence": 0.8,
+      "keyword_coverage": 0.3333333333333333,
+      "answer_len_chars": 273
+    },
+    {
+      "id": "qa47",
+      "language": "si",
+      "latency_s": 2.6316704580094665,
+      "confidence": 0.8,
+      "keyword_coverage": 0.6666666666666666,
+      "answer_len_chars": 300
+    },
+    {
+      "id": "qa48",
+      "language": "si",
+      "latency_s": 1.5046260838862509,
+      "confidence": 0.8,
+      "keyword_coverage": 0.0,
+      "answer_len_chars": 76
+    },
+    {
+      "id": "qa49",
+      "language": "si",
+      "latency_s": 6.302401874912903,
+      "confidence": 0.8,
+      "keyword_coverage": 0.6666666666666666,
+      "answer_len_chars": 808
+    },
+    {
+      "id": "qa50",
+      "language": "si",
+      "latency_s": 5.094927333993837,
+      "confidence": 0.8,
+      "keyword_coverage": 0.3333333333333333,
+      "answer_len_chars": 648
+    },
+    {
+      "id": "qa51",
+      "language": "si",
+      "latency_s": 2.059180707903579,
+      "confidence": 0.8,
+      "keyword_coverage": 1.0,
+      "answer_len_chars": 200
+    },
+    {
+      "id": "qa52",
+      "language": "si",
+      "latency_s": 1.7535307090729475,
+      "confidence": 0.8,
+      "keyword_coverage": 0.0,
+      "answer_len_chars": 104
+    },
+    {
+      "id": "qa53",
+      "language": "ta",
+      "latency_s": 2.7797622079961,
+      "confidence": 0.8,
+      "keyword_coverage": 0.3333333333333333,
+      "answer_len_chars": 323
+    },
+    {
+      "id": "qa54",
+      "language": "ta",
+      "latency_s": 2.347441792022437,
+      "confidence": 0.8,
+      "keyword_coverage": 0.6666666666666666,
+      "answer_len_chars": 409
+    },
+    {
+      "id": "qa55",
+      "language": "ta",
+      "latency_s": 1.8431287079583853,
+      "confidence": 0.8,
+      "keyword_coverage": 0.3333333333333333,
+      "answer_len_chars": 128
+    },
+    {
+      "id": "qa56",
+      "language": "ta",
+      "latency_s": 5.315419749822468,
+      "confidence": 0.8,
+      "keyword_coverage": 0.6666666666666666,
+      "answer_len_chars": 717
+    },
+    {
+      "id": "qa57",
+      "language": "ta",
+      "latency_s": 4.5857392500620335,
+      "confidence": 0.8,
+      "keyword_coverage": 0.3333333333333333,
+      "answer_len_chars": 989
+    },
+    {
+      "id": "qa58",
+      "language": "ta",
+      "latency_s": 2.9334078328683972,
+      "confidence": 0.8,
+      "keyword_coverage": 0.6666666666666666,
+      "answer_len_chars": 494
+    },
+    {
+      "id": "qa59",
+      "language": "ta",
+      "latency_s": 2.6923747500404716,
+      "confidence": 0.8,
+      "keyword_coverage": 0.6666666666666666,
+      "answer_len_chars": 312
+    },
+    {
+      "id": "qa60",
+      "language": "ta",
+      "latency_s": 2.8801442498806864,
+      "confidence": 0.8,
+      "keyword_coverage": 0.3333333333333333,
+      "answer_len_chars": 447
     }
   ]
 }

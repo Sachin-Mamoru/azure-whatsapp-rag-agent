@@ -1,87 +1,97 @@
 {
-  "n_queries": 20,
+  "n_queries": 38,
   "accuracy": 1.0,
   "confusion_matrix": {
     "query_knowledge_base": {
-      "query_knowledge_base": 6,
+      "query_knowledge_base": 11,
       "search_web": 0,
       "submit_community_report": 0,
       "get_community_observations": 0
     },
     "search_web": {
       "query_knowledge_base": 0,
-      "search_web": 5,
+      "search_web": 10,
       "submit_community_report": 0,
       "get_community_observations": 0
     },
     "submit_community_report": {
       "query_knowledge_base": 0,
       "search_web": 0,
-      "submit_community_report": 6,
+      "submit_community_report": 11,
       "get_community_observations": 0
     },
     "get_community_observations": {
       "query_knowledge_base": 0,
       "search_web": 0,
       "submit_community_report": 0,
-      "get_community_observations": 3
+      "get_community_observations": 6
     }
   },
   "latency": {
-    "n": 20,
-    "mean": 6.207453329104465,
-    "stdev": 2.8994606270081906,
-    "min": 1.7387159171048552,
-    "max": 11.080073666991666,
-    "p50": 5.567981333006173,
-    "p90": 9.941027332795784,
-    "p95": 10.78991866693832,
-    "p99": 11.080073666991666
+    "n": 38,
+    "mean": 6.207606055975989,
+    "stdev": 2.9587060368103804,
+    "min": 1.9354993749875575,
+    "max": 16.430769790895283,
+    "p50": 5.564882667036727,
+    "p90": 9.820648541906849,
+    "p95": 10.333629458909854,
+    "p99": 16.430769790895283,
+    "ci95_mean_lo": 5.302806723826124,
+    "ci95_mean_hi": 7.156797741306946
   },
   "latency_by_expected_tool": {
     "query_knowledge_base": {
-      "n": 6,
-      "mean": 8.676475083300224,
-      "stdev": 2.4391892996679982,
-      "min": 4.710094542009756,
-      "max": 11.080073666991666,
-      "p50": 8.28147158306092,
-      "p90": 10.78991866693832,
-      "p95": 11.080073666991666,
-      "p99": 11.080073666991666
+      "n": 11,
+      "mean": 7.347155931807885,
+      "stdev": 1.9745559635476737,
+      "min": 4.2219037499744445,
+      "max": 9.90450929198414,
+      "p50": 7.197190375067294,
+      "p90": 9.820648541906849,
+      "p95": 9.90450929198414,
+      "p99": 9.90450929198414,
+      "ci95_mean_lo": 6.177378333427689,
+      "ci95_mean_hi": 8.430036780466748
     },
     "search_web": {
-      "n": 5,
-      "mean": 5.847338741412386,
-      "stdev": 1.502498331767743,
-      "min": 4.292798083042726,
-      "max": 8.358224124880508,
-      "p50": 5.537710333010182,
-      "p90": 8.358224124880508,
-      "p95": 8.358224124880508,
-      "p99": 8.358224124880508
+      "n": 10,
+      "mean": 6.20867527090013,
+      "stdev": 0.9170307689770035,
+      "min": 5.23458291683346,
+      "max": 8.039507415844128,
+      "p50": 6.128631125204265,
+      "p90": 7.349555624881759,
+      "p95": 8.039507415844128,
+      "p99": 8.039507415844128,
+      "ci95_mean_lo": 5.705613908427767,
+      "ci95_mean_hi": 6.764244670816697
     },
     "submit_community_report": {
-      "n": 6,
-      "mean": 6.211801701341756,
-      "stdev": 2.3229981975160743,
-      "min": 3.9841219580266625,
-      "max": 8.383318042149767,
-      "p50": 4.165539833949879,
-      "p90": 8.310084790922701,
-      "p95": 8.383318042149767,
-      "p99": 8.383318042149767
+      "n": 11,
+      "mean": 7.072872269009664,
+      "stdev": 4.108247030211391,
+      "min": 3.553603959036991,
+      "max": 16.430769790895283,
+      "p50": 4.4546034168452024,
+      "p90": 10.673894583946094,
+      "p95": 16.430769790895283,
+      "p99": 16.430769790895283,
+      "ci95_mean_lo": 4.956662886585533,
+      "ci95_mean_hi": 9.594167651439255
     },
     "get_community_observations": {
-      "n": 3,
-      "mean": 1.8609040557251622,
-      "stdev": 0.1848350944921389,
-      "min": 1.7387159171048552,
-      "max": 2.0735453329980373,
-      "p50": 1.7704509170725942,
-      "p90": 2.0735453329980373,
-      "p95": 2.0735453329980373,
-      "p99": 2.0735453329980373
+      "n": 6,
+      "mean": 2.530327868182212,
+      "stdev": 0.9907127378950709,
+      "min": 1.9354993749875575,
+      "max": 4.525981709128246,
+      "p50": 2.1456974579486996,
+      "p90": 2.3613062920048833,
+      "p95": 4.525981709128246,
+      "p99": 4.525981709128246,
+      "ci95_mean_lo": 2.031505194531443,
+      "ci95_mean_hi": 3.352529465725335
     }
   },
   "per_query": [
@@ -94,8 +104,8 @@
       ],
       "first_tool": "query_knowledge_base",
       "correct": true,
-      "latency_s": 8.28147158306092,
-      "response_len": 506
+      "latency_s": 6.854070458095521,
+      "response_len": 763
     },
     {
       "id": "r02",
@@ -106,8 +116,8 @@
       ],
       "first_tool": "query_knowledge_base",
       "correct": true,
-      "latency_s": 10.78991866693832,
-      "response_len": 560
+      "latency_s": 6.343340875115246,
+      "response_len": 567
     },
     {
       "id": "r03",
@@ -118,8 +128,8 @@
       ],
       "first_tool": "query_knowledge_base",
       "correct": true,
-      "latency_s": 7.256264708004892,
-      "response_len": 644
+      "latency_s": 7.651843416970223,
+      "response_len": 623
     },
     {
       "id": "r04",
@@ -130,8 +140,8 @@
       ],
       "first_tool": "query_knowledge_base",
       "correct": true,
-      "latency_s": 4.710094542009756,
-      "response_len": 260
+      "latency_s": 4.2219037499744445,
+      "response_len": 298
     },
     {
       "id": "r05",
@@ -142,8 +152,8 @@
       ],
       "first_tool": "search_web",
       "correct": true,
-      "latency_s": 5.479979833122343,
-      "response_len": 178
+      "latency_s": 5.406037000007927,
+      "response_len": 203
     },
     {
       "id": "r06",
@@ -154,8 +164,8 @@
       ],
       "first_tool": "search_web",
       "correct": true,
-      "latency_s": 5.537710333010182,
-      "response_len": 208
+      "latency_s": 5.321380249923095,
+      "response_len": 238
     },
     {
       "id": "r07",
@@ -166,8 +176,8 @@
       ],
       "first_tool": "search_web",
       "correct": true,
-      "latency_s": 5.567981333006173,
-      "response_len": 311
+      "latency_s": 6.128631125204265,
+      "response_len": 288
     },
     {
       "id": "r08",
@@ -178,8 +188,8 @@
       ],
       "first_tool": "search_web",
       "correct": true,
-      "latency_s": 4.292798083042726,
-      "response_len": 197
+      "latency_s": 6.243456500116736,
+      "response_len": 207
     },
     {
       "id": "r09",
@@ -191,8 +201,8 @@
       ],
       "first_tool": "submit_community_report",
       "correct": true,
-      "latency_s": 8.383318042149767,
-      "response_len": 357
+      "latency_s": 8.602241290966049,
+      "response_len": 377
     },
     {
       "id": "r10",
@@ -204,8 +214,8 @@
       ],
       "first_tool": "submit_community_report",
       "correct": true,
-      "latency_s": 8.301164665957913,
-      "response_len": 945
+      "latency_s": 16.430769790895283,
+      "response_len": 808
     },
     {
       "id": "r11",
@@ -216,7 +226,7 @@
       ],
       "first_tool": "submit_community_report",
       "correct": true,
-      "latency_s": 4.126580917043611,
+      "latency_s": 4.164149875054136,
       "response_len": 77
     },
     {
@@ -229,8 +239,8 @@
       ],
       "first_tool": "submit_community_report",
       "correct": true,
-      "latency_s": 8.310084790922701,
-      "response_len": 715
+      "latency_s": 7.414069583173841,
+      "response_len": 739
     },
     {
       "id": "r13",
@@ -241,8 +251,8 @@
       ],
       "first_tool": "get_community_observations",
       "correct": true,
-      "latency_s": 1.7387159171048552,
-      "response_len": 56
+      "latency_s": 2.3613062920048833,
+      "response_len": 149
     },
     {
       "id": "r14",
@@ -253,8 +263,8 @@
       ],
       "first_tool": "get_community_observations",
       "correct": true,
-      "latency_s": 1.7704509170725942,
-      "response_len": 63
+      "latency_s": 4.525981709128246,
+      "response_len": 109
     },
     {
       "id": "r15",
@@ -265,8 +275,8 @@
       ],
       "first_tool": "get_community_observations",
       "correct": true,
-      "latency_s": 2.0735453329980373,
-      "response_len": 69
+      "latency_s": 2.240425999974832,
+      "response_len": 111
     },
     {
       "id": "r16",
@@ -277,8 +287,8 @@
       ],
       "first_tool": "query_knowledge_base",
       "correct": true,
-      "latency_s": 11.080073666991666,
-      "response_len": 655
+      "latency_s": 9.742711375001818,
+      "response_len": 411
     },
     {
       "id": "r17",
@@ -289,8 +299,8 @@
       ],
       "first_tool": "search_web",
       "correct": true,
-      "latency_s": 8.358224124880508,
-      "response_len": 231
+      "latency_s": 6.2583432090468705,
+      "response_len": 158
     },
     {
       "id": "r18",
@@ -301,7 +311,7 @@
       ],
       "first_tool": "submit_community_report",
       "correct": true,
-      "latency_s": 4.165539833949879,
+      "latency_s": 3.9509279581252486,
       "response_len": 64
     },
     {
@@ -313,8 +323,8 @@
       ],
       "first_tool": "query_knowledge_base",
       "correct": true,
-      "latency_s": 9.941027332795784,
-      "response_len": 947
+      "latency_s": 9.90450929198414,
+      "response_len": 1038
     },
     {
       "id": "r20",
@@ -325,8 +335,226 @@
       ],
       "first_tool": "submit_community_report",
       "correct": true,
-      "latency_s": 3.9841219580266625,
+      "latency_s": 3.553603959036991,
       "response_len": 67
+    },
+    {
+      "id": "r21",
+      "language": "en",
+      "expected_tool": "query_knowledge_base",
+      "called_tools": [
+        "query_knowledge_base"
+      ],
+      "first_tool": "query_knowledge_base",
+      "correct": true,
+      "latency_s": 5.249486250104383,
+      "response_len": 433
+    },
+    {
+      "id": "r22",
+      "language": "en",
+      "expected_tool": "search_web",
+      "called_tools": [
+        "search_web"
+      ],
+      "first_tool": "search_web",
+      "correct": true,
+      "latency_s": 5.564882667036727,
+      "response_len": 136
+    },
+    {
+      "id": "r23",
+      "language": "en",
+      "expected_tool": "submit_community_report",
+      "called_tools": [
+        "submit_community_report",
+        "query_knowledge_base"
+      ],
+      "first_tool": "submit_community_report",
+      "correct": true,
+      "latency_s": 10.333629458909854,
+      "response_len": 508
+    },
+    {
+      "id": "r24",
+      "language": "en",
+      "expected_tool": "get_community_observations",
+      "called_tools": [
+        "get_community_observations"
+      ],
+      "first_tool": "get_community_observations",
+      "correct": true,
+      "latency_s": 1.9354993749875575,
+      "response_len": 198
+    },
+    {
+      "id": "r25",
+      "language": "en",
+      "expected_tool": "query_knowledge_base",
+      "called_tools": [
+        "query_knowledge_base"
+      ],
+      "first_tool": "query_knowledge_base",
+      "correct": true,
+      "latency_s": 5.385596624808386,
+      "response_len": 486
+    },
+    {
+      "id": "r26",
+      "language": "en",
+      "expected_tool": "search_web",
+      "called_tools": [
+        "search_web"
+      ],
+      "first_tool": "search_web",
+      "correct": true,
+      "latency_s": 5.23458291683346,
+      "response_len": 226
+    },
+    {
+      "id": "r27",
+      "language": "en",
+      "expected_tool": "submit_community_report",
+      "called_tools": [
+        "submit_community_report"
+      ],
+      "first_tool": "submit_community_report",
+      "correct": true,
+      "latency_s": 4.401979084126651,
+      "response_len": 159
+    },
+    {
+      "id": "r28",
+      "language": "en",
+      "expected_tool": "get_community_observations",
+      "called_tools": [
+        "get_community_observations"
+      ],
+      "first_tool": "get_community_observations",
+      "correct": true,
+      "latency_s": 2.1456974579486996,
+      "response_len": 202
+    },
+    {
+      "id": "r29",
+      "language": "en",
+      "expected_tool": "query_knowledge_base",
+      "called_tools": [
+        "query_knowledge_base"
+      ],
+      "first_tool": "query_knowledge_base",
+      "correct": true,
+      "latency_s": 7.197190375067294,
+      "response_len": 954
+    },
+    {
+      "id": "r30",
+      "language": "en",
+      "expected_tool": "search_web",
+      "called_tools": [
+        "search_web"
+      ],
+      "first_tool": "search_web",
+      "correct": true,
+      "latency_s": 6.540376000106335,
+      "response_len": 352
+    },
+    {
+      "id": "r31",
+      "language": "en",
+      "expected_tool": "submit_community_report",
+      "called_tools": [
+        "submit_community_report",
+        "query_knowledge_base"
+      ],
+      "first_tool": "submit_community_report",
+      "correct": true,
+      "latency_s": 10.673894583946094,
+      "response_len": 649
+    },
+    {
+      "id": "r32",
+      "language": "en",
+      "expected_tool": "get_community_observations",
+      "called_tools": [
+        "get_community_observations"
+      ],
+      "first_tool": "get_community_observations",
+      "correct": true,
+      "latency_s": 1.9730563750490546,
+      "response_len": 241
+    },
+    {
+      "id": "r33",
+      "language": "si",
+      "expected_tool": "query_knowledge_base",
+      "called_tools": [
+        "query_knowledge_base"
+      ],
+      "first_tool": "query_knowledge_base",
+      "correct": true,
+      "latency_s": 8.447414290858433,
+      "response_len": 279
+    },
+    {
+      "id": "r34",
+      "language": "si",
+      "expected_tool": "search_web",
+      "called_tools": [
+        "search_web"
+      ],
+      "first_tool": "search_web",
+      "correct": true,
+      "latency_s": 8.039507415844128,
+      "response_len": 194
+    },
+    {
+      "id": "r35",
+      "language": "si",
+      "expected_tool": "submit_community_report",
+      "called_tools": [
+        "submit_community_report"
+      ],
+      "first_tool": "submit_community_report",
+      "correct": true,
+      "latency_s": 4.4546034168452024,
+      "response_len": 80
+    },
+    {
+      "id": "r36",
+      "language": "ta",
+      "expected_tool": "query_knowledge_base",
+      "called_tools": [
+        "query_knowledge_base"
+      ],
+      "first_tool": "query_knowledge_base",
+      "correct": true,
+      "latency_s": 9.820648541906849,
+      "response_len": 642
+    },
+    {
+      "id": "r37",
+      "language": "ta",
+      "expected_tool": "search_web",
+      "called_tools": [
+        "search_web"
+      ],
+      "first_tool": "search_web",
+      "correct": true,
+      "latency_s": 7.349555624881759,
+      "response_len": 259
+    },
+    {
+      "id": "r38",
+      "language": "ta",
+      "expected_tool": "submit_community_report",
+      "called_tools": [
+        "submit_community_report"
+      ],
+      "first_tool": "submit_community_report",
+      "correct": true,
+      "latency_s": 3.8217259580269456,
+      "response_len": 81
     }
   ]
 }
