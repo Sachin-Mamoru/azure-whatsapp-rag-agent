@@ -251,7 +251,7 @@ The contribution is a **three-layer credibility framework** designed for low-res
 
 1. **LLM-assisted structured extraction** — transforms free-text multilingual reports into a typed schema with zero manual annotation, enabling downstream algorithmic processing.
 
-2. **Composite confidence scoring** — combines four independent signals (completeness, geospatial plausibility, Bayesian triangulation, rainfall correlation) into a single calibrated score, without any labelled training data.
+2. **Composite confidence scoring** — combines four independent signals (completeness, geospatial plausibility, Bayesian triangulation, photographic evidence) into a single calibrated score, without any labelled training data.
 
 3. **Source credibility tracking (Bayesian Truth Discovery)** — models each contributor's reliability as a Beta-distributed random variable updated by admin verification decisions, so that repeat contributors with a track record of accuracy contribute more to the triangulation signal than anonymous one-off reporters.
 
@@ -261,7 +261,7 @@ The contribution is a **three-layer credibility framework** designed for low-res
 
 #### Confidence Score (Composite)
 
-$$\text{conf} = w_1 \cdot S_{\text{completeness}} + w_2 \cdot S_{\text{plausibility}} + w_3 \cdot S_{\text{triangulation}} + w_4 \cdot S_{\text{sev-boost}}$$
+$$\text{conf} = w_1 \cdot S_{\text{completeness}} + w_2 \cdot S_{\text{plausibility}} + w_3 \cdot S_{\text{triangulation}} + w_4 \cdot S_{\text{evidence}}$$
 
 Where default weights are:
 
@@ -270,7 +270,9 @@ Where default weights are:
 | $S_{\text{completeness}}$ | 0.30 | Fraction of schema fields populated (location, description, hazard type, etc.) |
 | $S_{\text{plausibility}}$ | 0.20 | District/locality lookup + Open-Meteo rainfall correlation |
 | $S_{\text{triangulation}}$ | 0.30 | Bayesian truth discovery across independent corroborators |
-| $S_{\text{sev-boost}}$ | 0.20 | Presence of high-severity linguistic indicators |
+| $S_{\text{evidence}}$ | 0.20 | Photographic evidence, scored 0.00–0.20 by a multimodal (vision) LLM against a fixed 5-tier rubric; 0 when no photo is attached |
+
+**Maximum achievable confidence:** $\sum w_i = 1.00$ is only reachable when a photo is attached *and* scored at the top evidence tier. Text-only reports (no photo) have $S_{\text{evidence}} = 0$, so their achievable maximum is capped at $0.30 + 0.20 + 0.30 = 0.80$ — attaching a supporting photo is therefore the only way a report can cross into the top confidence band.
 
 **Weight rationale:** The weights and composite structure are an original contribution of this work. Each dimension is grounded in prior literature:
 
@@ -279,7 +281,7 @@ Where default weights are:
 | $S_{\text{completeness}}$ (0.30) | VGI data quality literature — Goodchild & Li (2012), Haklay (2010): completeness of required fields (location, hazard type, description) is a standard quality dimension for volunteered geographic information |
 | $S_{\text{plausibility}}$ (0.20) | Environmental context validation — geo-spatial ground truth (landslide-prone districts, flood-prone localities) combined with Open-Meteo precipitation as physical corroboration; inspired by Panteras et al. (2014) on sensor cross-validation for crisis reports |
 | $S_{\text{triangulation}}$ (0.30) | TruthFinder algorithm — Yin et al. (2008) *"Towards Truth Discovery from Fact Conflicts"*: Bayesian source-credibility weighted corroboration adapted to spatially-independent VGI reporters |
-| $S_{\text{sev-boost}}$ (0.20) | Original heuristic — higher-severity signals (people at risk, ongoing emergency) receive priority weighting consistent with disaster response triage principles (e.g., Comes et al., 2014) |
+| $S_{\text{evidence}}$ (0.20) | Original extension of this work — a multimodal LLM assesses attached photos against a fixed evidence rubric, closing the gap between a free-text hazard claim and physically verifiable visual corroboration; not attributed to prior literature since it is introduced here |
 
 The specific combination of these four dimensions — applied to WhatsApp-based VGI in a low-resource multilingual disaster context — constitutes a novel contribution without direct precedent in the literature.
 
@@ -384,7 +386,7 @@ This system makes four contributions not found in combination in prior work:
 Existing VGI hazard systems (e.g., AIDR, Ushahidi) require manually annotated training corpora for each language. This system uses GPT-4o-mini zero-shot structured extraction with multilingual indicator dictionaries (English, Sinhala, Tamil) — making it applicable to under-resourced South Asian languages without crowd-sourced annotation.
 
 **2. Confidence scoring from independent signal fusion**
-Rather than relying on a single classifier, the system fuses four independent signals (structural completeness, geospatial plausibility via district lookup, Bayesian triangulation across independent reporters, and near-real-time rainfall correlation from Open-Meteo). Each signal is theoretically grounded and interpretable — important for institutional trust in an early-warning context.
+Rather than relying on a single classifier, the system fuses four independent signals (structural completeness, geospatial plausibility via district lookup and Open-Meteo rainfall correlation, Bayesian triangulation across independent reporters, and multimodal photographic evidence assessed by a vision LLM). Each signal is theoretically grounded and interpretable — important for institutional trust in an early-warning context.
 
 **3. Bayesian source credibility in a messaging-first interface**
 Prior truth discovery systems (TruthFinder, Spaun, CRH) assume a structured web table input. This work applies the core TruthFinder formulation directly to unstructured WhatsApp messages, with a phone-number-hashed identity model that is both privacy-preserving and Sybil-resistant (same user cannot corroborate their own report).
