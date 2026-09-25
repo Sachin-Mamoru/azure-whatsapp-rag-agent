@@ -12,9 +12,11 @@ vectorstore. Community observations only feed the advisory pipeline as
 read-only supplementary context with explicit source labelling.
 """
 
+import base64
 import hashlib
 import json
 import math
+import mimetypes
 import os
 import sqlite3
 import uuid
@@ -290,9 +292,19 @@ class CommunityReporter:
                     status           TEXT NOT NULL DEFAULT 'new',
                     people_at_risk   INTEGER DEFAULT 0,
                     ongoing          INTEGER DEFAULT 0,
+                    image_path       TEXT,
+                    image_evidence_score REAL DEFAULT 0.0,
                     created_at       TEXT NOT NULL
                 )
             """)
+            # Migration for DBs created before photo-evidence support existed.
+            existing_cols = {
+                row[1] for row in conn.execute("PRAGMA table_info(community_reports)").fetchall()
+            }
+            if "image_path" not in existing_cols:
+                conn.execute("ALTER TABLE community_reports ADD COLUMN image_path TEXT")
+            if "image_evidence_score" not in existing_cols:
+                conn.execute("ALTER TABLE community_reports ADD COLUMN image_evidence_score REAL DEFAULT 0.0")
             conn.execute("""
                 CREATE TABLE IF NOT EXISTS report_status_log (
                     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -340,6 +352,8 @@ class CommunityReporter:
         message: str,
         language: str,
         pending_report: Optional[Dict] = None,
+        image_bytes: Optional[bytes] = None,
+        image_mime: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Main entry point called from the orchestrator.
@@ -364,6 +378,16 @@ class CommunityReporter:
                 extracted["description"] = message.strip()
         else:
             extracted = await self._extract_report(message, language)
+
+        # A photo attached to this message is scored as visual evidence and
+        # merged into the (possibly still-pending) extracted fields so it
+        # survives a follow-up clarification round-trip.
+        if image_bytes:
+            evidence_score, image_path = await self._score_image_evidence(
+                image_bytes, image_mime, extracted.get("description") or message, language,
+            )
+            extracted["image_evidence_score"] = evidence_score
+            extracted["image_path"] = image_path
 
         # Only ask ONE follow-up: location is the most actionable missing field
         if not extracted.get("location_text"):
@@ -406,6 +430,8 @@ class CommunityReporter:
             "status":           "new",
             "people_at_risk":   1 if extracted.get("people_at_risk") else 0,
             "ongoing":          1 if extracted.get("ongoing") else 0,
+            "image_path":       extracted.get("image_path"),
+            "image_evidence_score": round(extracted.get("image_evidence_score") or 0.0, 3),
             "created_at":       now,
         }
 
@@ -546,6 +572,73 @@ class CommunityReporter:
             "infrastructure_damage": _contains_indicators(message, [INFRASTRUCTURE_INDICATORS]),
         }
 
+    # ── Photo evidence scoring (vision LLM) ────────────────────────────────
+
+    # Evidence-score rubric — mirrors the confidence-scoring spec's 4th
+    # component (weight 0.20) and must stay in this exact 5-tier form so the
+    # LLM's output can be snapped to a valid score.
+    _EVIDENCE_TIERS = [0.00, 0.05, 0.10, 0.15, 0.20]
+
+    async def _score_image_evidence(
+        self,
+        image_bytes: bytes,
+        image_mime: Optional[str],
+        description: str,
+        language: str,
+    ) -> Tuple[float, str]:
+        """
+        Score how well an attached photo supports the report, using a
+        vision-capable LLM against a fixed 5-tier rubric, and save the photo
+        to local disk for admin review. Returns (evidence_score, image_path).
+        """
+        image_mime = image_mime or "image/jpeg"
+        image_path = self._save_image(image_bytes, image_mime)
+
+        prompt = (
+            "You are assessing photo evidence attached to a disaster/hazard "
+            "community report. Rate how well the photo supports the report "
+            "using EXACTLY one of these tiers:\n"
+            "0.00 - No image / unusable image\n"
+            "0.05 - Image visible but does not clearly support the report\n"
+            "0.10 - Partially consistent evidence\n"
+            "0.15 - Clear evidence consistent with the report\n"
+            "0.20 - Strong, clear evidence directly supporting the report\n\n"
+            f"Report description: {description or '(no description provided)'}\n\n"
+            'Return ONLY a JSON object: {"evidence_score": <one of 0.00, 0.05, 0.10, 0.15, 0.20>}'
+        )
+        try:
+            b64 = base64.b64encode(image_bytes).decode("ascii")
+            result = await self.llm.ainvoke([
+                HumanMessage(content=[
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": f"data:{image_mime};base64,{b64}"}},
+                ])
+            ])
+            raw = result.content.strip()
+            if raw.startswith("```"):
+                parts = raw.split("```")
+                raw = parts[1] if len(parts) > 1 else parts[0]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+            score = float(json.loads(raw.strip()).get("evidence_score", 0.0))
+        except Exception as exc:
+            print(f"[reporter] image evidence scoring error: {exc}")
+            score = 0.05  # image received but could not be automatically assessed
+
+        score = min(self._EVIDENCE_TIERS, key=lambda t: abs(t - score))
+        return score, image_path
+
+    @staticmethod
+    def _save_image(image_bytes: bytes, mime_type: str) -> str:
+        """Persist the raw photo to local disk so admins can review evidence."""
+        ext = mimetypes.guess_extension(mime_type) or ".jpg"
+        images_dir = Config.REPORT_IMAGES_DIR
+        os.makedirs(images_dir, exist_ok=True)
+        path = os.path.join(images_dir, f"{uuid.uuid4().hex}{ext}")
+        with open(path, "wb") as f:
+            f.write(image_bytes)
+        return path
+
     # ── Confidence scoring ────────────────────────────────────────────────
 
     def _score_confidence(self, extracted: Dict, phone_number: str) -> float:
@@ -554,7 +647,7 @@ class CommunityReporter:
           completeness  0.30
           plausibility  0.20
           triangulation 0.30  ← now Bayesian source-credibility weighted
-          (evidence skipped in Phase 1 — text only, no attachment analysis)
+          evidence      0.20  ← vision-LLM photo assessment, 0.00-0.20 (see _score_image_evidence)
         """
         score = 0.0
 
@@ -572,6 +665,9 @@ class CommunityReporter:
 
         # Bayesian source-credibility weighted triangulation
         score += self._check_triangulation_bayesian(extracted, phone_number)
+
+        # Visual evidence (attached photo), already clamped to [0.00, 0.20]
+        score += extracted.get("image_evidence_score") or 0.0
 
         return min(score, 1.0)
 
@@ -906,15 +1002,16 @@ class CommunityReporter:
                         (report_id, timestamp, user_hash, language, report_domain,
                          hazard_type, category, location_text, description,
                          confidence_score, severity_score, action, status,
-                         people_at_risk, ongoing, created_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                         people_at_risk, ongoing, image_path, image_evidence_score, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     record["report_id"],   record["timestamp"],    record["user_hash"],
                     record["language"],    record["report_domain"], record["hazard_type"],
                     record["category"],    record["location_text"], record["description"],
                     record["confidence_score"], record["severity_score"],
                     record["action"],      record["status"],
-                    record["people_at_risk"], record["ongoing"], record["created_at"],
+                    record["people_at_risk"], record["ongoing"],
+                    record["image_path"], record["image_evidence_score"], record["created_at"],
                 ))
                 conn.execute("""
                     INSERT INTO report_status_log

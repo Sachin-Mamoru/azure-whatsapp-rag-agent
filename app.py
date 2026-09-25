@@ -93,13 +93,25 @@ async def receive_message(request: Request):
                         # Process incoming messages
                         for message in value.get("messages", []):
                             phone_number = message.get("from")
-                            message_body = message.get("text", {}).get("body", "")
                             message_id = message.get("id")
-                            
-                            if phone_number and message_body:
+                            msg_type = message.get("type")
+
+                            image_bytes, image_mime = None, None
+                            if msg_type == "image":
+                                image_info = message.get("image", {})
+                                # A photo may arrive with or without a caption
+                                message_body = image_info.get("caption") or "[image attached]"
+                                media = download_whatsapp_media(image_info.get("id"))
+                                if media:
+                                    image_bytes, image_mime = media
+                            else:
+                                message_body = message.get("text", {}).get("body", "")
+
+                            if phone_number and (message_body or image_bytes):
                                 # Process message through orchestrator
                                 response = await orchestrator.process_message(
-                                    phone_number, message_body, message_id
+                                    phone_number, message_body, message_id,
+                                    image_bytes=image_bytes, image_mime=image_mime,
                                 )
                                 
                                 if response:
@@ -110,6 +122,39 @@ async def receive_message(request: Request):
     except Exception as e:
         print(f"Error processing webhook: {e}")
         return {"status": "error"}
+
+def download_whatsapp_media(media_id: str):
+    """
+    Download a WhatsApp media attachment (2-step Graph API flow):
+    1. Resolve the media_id to a short-lived CDN URL + mime type.
+    2. Fetch the bytes from that URL using the same bearer token.
+    Returns (bytes, mime_type) or None on failure.
+    """
+    if not media_id:
+        return None
+    try:
+        meta_resp = requests.get(
+            f"https://graph.facebook.com/v22.0/{media_id}",
+            params={"access_token": Config.WHATSAPP_TOKEN},
+            timeout=10,
+        )
+        meta_resp.raise_for_status()
+        meta = meta_resp.json()
+        media_url = meta.get("url")
+        mime_type = meta.get("mime_type", "image/jpeg")
+        if not media_url:
+            return None
+
+        file_resp = requests.get(
+            media_url,
+            headers={"Authorization": f"Bearer {Config.WHATSAPP_TOKEN}"},
+            timeout=20,
+        )
+        file_resp.raise_for_status()
+        return file_resp.content, mime_type
+    except Exception as e:
+        print(f"Error downloading WhatsApp media {media_id}: {e}")
+        return None
 
 async def send_whatsapp_message(phone_number: str, message: str):
     """Send message via WhatsApp API"""

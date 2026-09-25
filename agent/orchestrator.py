@@ -85,7 +85,14 @@ class WhatsAppOrchestrator:
                 return "ta"
         return None  # no non-ASCII script found → treat as English
 
-    async def process_message(self, phone_number: str, message: str, message_id: str) -> Optional[str]:
+    async def process_message(
+        self,
+        phone_number: str,
+        message: str,
+        message_id: str,
+        image_bytes: Optional[bytes] = None,
+        image_mime: Optional[str] = None,
+    ) -> Optional[str]:
         """Process incoming WhatsApp message and return response"""
         try:
             # Get user session data
@@ -171,13 +178,18 @@ class WhatsAppOrchestrator:
             # If the user was asked a location clarification for a pending
             # report, route directly back to the reporter — no agent call
             # needed since this is a stateful continuation, not a new decision.
-            if session.get("report_state") == "awaiting_clarification":
+            # A photo attachment is treated the same way: it is evidence for
+            # a (new or in-progress) community report, so it also bypasses
+            # the LLM agent and goes straight to the reporting pipeline.
+            if session.get("report_state") == "awaiting_clarification" or image_bytes:
                 self.memory.add_message(phone_number, "user", message)
                 result = await self.reporter.process_report(
                     phone_number, message, user_language,
                     pending_report=session.get("pending_report"),
+                    image_bytes=image_bytes, image_mime=image_mime,
                 )
                 if result["needs_clarification"]:
+                    session["report_state"] = "awaiting_clarification"
                     session["pending_report"] = result["pending_report"]
                 else:
                     session.pop("report_state", None)

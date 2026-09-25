@@ -27,6 +27,9 @@ class Config:
     # SQLite path for community hazard reports (separate from authoritative RAG)
     COMMUNITY_REPORTS_DB = os.getenv("COMMUNITY_REPORTS_DB", "./data/community_reports.db")
 
+    # Local disk folder where photos attached to community reports are saved
+    REPORT_IMAGES_DIR = os.getenv("REPORT_IMAGES_DIR", "./data/report_images")
+
     # Google Sheets (linked to Google Form responses)
     GOOGLE_SHEETS_CREDENTIALS_FILE = os.getenv("GOOGLE_SHEETS_CREDENTIALS_FILE", "./credentials.json")
     GOOGLE_SHEETS_SPREADSHEET_ID   = os.getenv("GOOGLE_SHEETS_SPREADSHEET_ID", "")
