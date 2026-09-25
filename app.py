@@ -246,7 +246,8 @@ async def admin_list_reports(
                     SELECT report_id, timestamp, language, report_domain,
                            hazard_type, category, location_text, description,
                            confidence_score, severity_score, action, status,
-                           people_at_risk, ongoing
+                           people_at_risk, ongoing, image_path, image_evidence_score,
+                           image_hazard_category
                     FROM community_reports
                     WHERE action = ?
                       AND status NOT IN ('verified', 'closed', 'archived')
@@ -258,7 +259,8 @@ async def admin_list_reports(
                     SELECT report_id, timestamp, language, report_domain,
                            hazard_type, category, location_text, description,
                            confidence_score, severity_score, action, status,
-                           people_at_risk, ongoing
+                           people_at_risk, ongoing, image_path, image_evidence_score,
+                           image_hazard_category
                     FROM community_reports
                     WHERE status = ?
                     ORDER BY severity_score DESC, timestamp DESC

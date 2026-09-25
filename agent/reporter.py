@@ -294,6 +294,7 @@ class CommunityReporter:
                     ongoing          INTEGER DEFAULT 0,
                     image_path       TEXT,
                     image_evidence_score REAL DEFAULT 0.0,
+                    image_hazard_category TEXT,
                     created_at       TEXT NOT NULL
                 )
             """)
@@ -305,6 +306,8 @@ class CommunityReporter:
                 conn.execute("ALTER TABLE community_reports ADD COLUMN image_path TEXT")
             if "image_evidence_score" not in existing_cols:
                 conn.execute("ALTER TABLE community_reports ADD COLUMN image_evidence_score REAL DEFAULT 0.0")
+            if "image_hazard_category" not in existing_cols:
+                conn.execute("ALTER TABLE community_reports ADD COLUMN image_hazard_category TEXT")
             conn.execute("""
                 CREATE TABLE IF NOT EXISTS report_status_log (
                     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -379,15 +382,29 @@ class CommunityReporter:
         else:
             extracted = await self._extract_report(message, language)
 
-        # A photo attached to this message is scored as visual evidence and
-        # merged into the (possibly still-pending) extracted fields so it
-        # survives a follow-up clarification round-trip.
+        # A photo attached to this message is fully analysed (hazard category,
+        # severity, consistency, evidence score) and merged into the
+        # (possibly still-pending) extracted fields so it survives a
+        # follow-up clarification round-trip.
         if image_bytes:
-            evidence_score, image_path = await self._score_image_evidence(
+            analysis = await self._analyze_image_evidence(
                 image_bytes, image_mime, extracted.get("description") or message, language,
             )
-            extracted["image_evidence_score"] = evidence_score
-            extracted["image_path"] = image_path
+            extracted["image_evidence_score"] = analysis["evidence_score"]
+            extracted["image_path"] = analysis["image_path"]
+            extracted["image_hazard_category"] = analysis["hazard_category"]
+            extracted["image_summary"] = analysis["summary"]
+
+            # If the text alone couldn't classify the report, fall back to
+            # what the photo itself shows (e.g. caption-only reports).
+            mapped = self._IMAGE_HAZARD_MAPPING.get(analysis["hazard_category"])
+            if mapped and extracted.get("hazard_type") in (None, "unknown"):
+                extracted["report_domain"], extracted["hazard_type"] = mapped
+                extracted["category"] = analysis["possible_condition"] or analysis["hazard_category"]
+            if extracted.get("hazard_scale", "unknown") == "unknown" and analysis["severity_from_image"] != "none":
+                extracted["hazard_scale"] = {"low": "minor", "moderate": "moderate", "high": "major"}.get(
+                    analysis["severity_from_image"], "unknown"
+                )
 
         # Only ask ONE follow-up: location is the most actionable missing field
         if not extracted.get("location_text"):
@@ -432,13 +449,17 @@ class CommunityReporter:
             "ongoing":          1 if extracted.get("ongoing") else 0,
             "image_path":       extracted.get("image_path"),
             "image_evidence_score": round(extracted.get("image_evidence_score") or 0.0, 3),
+            "image_hazard_category": extracted.get("image_hazard_category"),
             "created_at":       now,
         }
 
         self._store_report(record)
 
         return {
-            "response":             self._acknowledgement(language, report_id, action, severity),
+            "response":             self._acknowledgement(
+                language, report_id, action, severity,
+                image_hazard_category=extracted.get("image_hazard_category"),
+            ),
             "report_id":            report_id,
             "needs_clarification":  False,
             "clarification_field":  None,
@@ -579,33 +600,69 @@ class CommunityReporter:
     # LLM's output can be snapped to a valid score.
     _EVIDENCE_TIERS = [0.00, 0.05, 0.10, 0.15, 0.20]
 
-    async def _score_image_evidence(
+    # hazard_category (as classified by the vision LLM) -> (report_domain, hazard_type)
+    # used to backfill classification when the text alone was too sparse to tell.
+    _IMAGE_HAZARD_MAPPING: Dict[str, Tuple[str, str]] = {
+        "drainage_issue":     ("infrastructure", "drainage"),
+        "slope_instability":  ("hazard", "landslide"),
+        "ground_cracking":    ("hazard", "landslide"),
+        "localised_flooding": ("hazard", "flood"),
+        "access_obstruction": ("infrastructure", "other"),
+    }
+
+    # Short, human-readable label for each hazard_category, per language —
+    # used to tell the user what the photo itself showed.
+    _HAZARD_CATEGORY_LABELS: Dict[str, Dict[str, str]] = {
+        "drainage_issue":     {"en": "a drainage issue", "si": "ජල බැස්සීමේ ගැටළුවක්", "ta": "வடிகால் சிக்கல்"},
+        "slope_instability":  {"en": "slope instability", "si": "බෑවුම අස්ථාවර වීමක්", "ta": "சரிவு உறுதியற்ற தன்மை"},
+        "ground_cracking":    {"en": "ground cracking", "si": "බිම් ඉරිතැලීම්", "ta": "தரை விரிசல்"},
+        "localised_flooding": {"en": "localised flooding", "si": "ප්‍රාදේශීය ගංවතුර", "ta": "உள்ளூர் வெள்ளம்"},
+        "access_obstruction": {"en": "a road obstruction", "si": "මාර්ග අවහිරයක්", "ta": "சாலை தடை"},
+    }
+
+    async def _analyze_image_evidence(
         self,
         image_bytes: bytes,
         image_mime: Optional[str],
         description: str,
         language: str,
-    ) -> Tuple[float, str]:
+    ) -> Dict[str, Any]:
         """
-        Score how well an attached photo supports the report, using a
-        vision-capable LLM against a fixed 5-tier rubric, and save the photo
-        to local disk for admin review. Returns (evidence_score, image_path).
+        Run a full structured vision assessment of an attached photo: what
+        hazard (if any) is visible, how severe it looks, whether it's
+        consistent with the user's text, and an evidence score (0.00-0.20).
+        Saves the photo to local disk for admin review.
         """
         image_mime = image_mime or "image/jpeg"
         image_path = self._save_image(image_bytes, image_mime)
 
         prompt = (
-            "You are assessing photo evidence attached to a disaster/hazard "
-            "community report. Rate how well the photo supports the report "
-            "using EXACTLY one of these tiers:\n"
+            "You are assessing a photo attached to a disaster/hazard community report.\n"
+            f"Report description: {description or '(no description provided)'}\n\n"
+            "Return ONLY a JSON object with this exact shape:\n"
+            "{\n"
+            '  "hazard_detected": <true/false>,\n'
+            '  "hazard_category": <one of "drainage_issue", "slope_instability", '
+            '"ground_cracking", "localised_flooding", "access_obstruction", "other", "none">,\n'
+            '  "possible_condition": "<short phrase, e.g. poor_drainage_or_possible_blockage>",\n'
+            '  "severity_from_image": <one of "none", "low", "moderate", "high">,\n'
+            '  "report_image_consistency": <one of "high", "moderate", "low", "contradiction">,\n'
+            '  "evidence_score": <one of 0.00, 0.05, 0.10, 0.15, 0.20 - see rubric below>,\n'
+            '  "summary": "<one short sentence>"\n'
+            "}\n\n"
+            "evidence_score rubric:\n"
             "0.00 - No image / unusable image\n"
             "0.05 - Image visible but does not clearly support the report\n"
             "0.10 - Partially consistent evidence\n"
             "0.15 - Clear evidence consistent with the report\n"
-            "0.20 - Strong, clear evidence directly supporting the report\n\n"
-            f"Report description: {description or '(no description provided)'}\n\n"
-            'Return ONLY a JSON object: {"evidence_score": <one of 0.00, 0.05, 0.10, 0.15, 0.20>}'
+            "0.20 - Strong, clear evidence directly supporting the report"
         )
+        default: Dict[str, Any] = {
+            "hazard_detected": False, "hazard_category": "none",
+            "possible_condition": "", "severity_from_image": "none",
+            "report_image_consistency": "low", "evidence_score": 0.05,
+            "summary": "Photo received but could not be automatically assessed.",
+        }
         try:
             b64 = base64.b64encode(image_bytes).decode("ascii")
             result = await self.llm.ainvoke([
@@ -620,13 +677,16 @@ class CommunityReporter:
                 raw = parts[1] if len(parts) > 1 else parts[0]
                 if raw.startswith("json"):
                     raw = raw[4:]
-            score = float(json.loads(raw.strip()).get("evidence_score", 0.0))
+            analysis = {**default, **json.loads(raw.strip())}
         except Exception as exc:
             print(f"[reporter] image evidence scoring error: {exc}")
-            score = 0.05  # image received but could not be automatically assessed
+            analysis = dict(default)
 
-        score = min(self._EVIDENCE_TIERS, key=lambda t: abs(t - score))
-        return score, image_path
+        analysis["evidence_score"] = min(
+            self._EVIDENCE_TIERS, key=lambda t: abs(t - float(analysis.get("evidence_score", 0.0)))
+        )
+        analysis["image_path"] = image_path
+        return analysis
 
     @staticmethod
     def _save_image(image_bytes: bytes, mime_type: str) -> str:
@@ -1002,8 +1062,9 @@ class CommunityReporter:
                         (report_id, timestamp, user_hash, language, report_domain,
                          hazard_type, category, location_text, description,
                          confidence_score, severity_score, action, status,
-                         people_at_risk, ongoing, image_path, image_evidence_score, created_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                         people_at_risk, ongoing, image_path, image_evidence_score,
+                         image_hazard_category, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     record["report_id"],   record["timestamp"],    record["user_hash"],
                     record["language"],    record["report_domain"], record["hazard_type"],
@@ -1011,7 +1072,8 @@ class CommunityReporter:
                     record["confidence_score"], record["severity_score"],
                     record["action"],      record["status"],
                     record["people_at_risk"], record["ongoing"],
-                    record["image_path"], record["image_evidence_score"], record["created_at"],
+                    record["image_path"], record["image_evidence_score"],
+                    record["image_hazard_category"], record["created_at"],
                 ))
                 conn.execute("""
                     INSERT INTO report_status_log
@@ -1051,10 +1113,26 @@ class CommunityReporter:
         return msgs.get(language, msgs["en"])
 
     @staticmethod
-    def _acknowledgement(language: str, report_id: str, action: str, severity: float) -> str:
+    def _acknowledgement(
+        language: str,
+        report_id: str,
+        action: str,
+        severity: float,
+        image_hazard_category: Optional[str] = None,
+    ) -> str:
         """User-facing acknowledgement based on decision action."""
+        photo_note = ""
+        labels = CommunityReporter._HAZARD_CATEGORY_LABELS.get(image_hazard_category or "")
+        if labels:
+            label = labels.get(language, labels["en"])
+            photo_note = {
+                "en": f"\n\n📷 Your photo shows signs of {label}.",
+                "si": f"\n\n📷 ඔබේ ඡායාරූපයේ {label} පෙන්නුම් කරයි.",
+                "ta": f"\n\n📷 உங்கள் புகைப்படத்தில் {label} தென்படுகிறது.",
+            }.get(language, f"\n\n📷 Your photo shows signs of {label}.")
+
         if action == "escalate":
-            return {
+            msg = {
                 "en": (
                     f"🚨 *Report received* (ID: {report_id})\n\n"
                     "This has been flagged as urgent and the monitoring team has been notified. "
@@ -1072,9 +1150,10 @@ class CommunityReporter:
                     "நீங்கள் ஆபத்தில் இருந்தால் உடனடியாக பாதுகாப்பான இடத்திற்கு செல்லுங்கள்."
                 ),
             }.get(language, "")  # falls through to default below if language missing
+            return msg + photo_note
 
         if action in ("flag_review", "monitor"):
-            return {
+            msg = {
                 "en": (
                     f"✅ *Report received* (ID: {report_id})\n\n"
                     "Thank you. Your observation has been recorded and added to our "
@@ -1091,9 +1170,10 @@ class CommunityReporter:
                     "வரிசையில் சேர்க்கப்பட்டது. நிலைமை மோசமானால் மீண்டும் அனுப்பவும்."
                 ),
             }.get(language, "")
+            return msg + photo_note
 
         # store_only
-        return {
+        msg = {
             "en": (
                 f"✅ *Report noted* (ID: {report_id})\n\n"
                 "Thank you for letting us know. Your report has been stored. "
@@ -1110,3 +1190,4 @@ class CommunityReporter:
                 "இடம் மற்றும் கண்ட விவரங்கள் தர முடியுமா?"
             ),
         }.get(language, f"✅ Report noted (ID: {report_id}). Thank you.")
+        return msg + photo_note
