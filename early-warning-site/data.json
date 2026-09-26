@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-26T10:25:26.390Z",
+  "last_updated": "2026-09-26T10:25:53.280Z",
   "warnings": {
     "Ampara": false,
     "Anuradhapura": false,
@@ -10,7 +10,7 @@
     "Gampaha": false,
     "Hambantota": false,
     "Jaffna": false,
-    "Kalutara": false,
+    "Kalutara": true,
     "Kandy": false,
     "Kegalle": false,
     "Kilinochchi": false,
