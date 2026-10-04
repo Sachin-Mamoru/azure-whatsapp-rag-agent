@@ -305,6 +305,15 @@ class TestCorroboration(ReporterTestCase):
         self.assertEqual(len(next(c for c in d["contributors"] if c["user_hash"] == "other_user")["report_ids"]), 3)
         self.assertAlmostEqual(d["score"], 0.30 * 0.5)
 
+    def test_byte_identical_photo_is_not_independent_corroboration(self):
+        self.insert_report("COPY", "other_user")
+        with sqlite3.connect(Config.COMMUNITY_REPORTS_DB) as conn:
+            conn.execute("UPDATE community_reports SET image_sha256 = 'abc' WHERE report_id = 'COPY'")
+        fields = {"location_text": "Ratnapura", "report_domain": "hazard", "hazard_type": "landslide"}
+        self.assertEqual(self.reporter._corroboration_details(fields, "me", image_sha256="abc")["contributors"], [])
+        self.assertEqual(len(self.reporter._corroboration_details(fields, "me", image_sha256="xyz")["contributors"]), 1)
+        self.assertEqual(len(self.reporter._corroboration_details(fields, "me")["contributors"]), 1)
+
     def test_location_token_skips_positional_words(self):
         self.assertEqual(self.reporter._location_token("near the temple"), "temple")
         self.assertEqual(self.reporter._location_token("behind Kandy hospital"), "kandy")

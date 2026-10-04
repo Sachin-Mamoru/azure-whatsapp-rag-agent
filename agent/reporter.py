@@ -701,6 +701,7 @@ class CommunityReporter:
                 ("shadow_action", "TEXT"),
                 ("review_outcome", "TEXT"),
                 ("scoring_provenance", "TEXT"),
+                ("image_sha256", "TEXT"),
             ]:
                 if col not in existing_cols:
                     conn.execute(f"ALTER TABLE community_reports ADD COLUMN {col} {ddl}")
@@ -864,7 +865,8 @@ class CommunityReporter:
 
         now = datetime.now(timezone.utc)
         rainfall = await self._fetch_rainfall_for_location(fields.get("location_text") or "")
-        scoring = self.score_report(fields, user_hash, visual_contribution, now=now)
+        image_sha256 = analysis.get("image_sha256") if analysis and analysis.get("image_bytes") else None
+        scoring = self.score_report(fields, user_hash, visual_contribution, now=now, image_sha256=image_sha256)
 
         report_id = f"RPT-{uuid.uuid4().hex[:8].upper()}"
         visual_outcome = classify_visual_outcome(analysis) if analysis else None
@@ -913,6 +915,7 @@ class CommunityReporter:
             "policy_version":   scoring["policy_version"],
             "shadow_action":    scoring["shadow_action"],
             "scoring_provenance": json.dumps(provenance, ensure_ascii=False, default=str),
+            "image_sha256":     image_sha256,
         }
 
         try:
@@ -1200,7 +1203,7 @@ class CommunityReporter:
     # ── Confidence scoring ────────────────────────────────────────────────
 
     def score_report(self, fields: Dict[str, Any], user_hash: str, visual_contribution: float,
-                     now: Optional[datetime] = None) -> Dict[str, Any]:
+                     now: Optional[datetime] = None, image_sha256: Optional[str] = None) -> Dict[str, Any]:
         """
         Confidence (completeness 0.30, plausibility 0.20, corroboration 0.30,
         image evidence 0.20), severity (spec Table 5) and both decision
@@ -1213,7 +1216,7 @@ class CommunityReporter:
             "description": 0.05 if len(fields.get("description") or "") > 20 else 0.0,
         }
         plausibility = self._check_plausibility(fields, now=now)
-        corroboration = self._corroboration_details(fields, user_hash, now=now)
+        corroboration = self._corroboration_details(fields, user_hash, now=now, image_sha256=image_sha256)
         conf_parts = {
             "completeness": sum(completeness.values()),
             "plausibility": plausibility,
@@ -1362,13 +1365,14 @@ class CommunityReporter:
         return next((w.strip(",.") for w in loc.split()
                      if len(w.strip(",.")) > 2 and w.strip(",.") not in self._LOCATION_STOPWORDS), "")
 
-    def _corroboration_details(self, extracted: Dict, user_hash: str,
-                               now: Optional[datetime] = None) -> Dict[str, Any]:
+    def _corroboration_details(self, extracted: Dict, user_hash: str, now: Optional[datetime] = None,
+                               image_sha256: Optional[str] = None) -> Dict[str, Any]:
         """
         Corroboration from other contributors' recent reports in the same
         (domain, hazard type, location token) cluster. Each distinct other
         contributor counts once; the submitter is excluded. Their reliabilities
         are combined by aggregate_reliabilities and scaled to [0, 0.30].
+        Reports carrying a byte-identical photo are excluded as copies.
         Distinct contributor pseudonyms are not proof of independent observations.
         """
         now = now or datetime.now(timezone.utc)
@@ -1398,8 +1402,9 @@ class CommunityReporter:
                   AND lower(r.location_text) LIKE ? ESCAPE '\\'
                   AND r.status NOT IN ('closed', 'archived')
                   AND r.user_hash != ?
+                  AND (? IS NULL OR r.image_sha256 IS NULL OR r.image_sha256 != ?)
                 ORDER BY r.timestamp
-            """, (cutoff, domain, hazard, hazard, like, user_hash)).fetchall()
+            """, (cutoff, domain, hazard, hazard, like, user_hash, image_sha256, image_sha256)).fetchall()
         except Exception as exc:
             print(f"[reporter] corroboration query error: {exc}")
             return details
@@ -1557,7 +1562,7 @@ class CommunityReporter:
         "category", "location_text", "description", "confidence_score", "severity_score",
         "action", "status", "people_at_risk", "ongoing", "image_path", "image_evidence_score",
         "image_hazard_category", "created_at", "source_message_id", "policy_version",
-        "shadow_action", "scoring_provenance",
+        "shadow_action", "scoring_provenance", "image_sha256",
     )
 
     def _store_report(self, record: Dict) -> None:
