@@ -163,10 +163,17 @@ class WhatsAppOrchestrator:
                 self.memory.update_session(phone_number, session)
                 return get_response_text("language_selected", selected_language)
 
-            # ── 6. First-time users: show menu for greetings ──────────────
+            # ── 6. Greetings always show the welcome + language menu ───────
+            # This applies even to returning users (session already has a
+            # language) so a plain "hi" never falls through to the LLM agent,
+            # and it also nudges the user to register for alerts.
+            greetings = {"hi", "hello", "hey", "start", "help", "menu"}
+            if message_lower.strip() in greetings:
+                lang = session.get("language", "en")
+                return get_menu_text() + get_response_text("greeting_register_note", lang)
+
             if not session.get("language"):
-                greetings = {"hi", "hello", "hey", "start", "help", "menu", "1", "2", "3"}
-                if message_lower.strip() in greetings or len(message_lower.strip()) <= 3:
+                if len(message_lower.strip()) <= 3:
                     return get_menu_text()
                 # For a real first question with no script detected, default to English
                 session["language"] = "en"

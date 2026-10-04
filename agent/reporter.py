@@ -372,11 +372,15 @@ class CommunityReporter:
           }
         """
         # If we are receiving a clarification answer for an existing pending report
+        answering_location_clarification = bool(
+            pending_report and pending_report.get("_clarification_field") == "location"
+        )
         if pending_report:
             extracted = dict(pending_report)
             clarification_field = extracted.pop("_clarification_field", None)
             if clarification_field == "location":
                 extracted["location_text"] = message.strip()
+                extracted["location_specific"] = True  # trust the user's direct answer, don't loop
             elif clarification_field == "description":
                 extracted["description"] = message.strip()
         else:
@@ -406,11 +410,15 @@ class CommunityReporter:
                     analysis["severity_from_image"], "unknown"
                 )
 
-        # Only ask ONE follow-up: location is the most actionable missing field
-        if not extracted.get("location_text"):
+        # Only ask ONE follow-up: location is the most actionable missing field.
+        # The LLM itself judges whether location_text is specific enough to act on
+        # (e.g. "my hometown"/"here" -> not specific) and writes the follow-up
+        # question, rather than matching against a fixed keyword list.
+        if not extracted.get("location_text") or not extracted.get("location_specific", True):
             extracted["_clarification_field"] = "location"
+            question = extracted.get("clarification_question") or self._clarification_prompt(language, "location")
             return {
-                "response": self._clarification_prompt(language, "location"),
+                "response": question,
                 "report_id": None,
                 "needs_clarification": True,
                 "clarification_field": "location",
@@ -543,6 +551,15 @@ class CommunityReporter:
             "  hazard_type:           one of [landslide, flood, erosion, drainage, mixed, other, unknown]\n"
             "  category:              short normalized English label (e.g. 'slope crack', 'drain blockage')\n"
             "  location_text:         place name from message in English or as written, or null if not mentioned\n"
+            "  location_specific:     true only if location_text names something a responder could actually\n"
+            "                         navigate to (a village/town/city, road, junction, landmark, or GPS\n"
+            "                         coordinates). false if location_text is null, or is only a vague/generic\n"
+            "                         self-reference such as 'my hometown', 'my home city', 'here', 'nearby',\n"
+            "                         'this area' with no actual place name attached.\n"
+            "  clarification_question: if location_specific is false, write ONE short, friendly follow-up\n"
+            "                         question — in the SAME language as the user's message — asking them to\n"
+            "                         name the specific village/town, road, or nearest landmark (they may also\n"
+            "                         share a WhatsApp location pin). null if location_specific is true.\n"
             "  description:           1-2 sentence English summary of the observation\n"
             "  people_at_risk:        true if message mentions people, houses, schools, roads; false otherwise\n"
             "  ongoing:               true if implies the situation is happening now; false otherwise\n"
@@ -586,6 +603,8 @@ class CommunityReporter:
             "hazard_type":      hazard_type,
             "category":         hazard_type if hazard_type != "unknown" else domain,
             "location_text":    None,
+            "location_specific": False,
+            "clarification_question": None,  # process_report falls back to the static prompt
             "description":      message[:200],
             "people_at_risk":   _contains_indicators(message, [EXPOSURE_INDICATORS]),
             "ongoing":          _contains_indicators(message, [IMMEDIACY_INDICATORS]),
@@ -1095,7 +1114,7 @@ class CommunityReporter:
 
     @staticmethod
     def _clarification_prompt(language: str, field: str) -> str:
-        """Single targeted follow-up when a critical field is absent."""
+        """Static fallback follow-up, used only if the LLM didn't supply one."""
         msgs = {
             "en": (
                 "📍 Thank you for the report. Could you share the location or nearest "

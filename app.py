@@ -89,7 +89,30 @@ async def receive_message(request: Request):
                 for change in entry.get("changes", []):
                     if change.get("field") == "messages":
                         value = change.get("value", {})
-                        
+                        # Numbers may host multiple WhatsApp phone numbers on one WABA;
+                        # always reply from the number that actually received the message.
+                        metadata = value.get("metadata", {})
+                        receiving_phone_number_id = metadata.get("phone_number_id") or Config.WHATSAPP_PHONE_NUMBER_ID
+                        if receiving_phone_number_id != Config.WHATSAPP_PHONE_NUMBER_ID:
+                            print(f"[webhook] incoming message via phone_number_id={receiving_phone_number_id} "
+                                  f"display_number={metadata.get('display_phone_number')} "
+                                  f"(configured default is {Config.WHATSAPP_PHONE_NUMBER_ID})")
+
+                        # Delivery/read receipts arrive as "statuses", not "messages" —
+                        # log failures so silent proactive-alert drops (e.g. recipient
+                        # outside the 24h session window) are visible.
+                        for status in value.get("statuses", []):
+                            recipient = status.get("recipient_id")
+                            status_type = status.get("status")
+                            errors = status.get("errors") or []
+                            if status_type == "failed" or errors:
+                                for err in errors:
+                                    print(f"[webhook] delivery FAILED to {recipient}: "
+                                          f"code={err.get('code')} title={err.get('title')} "
+                                          f"detail={err.get('error_data', {}).get('details')}")
+                            else:
+                                print(f"[webhook] status update: {recipient} -> {status_type}")
+
                         # Process incoming messages
                         for message in value.get("messages", []):
                             phone_number = message.get("from")
@@ -115,7 +138,7 @@ async def receive_message(request: Request):
                                 )
                                 
                                 if response:
-                                    await send_whatsapp_message(phone_number, response)
+                                    await send_whatsapp_message(phone_number, response, phone_number_id=receiving_phone_number_id)
         
         return {"status": "ok"}
     
@@ -156,9 +179,10 @@ def download_whatsapp_media(media_id: str):
         print(f"Error downloading WhatsApp media {media_id}: {e}")
         return None
 
-async def send_whatsapp_message(phone_number: str, message: str):
-    """Send message via WhatsApp API"""
-    url = f"{Config.WHATSAPP_BASE_URL}/messages"
+async def send_whatsapp_message(phone_number: str, message: str, phone_number_id: str = None):
+    """Send message via WhatsApp API, from the given phone_number_id (defaults to Config)"""
+    sender_id = phone_number_id or Config.WHATSAPP_PHONE_NUMBER_ID
+    url = f"https://graph.facebook.com/v22.0/{sender_id}/messages"
     headers = {
         "Authorization": f"Bearer {Config.WHATSAPP_TOKEN}",
         "Content-Type": "application/json"
@@ -176,7 +200,9 @@ async def send_whatsapp_message(phone_number: str, message: str):
         response.raise_for_status()
         return response.json()
     except Exception as e:
-        print(f"Error sending WhatsApp message: {e}")
+        body = getattr(e, "response", None)
+        detail = body.text if body is not None else ""
+        print(f"Error sending WhatsApp message via {sender_id}: {e} {detail}")
         return None
 
 

@@ -137,6 +137,12 @@ How can I help you today?""",
         "si": "✅ භාෂාව සිංහලට වෙනස් කරන ලදී",
         "ta": "✅ மொழி தமிழுக்கு மாற்றப்பட்டது"
     },
+
+    "greeting_register_note": {
+        "en": "\n\n📲 *Want early warning alerts on WhatsApp?*\nReply *register* to sign up for district-level hazard alerts.",
+        "si": "\n\n📲 *WhatsApp ඔස්සේ මුල් අනතුරු ඇඟවීම් ලැබීමට?*\nඔබේ දිස්ත්‍රික්කය සඳහා අනතුරු ඇඟවීම් ලබා ගැනීමට *register* ලෙස පිළිතුරු දෙන්න.",
+        "ta": "\n\n📲 *WhatsApp இல் ஆரம்ப எச்சரிக்கை அறிவிப்புகளைப் பெற விரும்புகிறீர்களா?*\nஉங்கள் மாவட்ட அபாய எச்சரிக்கைகளுக்கு *register* என்று பதிலளிக்கவும்.",
+    },
     
     "web_search_limited": {
         "en": "I can help you with that, but web search is temporarily limited. Please try again in a few minutes, or ask me about safety topics from my knowledge base.",
