@@ -14,7 +14,7 @@ manuscript, with each claim traceable to code, a test, a run or a source.
 | 7 | Claim-to-evidence matrix | `CLAIMS_MATRIX.md` |
 | 8 | Manuscript text | `PAPER_UPDATE.md` |
 | 9 | Limitations | `LIMITATIONS.md` |
-| 10 | Shareable archive | `python make_archive.py` → `dist/` (not committed) |
+| 10 | Shareable archive | `python make_archive.py` → `dist/` (not committed). It contains the blinding keys, so never send it to annotators. |
 
 ## Kinds of evidence, kept separate
 

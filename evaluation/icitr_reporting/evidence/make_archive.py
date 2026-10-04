@@ -26,8 +26,9 @@ INCLUDE = ["agent", "config.py", "app.py", "requirements.txt", "tests",
            "evaluation/results/05_triangulation_bayesian.json"]
 EXCLUDE = re.compile(r"(^|/)(\.env|credentials\.json|__pycache__|dist|commons_cache\.json)(/|$)|\.db$|\.pyc$")
 SECRET = re.compile(r"sk-[A-Za-z0-9_-]{20,}|EAA[A-Za-z0-9]{30,}|ghp_[A-Za-z0-9]{30,}|-----BEGIN [A-Z ]*PRIVATE KEY")
-PHONE = re.compile(r"(?<!\d)(?:\+?94|0)7\d{8}(?!\d)")
-SYNTHETIC_NUMBERS = {"94770000000"}  # placeholder used by the audited-code probe
+PHONE = re.compile(r"(?<![0-9a-fA-F])(?:\+?94|0)7\d{8}(?![0-9a-fA-F])")
+# Placeholder used by the audited-code probe, and format examples in docstrings.
+SYNTHETIC_NUMBERS = {"94770000000", "0771234567", "+94771234567", "94771234567"}
 
 
 def files():
