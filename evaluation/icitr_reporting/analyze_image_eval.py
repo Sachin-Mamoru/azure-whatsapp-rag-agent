@@ -135,17 +135,22 @@ def analyze(rows, run_meta):
     # 1. Text extraction against the constructed caption claim
     def expected_text_hazard(r):
         return r["text_claim_class"] if r["text_claim_class"] != "none" else "unknown"
-    gold = [expected_text_hazard(r) for r in real]
-    pred = [r["extraction"].get("hazard_type") for r in real]
-    m["text_extraction"] = {
-        "hazard_type_agreement": rate_with_cluster_ci(real, lambda r: r["extraction"].get("hazard_type") == expected_text_hazard(r)),
-        "hazard_type_macro_f1": macro_f1(gold, pred, ["flood", "landslide", "unknown"]),
-        "location_presence": proportion(sum(bool(r["extraction"].get("location_text")) for r in real), len(real)),
-        "would_ask_clarification": proportion(sum(r["would_ask_clarification"] for r in real), len(real)),
-        "by_language": {lang: proportion(sum(r["extraction"].get("hazard_type") == expected_text_hazard(r) for r in sub), len(sub))
-                        for lang in ("en", "si", "ta") for sub in [[r for r in real if r["caption_language"] == lang]]},
-        "note": "location_presence is presence of location text, not geolocation accuracy",
-    }
+    def text_block(subset):
+        gold = [expected_text_hazard(r) for r in subset]
+        pred = [r["extraction"].get("hazard_type") for r in subset]
+        return {
+            "hazard_type_agreement": rate_with_cluster_ci(subset, lambda r: r["extraction"].get("hazard_type") == expected_text_hazard(r)),
+            "hazard_type_macro_f1": macro_f1(gold, pred, ["flood", "landslide", "unknown"]) if subset else None,
+            "location_presence": proportion(sum(bool(r["extraction"].get("location_text")) for r in subset), len(subset)),
+            "would_ask_clarification": proportion(sum(r["would_ask_clarification"] for r in subset), len(subset)),
+            "by_language": {lang: proportion(sum(r["extraction"].get("hazard_type") == expected_text_hazard(r) for r in sub), len(sub))
+                            for lang in ("en", "si", "ta") for sub in [[r for r in subset if r["caption_language"] == lang]]},
+        }
+    # Model performance uses only items the model actually answered; keyword
+    # fallback output (after API failure) is reported separately.
+    m["text_extraction"] = {**text_block([r for r in real if r["extraction_status"] == "ok"]),
+                            "note": "model output only; location_presence is presence of location text, not geolocation accuracy"}
+    m["text_extraction_keyword_fallback"] = text_block([r for r in real if r["extraction_status"] != "ok"])
 
     # 2. Visual category against the provisional source-category class
     vok = [r for r in real if r["vision"]["status"] == "ok"]
@@ -153,7 +158,7 @@ def analyze(rows, run_meta):
         "n_scored": len(vok),
         "coarse_accuracy": rate_with_cluster_ci(vok, lambda r: r["vision_coarse"] == r["provisional_image_class"]),
         "macro_f1": macro_f1([r["provisional_image_class"] for r in vok], [r["vision_coarse"] for r in vok],
-                             ["flood", "landslide", "none"]),
+                             ["flood", "landslide", "none"]) if vok else None,
         "confusion": Counter(f"{r['provisional_image_class']}->{r['vision_coarse']}" for r in vok),
         "hazard_detected_agreement": rate_with_cluster_ci(
             vok, lambda r: bool(r["vision"].get("hazard_detected")) == (r["provisional_image_class"] != "none")),
@@ -179,7 +184,8 @@ def analyze(rows, run_meta):
     fs = {}
     for name, subset in (("all_non_supporting", neg),
                          ("contradiction_hazard_image", [r for r in neg if r["caption_condition"] == "contradiction"]),
-                         ("no_hazard_image", [r for r in neg if r["provisional_image_class"] == "none"])):
+                         ("no_hazard_image", [r for r in neg if r["provisional_image_class"] == "none"]),
+                         ("all_non_supporting_vision_ok", [r for r in neg if r["vision"]["status"] == "ok"])):
         b = sum(supports(r, "L") and not supports(r, "C") for r in subset)
         c = sum(supports(r, "C") and not supports(r, "L") for r in subset)
         fs[name] = {"visual_v2_C": rate_with_cluster_ci(subset, lambda r: supports(r, "C")),
@@ -278,13 +284,17 @@ def analyze(rows, run_meta):
 
 def tables(m):
     fs = m["false_support"]
+    f1 = lambda d: f"{d['macro_f1']:.3f}" if d else "n/a"
     pct = lambda d: f"{d['p']:.1%} ({d['k']}/{d['n']}; 95% CI {d['ci95_wilson'][0]:.1%}–{d['ci95_wilson'][1]:.1%})" if d["n"] else "n/a"
     lines = ["# Image evaluation tables", "",
              f"Run commit `{(m['run']['source_commit'] or '')[:8]}`, split `{m['run']['split']}`, "
-             f"model alias `{m['run']['model_alias']}`, snapshots {', '.join(m['model_snapshots'])}.", "",
+             f"model alias `{m['run']['model_alias']}`, snapshots {', '.join(m['model_snapshots']) or 'none (no successful model call)'}.", "",
+             f"Extraction status: {dict(m['extraction_status'])}; vision status: {dict(m['vision_status'])}.", "",
              "Reference labels: text = constructed caption claim; image = provisional Commons source category. "
              "No human annotations were used.", "",
              "## Table A. Visual support on items whose image should not support the report", "",
+             "Rows other than *_vision_ok include items whose vision call failed; for those items the comparison "
+             "reflects failure handling (legacy adds 0.05, visual-v2 adds 0), not model judgement.", "",
              "| Subset | visual-v2 (C) | legacy (L) | discordant L-only / C-only | exact McNemar p |", "|---|---|---|---|---|"]
     for name, d in fs.items():
         lines.append(f"| {name} | {pct(d['visual_v2_C'])} | {pct(d['legacy_L'])} | "
@@ -293,10 +303,11 @@ def tables(m):
     lines += ["", f"Items whose image should support the report but contributed nothing: visual-v2 {pct(ms['visual_v2_C'])}; "
                   f"legacy {pct(ms['legacy_L'])}.", "",
               "## Table B. Extraction and visual classification", "", "| Measure | Value |", "|---|---|",
-              f"| Text hazard type vs constructed claim | {pct(m['text_extraction']['hazard_type_agreement'])} |",
-              f"| Text hazard type macro-F1 (flood/landslide/unknown) | {m['text_extraction']['hazard_type_macro_f1']['macro_f1']:.3f} |",
+              f"| Text hazard type vs constructed claim (model output) | {pct(m['text_extraction']['hazard_type_agreement'])} |",
+              f"| Text hazard type macro-F1, model output (flood/landslide/unknown) | {f1(m['text_extraction']['hazard_type_macro_f1'])} |",
+              f"| Keyword fallback after API failure (not model performance) | {pct(m['text_extraction_keyword_fallback']['hazard_type_agreement'])} |",
               f"| Visual coarse class vs provisional class | {pct(m['visual_category']['coarse_accuracy'])} |",
-              f"| Visual macro-F1 (flood/landslide/none) | {m['visual_category']['macro_f1']['macro_f1']:.3f} |",
+              f"| Visual macro-F1 (flood/landslide/none) | {f1(m['visual_category']['macro_f1'])} |",
               f"| hazard_detected vs provisional hazard presence | {pct(m['visual_category']['hazard_detected_agreement'])} |", "",
               "## Table C. Hazard-type backfill (text left hazard type unknown)", "",
               "| Policy | Coverage | Correct vs provisional | Backfilled on no-hazard image |", "|---|---|---|---|"]
@@ -316,13 +327,15 @@ def figures(m, out):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    fs = m["false_support"]
+    fs = {n: d for n, d in m["false_support"].items() if d["visual_v2_C"]["n"]}
+    if not fs:
+        return
     names = list(fs)
     fig, ax = plt.subplots(figsize=(7, 3.6))
     for k, (code, label, color) in enumerate((("visual_v2_C", "visual-v2", "#2a6f97"), ("legacy_L", "legacy", "#bc6c25"))):
         vals = [fs[n][code]["p"] for n in names]
-        errs = [[v - fs[n][code]["ci95_wilson"][0] for v, n in zip(vals, names)],
-                [fs[n][code]["ci95_wilson"][1] - v for v, n in zip(vals, names)]]
+        errs = [[max(0.0, v - fs[n][code]["ci95_wilson"][0]) for v, n in zip(vals, names)],
+                [max(0.0, fs[n][code]["ci95_wilson"][1] - v) for v, n in zip(vals, names)]]
         ax.bar([i + k * 0.38 for i in range(len(names))], vals, 0.38, yerr=errs, capsize=3, label=label, color=color)
     ax.set_xticks([i + 0.19 for i in range(len(names))])
     ax.set_xticklabels([n.replace("_", " ") for n in names], fontsize=8)
