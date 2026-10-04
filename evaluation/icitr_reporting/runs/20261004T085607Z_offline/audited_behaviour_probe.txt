@@ -1,0 +1,6 @@
+# audited code 29f926f; python probe_audited_behaviour.py
+a) reliability after verifying the same report 3 times: [0.65, 0.755, 0.8285]
+[reporter] image evidence scoring error: upstream 500
+b) evidence_score after vision failure: 0.05
+[reporter] store error: simulated
+c) stored flag returned: True | rows in community_reports: 0 | reply starts: ✅ *Report received* (ID: R

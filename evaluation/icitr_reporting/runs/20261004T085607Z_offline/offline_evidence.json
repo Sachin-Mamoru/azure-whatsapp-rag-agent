@@ -1,0 +1,699 @@
+{
+  "aggregation": {
+    "n=1, r=0.3": {
+      "direct_product": 0.3,
+      "log_odds": 0.3,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.09,
+      "corroboration_points_new": 0.09
+    },
+    "n=1, r=0.5": {
+      "direct_product": 0.5,
+      "log_odds": 0.5,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.15,
+      "corroboration_points_new": 0.15
+    },
+    "n=1, r=0.7": {
+      "direct_product": 0.7,
+      "log_odds": 0.7,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.21,
+      "corroboration_points_new": 0.21
+    },
+    "n=1, r=0.9": {
+      "direct_product": 0.9,
+      "log_odds": 0.8999999999999999,
+      "abs_diff": 1.1102230246251565e-16,
+      "corroboration_points_old": 0.27,
+      "corroboration_points_new": 0.26999999999999996
+    },
+    "n=2, r=0.3": {
+      "direct_product": 0.15517241379310345,
+      "log_odds": 0.1551724137931034,
+      "abs_diff": 5.551115123125783e-17,
+      "corroboration_points_old": 0.04655172413793104,
+      "corroboration_points_new": 0.046551724137931016
+    },
+    "n=2, r=0.5": {
+      "direct_product": 0.5,
+      "log_odds": 0.5,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.15,
+      "corroboration_points_new": 0.15
+    },
+    "n=2, r=0.7": {
+      "direct_product": 0.8448275862068965,
+      "log_odds": 0.8448275862068966,
+      "abs_diff": 1.1102230246251565e-16,
+      "corroboration_points_old": 0.2534482758620689,
+      "corroboration_points_new": 0.253448275862069
+    },
+    "n=2, r=0.9": {
+      "direct_product": 0.9878048780487805,
+      "log_odds": 0.9878048780487805,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.29634146341463413,
+      "corroboration_points_new": 0.29634146341463413
+    },
+    "n=5, r=0.3": {
+      "direct_product": 0.01425219941348974,
+      "log_odds": 0.01425219941348972,
+      "abs_diff": 2.0816681711721685e-17,
+      "corroboration_points_old": 0.004275659824046922,
+      "corroboration_points_new": 0.004275659824046916
+    },
+    "n=5, r=0.5": {
+      "direct_product": 0.5,
+      "log_odds": 0.5,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.15,
+      "corroboration_points_new": 0.15
+    },
+    "n=5, r=0.7": {
+      "direct_product": 0.9857478005865103,
+      "log_odds": 0.9857478005865102,
+      "abs_diff": 1.1102230246251565e-16,
+      "corroboration_points_old": 0.2957243401759531,
+      "corroboration_points_new": 0.29572434017595306
+    },
+    "n=5, r=0.9": {
+      "direct_product": 0.999983065198984,
+      "log_odds": 0.9999830651989838,
+      "abs_diff": 1.1102230246251565e-16,
+      "corroboration_points_old": 0.29999491955969515,
+      "corroboration_points_new": 0.29999491955969515
+    },
+    "n=10, r=0.3": {
+      "direct_product": 0.00020899763468717,
+      "log_odds": 0.0002089976346871699,
+      "abs_diff": 1.0842021724855044e-19,
+      "corroboration_points_old": 6.2699290406151e-05,
+      "corroboration_points_new": 6.269929040615097e-05
+    },
+    "n=10, r=0.5": {
+      "direct_product": 0.5,
+      "log_odds": 0.5,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.15,
+      "corroboration_points_new": 0.15
+    },
+    "n=10, r=0.7": {
+      "direct_product": 0.9997910023653128,
+      "log_odds": 0.9997910023653128,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.29993730070959385,
+      "corroboration_points_new": 0.29993730070959385
+    },
+    "n=10, r=0.9": {
+      "direct_product": 0.9999999997132027,
+      "log_odds": 0.9999999997132027,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.2999999999139608,
+      "corroboration_points_new": 0.2999999999139608
+    },
+    "n=50, r=0.3": {
+      "direct_product": 3.9917261145931378e-19,
+      "log_odds": 3.991726114593186e-19,
+      "abs_diff": 4.8148248609680896e-33,
+      "corroboration_points_old": 1.1975178343779414e-19,
+      "corroboration_points_new": 1.1975178343779558e-19
+    },
+    "n=50, r=0.5": {
+      "direct_product": 0.5,
+      "log_odds": 0.5,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.15,
+      "corroboration_points_new": 0.15
+    },
+    "n=50, r=0.7": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "n=50, r=0.9": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "n=200, r=0.3": {
+      "direct_product": 2.538884481672736e-74,
+      "log_odds": 2.5388844816720645e-74,
+      "abs_diff": 6.71563986052729e-87,
+      "corroboration_points_old": 7.616653445018208e-75,
+      "corroboration_points_new": 7.616653445016193e-75
+    },
+    "n=200, r=0.5": {
+      "direct_product": 0.5,
+      "log_odds": 0.5,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.15,
+      "corroboration_points_new": 0.15
+    },
+    "n=200, r=0.7": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "n=200, r=0.9": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "n=1074, r=0.3": {
+      "direct_product": 0.0,
+      "log_odds": 0.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.0,
+      "corroboration_points_new": 0.0
+    },
+    "n=1074, r=0.5": {
+      "direct_product": 0.5,
+      "log_odds": 0.5,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.15,
+      "corroboration_points_new": 0.15
+    },
+    "n=1074, r=0.7": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "n=1074, r=0.9": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "n=1100, r=0.3": {
+      "direct_product": 0.0,
+      "log_odds": 0.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.0,
+      "corroboration_points_new": 0.0
+    },
+    "n=1100, r=0.5": {
+      "direct_product": 0.0,
+      "log_odds": 0.5,
+      "abs_diff": 0.5,
+      "corroboration_points_old": 0.0,
+      "corroboration_points_new": 0.15
+    },
+    "n=1100, r=0.7": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "n=1100, r=0.9": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "n=5000, r=0.3": {
+      "direct_product": 0.0,
+      "log_odds": 0.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.0,
+      "corroboration_points_new": 0.0
+    },
+    "n=5000, r=0.5": {
+      "direct_product": 0.0,
+      "log_odds": 0.5,
+      "abs_diff": 0.5,
+      "corroboration_points_old": 0.0,
+      "corroboration_points_new": 0.15
+    },
+    "n=5000, r=0.7": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "n=5000, r=0.9": {
+      "direct_product": 1.0,
+      "log_odds": 1.0,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.3,
+      "corroboration_points_new": 0.3
+    },
+    "mixed [0.9, 0.2, 0.6]": {
+      "direct_product": 0.7714285714285715,
+      "log_odds": 0.7714285714285715,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.23142857142857143,
+      "corroboration_points_new": 0.23142857142857143
+    },
+    "mixed 1100x0.95 + 1100x0.05": {
+      "direct_product": 0.0,
+      "log_odds": 0.4999999999999565,
+      "abs_diff": 0.4999999999999565,
+      "corroboration_points_old": 0.0,
+      "corroboration_points_new": 0.14999999999998695
+    },
+    "clipped [0.999, 0.001]": {
+      "direct_product": 0.4999999999999998,
+      "log_odds": 0.4999999999999998,
+      "abs_diff": 0.0,
+      "corroboration_points_old": 0.14999999999999994,
+      "corroboration_points_new": 0.14999999999999994
+    }
+  },
+  "aggregation_max_abs_diff_ordinary_cases": 1.1102230246251565e-16,
+  "decision_policies": {
+    "grid_points": 11449,
+    "action_counts": {
+      "baseline-v1": {
+        "store_only": 4601,
+        "monitor": 3392,
+        "flag_review": 2432,
+        "escalate": 1024
+      },
+      "candidate-v2": {
+        "store_only": 3225,
+        "expedited_review": 2400,
+        "monitor": 1984,
+        "flag_review": 2816,
+        "escalate": 1024
+      }
+    },
+    "baseline_to_candidate_changes": {
+      "store_only -> expedited_review": 1376,
+      "flag_review -> expedited_review": 1024,
+      "monitor -> flag_review": 1408
+    },
+    "monotonicity_violations_adjacent_grid_steps": {
+      "baseline-v1": 44,
+      "candidate-v2": 0
+    },
+    "documented_baseline_issues": {
+      "low_confidence_high_severity (0.39, 1.0)": {
+        "baseline-v1": "store_only",
+        "candidate-v2": "expedited_review"
+      },
+      "confidence just below 0.70 at severity 0.50": {
+        "baseline-v1": "flag_review",
+        "candidate-v2": "flag_review"
+      },
+      "confidence 0.70 at severity 0.50": {
+        "baseline-v1": "monitor",
+        "candidate-v2": "flag_review"
+      }
+    },
+    "note": "Grid counts describe the policy rules, not the distribution of real reports."
+  },
+  "shadow_on_archived_predictions": {
+    "n": 29,
+    "scoring_context": "no corroboration, no rainfall bonus, no image; archived predictions as extracted",
+    "baseline_actions": {
+      "flag_review": 11,
+      "store_only": 17,
+      "monitor": 1
+    },
+    "candidate_actions": {
+      "flag_review": 4,
+      "expedited_review": 10,
+      "store_only": 14,
+      "monitor": 1
+    },
+    "changed": [
+      {
+        "id": "e02",
+        "confidence": 0.45,
+        "severity": 0.85,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e06",
+        "confidence": 0.3,
+        "severity": 0.7,
+        "baseline": "store_only",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e08",
+        "confidence": 0.45,
+        "severity": 0.85,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e16",
+        "confidence": 0.45,
+        "severity": 0.85,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e18",
+        "confidence": 0.45,
+        "severity": 0.85,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e19",
+        "confidence": 0.45,
+        "severity": 1.0,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e20",
+        "confidence": 0.45,
+        "severity": 0.75,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e23",
+        "confidence": 0.45,
+        "severity": 0.8,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e26",
+        "confidence": 0.3,
+        "severity": 0.85,
+        "baseline": "store_only",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e28",
+        "confidence": 0.3,
+        "severity": 0.85,
+        "baseline": "store_only",
+        "candidate": "expedited_review"
+      }
+    ],
+    "items": [
+      {
+        "id": "e01",
+        "confidence": 0.45,
+        "severity": 0.65,
+        "baseline": "flag_review",
+        "candidate": "flag_review"
+      },
+      {
+        "id": "e02",
+        "confidence": 0.45,
+        "severity": 0.85,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e03",
+        "confidence": 0.15,
+        "severity": 0.35,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e04",
+        "confidence": 0.3,
+        "severity": 0.2,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e05",
+        "confidence": 0.15,
+        "severity": 0.1,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e06",
+        "confidence": 0.3,
+        "severity": 0.7,
+        "baseline": "store_only",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e07",
+        "confidence": 0.45,
+        "severity": 0.65,
+        "baseline": "flag_review",
+        "candidate": "flag_review"
+      },
+      {
+        "id": "e08",
+        "confidence": 0.45,
+        "severity": 0.85,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e09",
+        "confidence": 0.05,
+        "severity": 0.0,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e10",
+        "confidence": 0.3,
+        "severity": 0.45,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e11",
+        "confidence": 0.45,
+        "severity": 0.65,
+        "baseline": "flag_review",
+        "candidate": "flag_review"
+      },
+      {
+        "id": "e12",
+        "confidence": 0.3,
+        "severity": 0.65,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e13",
+        "confidence": 0.3,
+        "severity": 0.65,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e14",
+        "confidence": 0.3,
+        "severity": 0.1,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e15",
+        "confidence": 0.3,
+        "severity": 0.2,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e16",
+        "confidence": 0.45,
+        "severity": 0.85,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e17",
+        "confidence": 0.45,
+        "severity": 0.1,
+        "baseline": "monitor",
+        "candidate": "monitor"
+      },
+      {
+        "id": "e18",
+        "confidence": 0.45,
+        "severity": 0.85,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e19",
+        "confidence": 0.45,
+        "severity": 1.0,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e20",
+        "confidence": 0.45,
+        "severity": 0.75,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e21",
+        "confidence": 0.2,
+        "severity": 0.5,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e22",
+        "confidence": 0.3,
+        "severity": 0.3,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e23",
+        "confidence": 0.45,
+        "severity": 0.8,
+        "baseline": "flag_review",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e24",
+        "confidence": 0.05,
+        "severity": 0.0,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e25",
+        "confidence": 0.3,
+        "severity": 0.65,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      },
+      {
+        "id": "e26",
+        "confidence": 0.3,
+        "severity": 0.85,
+        "baseline": "store_only",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e27",
+        "confidence": 0.45,
+        "severity": 0.65,
+        "baseline": "flag_review",
+        "candidate": "flag_review"
+      },
+      {
+        "id": "e28",
+        "confidence": 0.3,
+        "severity": 0.85,
+        "baseline": "store_only",
+        "candidate": "expedited_review"
+      },
+      {
+        "id": "e29",
+        "confidence": 0.3,
+        "severity": 0.5,
+        "baseline": "store_only",
+        "candidate": "store_only"
+      }
+    ],
+    "caveat": "Action changes are not validated against any reference priority; they show what the candidate policy would do differently."
+  },
+  "visual_policy_truth_table": {
+    "inference error": {
+      "legacy_v1": {
+        "contribution": 0.05,
+        "hazard_type": "unknown",
+        "hazard_scale": "unknown"
+      },
+      "score_backfill": {
+        "contribution": 0.0,
+        "hazard_type": "unknown",
+        "hazard_scale": "unknown"
+      }
+    },
+    "unsupported image": {
+      "legacy_v1": {
+        "contribution": 0.05,
+        "hazard_type": "unknown",
+        "hazard_scale": "unknown"
+      },
+      "score_backfill": {
+        "contribution": 0.0,
+        "hazard_type": "unknown",
+        "hazard_scale": "unknown"
+      }
+    },
+    "unusable (score 0)": {
+      "legacy_v1": {
+        "contribution": 0.0,
+        "hazard_type": "flood",
+        "hazard_scale": "major"
+      },
+      "score_backfill": {
+        "contribution": 0.0,
+        "hazard_type": "unknown",
+        "hazard_scale": "unknown"
+      }
+    },
+    "no hazard detected": {
+      "legacy_v1": {
+        "contribution": 0.15,
+        "hazard_type": "unknown",
+        "hazard_scale": "major"
+      },
+      "score_backfill": {
+        "contribution": 0.0,
+        "hazard_type": "unknown",
+        "hazard_scale": "unknown"
+      }
+    },
+    "contradiction": {
+      "legacy_v1": {
+        "contribution": 0.15,
+        "hazard_type": "flood",
+        "hazard_scale": "major"
+      },
+      "score_backfill": {
+        "contribution": 0.0,
+        "hazard_type": "unknown",
+        "hazard_scale": "unknown"
+      }
+    },
+    "supporting, low consistency": {
+      "legacy_v1": {
+        "contribution": 0.05,
+        "hazard_type": "flood",
+        "hazard_scale": "major"
+      },
+      "score_backfill": {
+        "contribution": 0.05,
+        "hazard_type": "unknown",
+        "hazard_scale": "unknown"
+      }
+    },
+    "supporting, high consistency": {
+      "legacy_v1": {
+        "contribution": 0.15,
+        "hazard_type": "flood",
+        "hazard_scale": "major"
+      },
+      "score_backfill": {
+        "contribution": 0.15,
+        "hazard_type": "flood",
+        "hazard_scale": "major"
+      }
+    }
+  }
+}

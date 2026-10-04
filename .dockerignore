@@ -1,0 +1,11 @@
+# Secrets are injected as Container Apps secrets/env vars, never baked into the image.
+.env
+credentials.json
+.git
+.venv*
+__pycache__/
+*.pyc
+*.db
+# Evaluation code and data are not used at runtime.
+evaluation/
+tests/

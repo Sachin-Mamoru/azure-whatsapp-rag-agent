@@ -34,7 +34,7 @@ from agent.memory import ConversationMemory  # noqa: E402
 from agent.orchestrator import WhatsAppOrchestrator  # noqa: E402
 
 JPEG = b"\xff\xd8\xff\xe0" + b"\x00" * 64
-PHONE_A, PHONE_B = "94771234567", "94779876543"
+PHONE_A, PHONE_B = "94000000001", "94000000002"
 
 
 def text_reply(**overrides):

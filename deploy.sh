@@ -48,6 +48,15 @@ REDIS_URL_RAW=$(grep '^REDIS_URL=' .env | cut -d'=' -f2- | tr -d '"' | tr -d "'"
 az containerapp secret set --name $APP --resource-group $RG \
   --secrets "redis-url=${REDIS_URL_RAW}" 2>/dev/null || true
 
+echo "🔐 Storing contributor pseudonym key as Azure secret..."
+REPORTER_ID_KEY_RAW=$(grep '^REPORTER_ID_KEY=' .env | cut -d'=' -f2- | tr -d '"' | tr -d "'")
+if [ -z "$REPORTER_ID_KEY_RAW" ]; then
+  echo "❌ Error: REPORTER_ID_KEY missing from .env (generate once with: openssl rand -hex 32, then keep it stable)."
+  exit 1
+fi
+az containerapp secret set --name $APP --resource-group $RG \
+  --secrets "reporter-id-key=${REPORTER_ID_KEY_RAW}" 2>/dev/null || true
+
 echo "🔄 Deploying container app..."
 # Check if app already exists
 if az containerapp show --name $APP --resource-group $RG &>/dev/null; then
@@ -56,6 +65,7 @@ if az containerapp show --name $APP --resource-group $RG &>/dev/null; then
     --set-env-vars \
       GOOGLE_SHEETS_CREDENTIALS_JSON=secretref:google-credentials-json \
       REDIS_URL=secretref:redis-url \
+      REPORTER_ID_KEY=secretref:reporter-id-key \
       WHATSAPP_VERIFY_TOKEN="$WHATSAPP_VERIFY_TOKEN" \
       WHATSAPP_TOKEN="$WHATSAPP_TOKEN" \
       WHATSAPP_PHONE_NUMBER_ID="$WHATSAPP_PHONE_NUMBER_ID" \
@@ -80,10 +90,11 @@ else
     --ingress external --target-port 8000 \
     --min-replicas 1 --max-replicas 3 \
     --cpu 0.5 --memory 1.0Gi \
-    --secrets "google-credentials-json=$GOOGLE_CREDS_B64" "redis-url=${REDIS_URL_RAW}" \
+    --secrets "google-credentials-json=$GOOGLE_CREDS_B64" "redis-url=${REDIS_URL_RAW}" "reporter-id-key=${REPORTER_ID_KEY_RAW}" \
     --env-vars \
       GOOGLE_SHEETS_CREDENTIALS_JSON=secretref:google-credentials-json \
       REDIS_URL=secretref:redis-url \
+      REPORTER_ID_KEY=secretref:reporter-id-key \
       WHATSAPP_VERIFY_TOKEN="$WHATSAPP_VERIFY_TOKEN" \
       WHATSAPP_TOKEN="$WHATSAPP_TOKEN" \
       WHATSAPP_PHONE_NUMBER_ID="$WHATSAPP_PHONE_NUMBER_ID" \

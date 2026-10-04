@@ -138,3 +138,4 @@ evaluation/results/*.db
 # Images are re-fetched from the manifest URLs (SHA-256 verified).
 evaluation/icitr_reporting/image_data/images/
 evaluation/icitr_reporting/image_data/commons_cache.json
+evaluation/icitr_reporting/evidence/dist/
