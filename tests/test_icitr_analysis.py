@@ -1,7 +1,9 @@
 """Checks the image-evaluation metric arithmetic on synthetic records with known answers.
 Synthetic data here tests code only; it is never reported as an evaluation result."""
+import csv
 import os
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -64,6 +66,29 @@ class TestAnalysisArithmetic(unittest.TestCase):
         self.assertEqual(m["text_extraction"]["hazard_type_agreement"]["k"], 5)
         self.assertEqual(m["ablation"]["sparse_caption_hazard_type_vs_provisional"]["C_with_backfill"]["k"], 1)
         self.assertEqual(m["ablation"]["sparse_caption_hazard_type_vs_provisional"]["A_text_only"]["k"], 0)
+
+    def test_human_reference_review_metrics(self):
+        manifest = {"H1": item("H1", "flood", "matching", "flood", True),
+                    "H2": item("H2", "none", "hazard_claim", "flood", False)}
+        records = [record("H1", "flood", vision("localised_flooding", "high", 0.20)),
+                   record("H2", "flood", vision("none", "contradiction", 0.0, detected=False))]
+        records[0]["extraction"].update(people_at_risk=True, hazard_scale="major")  # severity 0.80
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "labels.csv")
+            with open(path, "w", newline="") as f:
+                w = csv.writer(f)
+                w.writerow(["item_id", "hazard_visible", "image_category", "evidence_tier", "caption_consistency",
+                            "severity", "reference_priority", "adjudicator", "notes"])
+                w.writerow(["H1", "yes", "flooding", "0.15", "high", "high", "urgent_review", "x", ""])
+                w.writerow(["H2", "no", "no_hazard", "0", "contradiction", "none", "no_action", "x", ""])
+            A.HUMAN_LABELS = path
+            hr = A.human_reference(A.score_items(records, manifest))
+        self.assertEqual(hr["visual_coarse_accuracy"]["k"], 2)
+        self.assertEqual(hr["evidence_tier_mean_abs_error_in_tiers"], 0.5)   # |0.20-0.15| = 1 tier, |0-0| = 0
+        self.assertEqual(hr["contradiction_detection"]["recall"]["k"], 1)
+        self.assertEqual(hr["false_support_C"]["k"], 0)
+        self.assertEqual(hr["candidate_action"]["severe_review_recall"]["n"], 1)
+        self.assertEqual(hr["candidate_action"]["review_workload"]["n"], 2)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,8 @@ Annotation tooling for the archived 29-report extraction benchmark.
   python evaluation/icitr_reporting/annotation_tools.py discrepancy
   python evaluation/icitr_reporting/annotation_tools.py packet
   python evaluation/icitr_reporting/annotation_tools.py agreement
+  python evaluation/icitr_reporting/annotation_tools.py image-packet
+  python evaluation/icitr_reporting/annotation_tools.py image-agreement
 
 All commands read the archived dataset and archived predictions and never
 modify them. Outputs go to evaluation/icitr_reporting/annotation/.
@@ -205,6 +207,72 @@ def cmd_agreement(_args):
     print(f"{len(result['disagreements'])} disagreements to adjudicate")
 
 
+IMAGE_DIR = os.path.join(HERE, "image_data")
+IMAGE_ANN = os.path.join(HERE, "image_annotation")
+IMAGE_FIELDS = ["hazard_visible", "image_category", "evidence_tier", "caption_consistency", "severity",
+                "reference_priority"]
+IMAGE_ALLOWED = {
+    "hazard_visible": {"yes", "no", "unclear"},
+    "image_category": {"flooding", "slope_failure_or_cracking", "drainage_problem", "road_obstruction",
+                       "other_hazard", "no_hazard", "unusable"},
+    "evidence_tier": {"0", "0.05", "0.10", "0.15", "0.20"},
+    "caption_consistency": {"high", "moderate", "low", "contradiction"},
+    "severity": {"none", "low", "moderate", "high"},
+    "reference_priority": {"urgent_review", "routine_review", "monitor_only", "no_action"},
+}
+
+
+def cmd_image_packet(_args):
+    items = [json.loads(l) for l in open(os.path.join(IMAGE_DIR, "manifest.jsonl"), encoding="utf-8")]
+    os.makedirs(IMAGE_ANN, exist_ok=True)
+    rng = random.Random(20261005)
+    codes = rng.sample(range(1000, 10000), len(items))
+    key = {f"P{c}": i["item_id"] for c, i in zip(codes, items)}
+    by_id = {i["item_id"]: i for i in items}
+    with open(os.path.join(IMAGE_ANN, "KEY_DO_NOT_SHARE.csv"), "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["item_code", "item_id"])
+        w.writerows(sorted(key.items()))
+    for annotator, seed in (("1", 11), ("2", 12)):
+        order = sorted(key)
+        random.Random(seed).shuffle(order)
+        with open(os.path.join(IMAGE_ANN, f"annotator_{annotator}.csv"), "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            w.writerow(["item_code", "image_file", "caption_language", "caption_text", *IMAGE_FIELDS, "notes"])
+            for code in order:
+                i = by_id[key[code]]
+                w.writerow([code, i["image_file"], i["caption_language"], i["caption_text"], *[""] * len(IMAGE_FIELDS), ""])
+    with open(os.path.join(IMAGE_ANN, "adjudicated_image_labels.csv"), "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["item_id", *IMAGE_FIELDS, "adjudicator", "notes"])
+        for i in items:
+            w.writerow([i["item_id"], *[""] * len(IMAGE_FIELDS), "", ""])
+    print(f"wrote image annotation packet for {len(items)} items")
+
+
+def cmd_image_agreement(_args):
+    key = {r["item_code"]: r["item_id"] for r in csv.DictReader(open(os.path.join(IMAGE_ANN, "KEY_DO_NOT_SHARE.csv"), encoding="utf-8"))}
+    sheets = {}
+    for annotator in ("1", "2"):
+        rows = list(csv.DictReader(open(os.path.join(IMAGE_ANN, f"annotator_{annotator}.csv"), encoding="utf-8")))
+        bad = [(r["item_code"], f, r[f]) for r in rows for f in IMAGE_FIELDS if r[f].strip() not in IMAGE_ALLOWED[f]]
+        if bad:
+            sys.exit(f"annotator_{annotator}.csv has {len(bad)} missing/invalid values, e.g. {bad[:3]}")
+        sheets[annotator] = {key[r["item_code"]]: {f: r[f].strip() for f in IMAGE_FIELDS} for r in rows}
+    ids = sorted(key.values())
+    result = {"n": len(ids), "per_field": {}, "disagreements": []}
+    for f in IMAGE_FIELDS:
+        a = [sheets["1"][i][f] for i in ids]
+        b = [sheets["2"][i][f] for i in ids]
+        result["per_field"][f] = {"raw_agreement": proportion(sum(x == y for x, y in zip(a, b)), len(ids)),
+                                  "cohen_kappa": cohen_kappa(a, b)}
+        result["disagreements"] += [{"item_id": i, "field": f, "1": sheets["1"][i][f], "2": sheets["2"][i][f]}
+                                    for i in ids if sheets["1"][i][f] != sheets["2"][i][f]]
+    write_json(os.path.join(IMAGE_ANN, "inter_annotator_agreement.json"), result)
+    print(json.dumps(result["per_field"], indent=1))
+    print(f"{len(result['disagreements'])} disagreements to adjudicate in adjudicated_image_labels.csv")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -213,6 +281,8 @@ if __name__ == "__main__":
     sub.add_parser("discrepancy")
     sub.add_parser("packet")
     sub.add_parser("agreement")
+    sub.add_parser("image-packet")
+    sub.add_parser("image-agreement")
     args = parser.parse_args()
-    {"rescore": cmd_rescore, "discrepancy": cmd_discrepancy, "packet": cmd_packet,
-     "agreement": cmd_agreement}[args.cmd](args)
+    {"rescore": cmd_rescore, "discrepancy": cmd_discrepancy, "packet": cmd_packet, "agreement": cmd_agreement,
+     "image-packet": cmd_image_packet, "image-agreement": cmd_image_agreement}[args.cmd](args)

@@ -30,6 +30,10 @@ sys.path.insert(0, HERE)
 from stats_utils import cluster_bootstrap, macro_f1, proportion, write_json  # noqa: E402
 
 MANIFEST = os.path.join(HERE, "image_data", "manifest.jsonl")
+HUMAN_LABELS = os.path.join(HERE, "image_annotation", "adjudicated_image_labels.csv")
+HUMAN_COARSE = {"flooding": "flood", "slope_failure_or_cracking": "landslide", "no_hazard": "none",
+                "unusable": "none", "drainage_problem": "other", "road_obstruction": "other", "other_hazard": "other"}
+REVIEW_ACTIONS = {"escalate", "expedited_review", "flag_review"}
 CONDITIONS = {"A": "text_only", "B": "score_only", "C": "score_backfill", "L": "legacy_v1"}
 COARSE = {"localised_flooding": "flood", "slope_instability": "landslide", "ground_cracking": "landslide",
           "none": "none", "drainage_issue": "other", "access_obstruction": "other", "other": "other"}
@@ -239,7 +243,7 @@ def analyze(rows, run_meta):
         "mcnemar_exact_p": exact_mcnemar(sum(c and not a for a, c in zip(a_ok, c_ok)), sum(a and not c for a, c in zip(a_ok, c_ok)))}
     m["ablation"] = ab
     m["ablation_D_contributor_weights"] = "not run: no valid contributor histories exist for these items (no simulation substituted)"
-    m["severe_report_review_recall"] = "not computed: no independently labelled reference priorities"
+    m["severe_report_review_recall"] = "see human_reference (requires independently labelled reference priorities)"
 
     # 6. Latency, tokens, cost (paths exercised: extraction + vision + offline scoring)
     ext = [r["latency_s"]["extraction"] for r in ok if r["latency_s"]["extraction"] is not None]
@@ -277,9 +281,68 @@ def analyze(rows, run_meta):
             "by_transformation": Counter(b["transformation"] for _, b in ps),
         }
     m["duplicate_and_degradation_controls"] = ctrl
+    m["human_reference"] = human_reference(rows)
     m["run"] = {k: run_meta.get(k) for k in ("source_commit", "split", "model_alias", "manifest_sha256", "started_at",
                                              "prompt_digests")}
     return m
+
+
+def load_human_labels():
+    """Adjudicated two-annotator labels, or None until every row is complete."""
+    import csv
+    if not os.path.exists(HUMAN_LABELS):
+        return None
+    rows = list(csv.DictReader(open(HUMAN_LABELS, encoding="utf-8")))
+    if not rows or any(r[f].strip() == "" for r in rows for f in ("image_category", "evidence_tier",
+                                                                 "caption_consistency", "reference_priority")):
+        return None
+    return {r["item_id"]: {k: v.strip() for k, v in r.items()} for r in rows}
+
+
+def human_reference(rows):
+    """Metrics against adjudicated human labels (computed only once they exist)."""
+    labels = load_human_labels()
+    if labels is None:
+        return "not computed: adjudicated human image labels are not available yet"
+    ok = [r for r in rows if "runner_error" not in r and r["item_id"] in labels]
+    for r in ok:
+        h = labels[r["item_id"]]
+        r["_h_coarse"] = HUMAN_COARSE[h["image_category"]]
+        r["_h_supports"] = r["_h_coarse"] != "none" and h["caption_consistency"] in ("high", "moderate")
+        r["_h_severe"] = h["reference_priority"] == "urgent_review"
+    vok = [r for r in ok if r["vision"]["status"] == "ok"]
+    tier_steps = [round(abs(float(r["vision"]["evidence_score"]) - float(labels[r["item_id"]]["evidence_tier"])) / 0.05)
+                  for r in vok]
+    out = {"n_labelled": len(ok),
+           "visual_coarse_accuracy": rate_with_cluster_ci(vok, lambda r: r["vision_coarse"] == r["_h_coarse"]),
+           "visual_macro_f1": macro_f1([r["_h_coarse"] for r in vok], [r["vision_coarse"] for r in vok],
+                                       ["flood", "landslide", "other", "none"]) if vok else None,
+           "evidence_tier_mean_abs_error_in_tiers": statistics.mean(tier_steps) if tier_steps else None,
+           "evidence_tier_exact": proportion(sum(t == 0 for t in tier_steps), len(tier_steps)),
+           "contradiction_detection": {
+               "recall": proportion(sum(r["vision"].get("report_image_consistency") == "contradiction" for r in vok
+                                        if labels[r["item_id"]]["caption_consistency"] == "contradiction"),
+                                    sum(labels[r["item_id"]]["caption_consistency"] == "contradiction" for r in vok))}}
+    for code in ("C", "L"):
+        neg = [r for r in ok if not r["_h_supports"]]
+        out[f"false_support_{code}"] = rate_with_cluster_ci(neg, lambda r: r["conditions"][code]["visual_contribution"] > 0)
+        acc = [r for r in ok if r["conditions"][code]["hazard_type"] != r["extraction"].get("hazard_type")]
+        out[f"backfill_correct_{code}"] = proportion(sum(r["conditions"][code]["hazard_type"] == r["_h_coarse"] for r in acc), len(acc))
+    severe = [r for r in ok if r["_h_severe"]]
+    for policy in ("baseline_action", "candidate_action"):
+        out[policy] = {
+            "severe_review_recall": rate_with_cluster_ci(severe, lambda r: r["conditions"]["C"][policy] in REVIEW_ACTIONS),
+            "false_escalation": proportion(sum(r["conditions"]["C"][policy] == "escalate" for r in ok if not r["_h_severe"]),
+                                           sum(not r["_h_severe"] for r in ok)),
+            "review_workload": proportion(sum(r["conditions"]["C"][policy] in REVIEW_ACTIONS for r in ok), len(ok)),
+        }
+    b = sum(r["conditions"]["C"]["candidate_action"] in REVIEW_ACTIONS and r["conditions"]["C"]["baseline_action"] not in REVIEW_ACTIONS for r in severe)
+    c = sum(r["conditions"]["C"]["baseline_action"] in REVIEW_ACTIONS and r["conditions"]["C"]["candidate_action"] not in REVIEW_ACTIONS for r in severe)
+    out["severe_recall_candidate_vs_baseline_mcnemar_p"] = exact_mcnemar(b, c)
+    for r in ok:
+        for k in ("_h_coarse", "_h_supports", "_h_severe"):
+            r.pop(k, None)
+    return out
 
 
 def tables(m):
