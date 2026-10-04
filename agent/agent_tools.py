@@ -14,7 +14,7 @@ the correct per-request language and phone-number context.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from langchain_core.tools import tool
 
@@ -30,6 +30,8 @@ def build_tools(
     web_search: "WebSearchTool",
     language: str,
     phone_number: str,
+    report_sink: Optional[Dict[str, Any]] = None,
+    message_id: Optional[str] = None,
 ) -> List:
     """
     Return the four LangChain tool objects for one agent invocation.
@@ -37,6 +39,9 @@ def build_tools(
     All tools capture *language* and *phone_number* via closure so the agent
     does not need to pass them explicitly — keeping tool descriptions clean
     and reducing prompt complexity.
+
+    report_sink receives the reporter's full result so the orchestrator can
+    keep a pending (clarification-needed) report in the user's session.
     """
 
     @tool
@@ -83,10 +88,16 @@ def build_tools(
         Do NOT use this for questions or requests for advice.  The input should
         be the user's own description of what they are observing.
         """
+        if report_sink is not None and "result" in report_sink:
+            return "This report was already submitted for this message."
         reporter.log_tool_call(
             phone_number, "submit_community_report", {"text": report_text[:200]}
         )
-        result = await reporter.process_report(phone_number, report_text, language)
+        result = await reporter.process_report(
+            phone_number, report_text, language, message_id=message_id
+        )
+        if report_sink is not None:
+            report_sink["result"] = result
         return result["response"]
 
     @tool

@@ -179,7 +179,7 @@ class ConversationMemory:
                             self.redis.delete(key)
                             if phone_number:
                                 self.redis.delete(f"{self.conversation_prefix}{phone_number}")
-                            print(f"Cleaned up old session: {phone_number}")
+                            print("Cleaned up an old session")
                             
                 except Exception as e:
                     print(f"Error processing session key {key}: {e}")

@@ -46,6 +46,11 @@ app.add_middleware(
 # Initialize the orchestrator
 orchestrator = WhatsAppOrchestrator()
 
+def _mask(phone: str) -> str:
+    """Keep logs free of full phone numbers."""
+    return f"…{str(phone)[-3:]}" if phone else "?"
+
+
 @app.get("/")
 async def root():
     return {"message": "WhatsApp RAG Agent is running"}
@@ -107,11 +112,11 @@ async def receive_message(request: Request):
                             errors = status.get("errors") or []
                             if status_type == "failed" or errors:
                                 for err in errors:
-                                    print(f"[webhook] delivery FAILED to {recipient}: "
+                                    print(f"[webhook] delivery FAILED to {_mask(recipient)}: "
                                           f"code={err.get('code')} title={err.get('title')} "
                                           f"detail={err.get('error_data', {}).get('details')}")
                             else:
-                                print(f"[webhook] status update: {recipient} -> {status_type}")
+                                print(f"[webhook] status update: {_mask(recipient)} -> {status_type}")
 
                         # Process incoming messages
                         for message in value.get("messages", []):
@@ -297,82 +302,34 @@ async def admin_list_reports(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/admin/reports/{report_id}/verify")
-async def admin_verify_report(report_id: str, request: Request):
-    """
-    Mark a report as verified (confirmed by official source or observation).
-    Updates the reporter's Bayesian reliability score upward.
-    """
+def _review(report_id: str, request: Request, decision: str):
     _require_admin_token(request)
-    import sqlite3 as _sq
-    db_path = Config.COMMUNITY_REPORTS_DB
-    now = __import__("datetime").datetime.utcnow().isoformat()
     try:
-        with _sq.connect(db_path) as conn:
-            row = conn.execute(
-                "SELECT user_hash, status FROM community_reports WHERE report_id = ?",
-                (report_id,)
-            ).fetchone()
-            if not row:
-                raise HTTPException(status_code=404, detail="Report not found")
-            user_hash, old_status = row
-            conn.execute(
-                "UPDATE community_reports SET status = 'verified' WHERE report_id = ?",
-                (report_id,)
-            )
-            conn.execute("""
-                INSERT INTO report_status_log (report_id, old_status, new_status, changed_at, note)
-                VALUES (?, ?, 'verified', ?, 'admin verified')
-            """, (report_id, old_status, now))
-            conn.commit()
-        # Update Bayesian reliability
-        orchestrator.reporter.update_user_reliability(
-            user_hash, verified=True, note=f"admin verified {report_id}"
-        )
-        return {"status": "ok", "report_id": report_id, "new_status": "verified"}
-    except HTTPException:
-        raise
+        result = orchestrator.reporter.review_report(report_id, decision, reviewer="admin")
+    except KeyError:
+        raise HTTPException(status_code=404, detail="Report not found")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    return {"status": "ok", "report_id": report_id, "new_status": result["status"],
+            "review_outcome": result["review_outcome"], "changed": result["changed"]}
+
+
+@app.post("/admin/reports/{report_id}/verify")
+async def admin_verify_report(report_id: str, request: Request):
+    """Review a report as verified. Repeating it is a no-op (idempotent)."""
+    return _review(report_id, request, "verified")
 
 
 @app.post("/admin/reports/{report_id}/reject")
 async def admin_reject_report(report_id: str, request: Request):
-    """
-    Mark a report as closed/rejected (false report or unvalidated).
-    Updates the reporter's Bayesian reliability score downward.
-    """
-    _require_admin_token(request)
-    import sqlite3 as _sq
-    db_path = Config.COMMUNITY_REPORTS_DB
-    now = __import__("datetime").datetime.utcnow().isoformat()
-    try:
-        with _sq.connect(db_path) as conn:
-            row = conn.execute(
-                "SELECT user_hash, status FROM community_reports WHERE report_id = ?",
-                (report_id,)
-            ).fetchone()
-            if not row:
-                raise HTTPException(status_code=404, detail="Report not found")
-            user_hash, old_status = row
-            conn.execute(
-                "UPDATE community_reports SET status = 'closed' WHERE report_id = ?",
-                (report_id,)
-            )
-            conn.execute("""
-                INSERT INTO report_status_log (report_id, old_status, new_status, changed_at, note)
-                VALUES (?, ?, 'closed', ?, 'admin rejected')
-            """, (report_id, old_status, now))
-            conn.commit()
-        # Update Bayesian reliability
-        orchestrator.reporter.update_user_reliability(
-            user_hash, verified=False, note=f"admin rejected {report_id}"
-        )
-        return {"status": "ok", "report_id": report_id, "new_status": "closed"}
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    """Review a report as a verified false report (status 'closed')."""
+    return _review(report_id, request, "false")
+
+
+@app.post("/admin/reports/{report_id}/retract")
+async def admin_retract_review(report_id: str, request: Request):
+    """Withdraw a mistaken review; the contributor's reliability is replayed without it."""
+    return _review(report_id, request, "retracted")
 
 
 @app.get("/admin/reports/stats")
