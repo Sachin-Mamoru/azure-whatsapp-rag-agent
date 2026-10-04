@@ -1,0 +1,163 @@
+{
+ "item_id": "IMG-031",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 2.209563999902457,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 1,
+   "wall_s": 2.266734916716814,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 2,
+   "wall_s": 2.128761083818972,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 3,
+   "wall_s": 2.172273457981646,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.28951545804739,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 1,
+   "wall_s": 2.2969236252829432,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 2,
+   "wall_s": 2.3966435422189534,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 3,
+   "wall_s": 2.393062417395413,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  }
+ ],
+ "failures": [
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  }
+ ],
+ "extraction": {
+  "report_domain": "unknown",
+  "hazard_type": "unknown",
+  "category": "unknown",
+  "location_text": null,
+  "location_specific": false,
+  "clarification_question": null,
+  "description": "Please look at this photo. Ratnapura.",
+  "people_at_risk": false,
+  "ongoing": false,
+  "hazard_scale": "unknown",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "issues": []
+  }
+ },
+ "vision": {
+  "status": "error",
+  "error": "api_error: RateLimitError",
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "9a9fda67abfc4e6a71001d420d4a2fbe1624ca0bfff593113f88963d60e1d9e0",
+  "image_bytes": 346786
+ },
+ "completed_at": "2026-10-04T08:49:05.844449+00:00"
+}

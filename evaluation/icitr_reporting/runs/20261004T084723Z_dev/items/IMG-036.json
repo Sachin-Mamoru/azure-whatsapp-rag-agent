@@ -1,0 +1,163 @@
+{
+ "item_id": "IMG-036",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 2.1123836250044405,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 1,
+   "wall_s": 2.1480249161832035,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 2,
+   "wall_s": 2.1994790420867503,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 3,
+   "wall_s": 2.192947333212942,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.4288857923820615,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 1,
+   "wall_s": 2.166131957899779,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 2,
+   "wall_s": 2.283806041814387,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 3,
+   "wall_s": 2.3718844172544777,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  }
+ ],
+ "failures": [
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  }
+ ],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "landslide",
+  "category": "landslide",
+  "location_text": null,
+  "location_specific": false,
+  "clarification_question": null,
+  "description": "கொழும்பு அருகே நிலச்சரிவு ஏற்பட்டுள்ளது, சரிவிலிருந்து இன்னும் பாறைகளும் சேறும் விழுகின்றன.",
+  "people_at_risk": false,
+  "ongoing": false,
+  "hazard_scale": "unknown",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "issues": []
+  }
+ },
+ "vision": {
+  "status": "error",
+  "error": "api_error: RateLimitError",
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "81e0f3661421eafb6b53cdfe6a9750ac93fca055a8e78b3a1a71f2cf98883e49",
+  "image_bytes": 161714
+ },
+ "completed_at": "2026-10-04T08:50:41.039763+00:00"
+}

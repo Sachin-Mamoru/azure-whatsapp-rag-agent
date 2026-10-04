@@ -1,0 +1,26 @@
+{
+  "frozen_at": "2026-10-04",
+  "source_commit": "befea642b0d0f3f897a4ad54db1d0c06f50c7e61",
+  "prompt_digests": {
+    "extraction": "14a232334a5a",
+    "vision": "42a65476404e"
+  },
+  "policies": {
+    "visual": "visual-v2",
+    "decision_baseline": "baseline-v1",
+    "decision_candidate": "candidate-v2",
+    "provenance_schema": "scoring-provenance-v1"
+  },
+  "model_alias": "gpt-4o-mini",
+  "temperature": 0.0,
+  "frozen_files_sha256": {
+    "agent/reporter.py": "42a8c17e607b7d1609e30192af6fcf6b5aa8867c519603f95eab513d11944f8b",
+    "config.py": "01fb89558aeec884817739bdbe28922c03f8d048eadbbc32252e59232c40d3ba",
+    "evaluation/icitr_reporting/run_image_eval.py": "0504974e70c3542468fbce334638dd5d86b2a58e9d65de91d2c358ad11f3ef56",
+    "evaluation/icitr_reporting/analyze_image_eval.py": "5a1c53b28a4b6b48f2e92039887ba3983dadb3bebb48661845a6999c7d5ee175",
+    "evaluation/icitr_reporting/image_data/manifest.jsonl": "4d6765378cc18cd304543064b0fe6ea0bbbeccb22b2f377087ea00ea4404f87d"
+  },
+  "test_split": "159 items (manifest split == 'test'), event-grouped; dev split used only for runner smoke tests",
+  "analysis_plan": "analyze_image_eval.py at this commit; primary outcome = false-support rate on non-supporting real images, visual-v2 vs legacy, paired exact McNemar; secondary = missed support, backfill coverage/correctness vs provisional class, visual coarse accuracy/macro-F1, text hazard-type agreement vs constructed claim, latency, tokens, cost. Reference labels are provisional/constructed until human annotation is complete.",
+  "no_tuning_statement": "No prompt, policy or threshold may change between this record and the test-split run; run_image_eval.py refuses to run the test split if any frozen file differs."
+}

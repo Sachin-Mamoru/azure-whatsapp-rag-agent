@@ -1,0 +1,163 @@
+{
+ "item_id": "IMG-032",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 2.251796333119273,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 1,
+   "wall_s": 2.3027932080440223,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 2,
+   "wall_s": 2.1307080001570284,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 3,
+   "wall_s": 2.1169694997370243,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.555974249728024,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 1,
+   "wall_s": 2.409704999998212,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 2,
+   "wall_s": 2.4372408338822424,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 3,
+   "wall_s": 2.5991296251304448,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  }
+ ],
+ "failures": [
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  }
+ ],
+ "extraction": {
+  "report_domain": "unknown",
+  "hazard_type": "unknown",
+  "category": "unknown",
+  "location_text": null,
+  "location_specific": false,
+  "clarification_question": null,
+  "description": "කරුණාකර මේ ඡායාරූපය බලන්න. මාතර.",
+  "people_at_risk": false,
+  "ongoing": false,
+  "hazard_scale": "unknown",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "issues": []
+  }
+ },
+ "vision": {
+  "status": "error",
+  "error": "api_error: RateLimitError",
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "7d1cff2447a52dc6e5019b06e605ee034a207ab522b978c14be86fe7fb0414c8",
+  "image_bytes": 505101
+ },
+ "completed_at": "2026-10-04T08:49:53.119383+00:00"
+}

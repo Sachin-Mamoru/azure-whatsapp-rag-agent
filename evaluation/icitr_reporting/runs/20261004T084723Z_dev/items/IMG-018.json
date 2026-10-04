@@ -1,0 +1,163 @@
+{
+ "item_id": "IMG-018",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 4.451325625181198,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 1,
+   "wall_s": 2.2273245831020176,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 2,
+   "wall_s": 2.1552409171126783,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "extraction",
+   "n": 3,
+   "wall_s": 2.219963791780174,
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.7191715827211738,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 1,
+   "wall_s": 3.1780617502518,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 2,
+   "wall_s": 2.7760423752479255,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 3,
+   "wall_s": 2.7179749999195337,
+   "status": "error",
+   "reason": "api_error: RateLimitError",
+   "meta": {
+    "model_snapshot": null,
+    "token_usage": null,
+    "latency_s": null
+   }
+  }
+ ],
+ "failures": [
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "extraction",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  },
+  {
+   "stage": "vision",
+   "reason": "api_error: RateLimitError"
+  }
+ ],
+ "extraction": {
+  "report_domain": "unknown",
+  "hazard_type": "unknown",
+  "category": "unknown",
+  "location_text": null,
+  "location_specific": false,
+  "clarification_question": null,
+  "description": "களனி அருகே மலைச்சரிவின் ஒரு பகுதி சரிந்து சாலையை மண் மூடியுள்ளது.",
+  "people_at_risk": false,
+  "ongoing": false,
+  "hazard_scale": "unknown",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "fallback",
+   "reason": "api_error: RateLimitError",
+   "issues": []
+  }
+ },
+ "vision": {
+  "status": "error",
+  "error": "api_error: RateLimitError",
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "4afa9ae7bc5b6186ad1d2765df98fe80e009ab42df5506b4724513b5db016818",
+  "image_bytes": 700546
+ },
+ "completed_at": "2026-10-04T08:48:16.784802+00:00"
+}
