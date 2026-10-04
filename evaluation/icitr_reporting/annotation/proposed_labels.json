@@ -1,0 +1,42 @@
+{
+  "policy_version": "annotation-policy-v1",
+  "status": "proposed - pending blinded human review; original labels unchanged",
+  "note": "Proposals are derived from ANNOTATION_POLICY.md rules, not from model predictions. Items where the policy confirms the original label are listed under 'retained' with the rule applied.",
+  "proposals": [
+    {"id": "e06", "field": "people_at_risk", "original": false, "proposed": true, "rule": "E1",
+     "rationale": "'a crack in our wall' places the reporter's occupied home in the affected area."},
+    {"id": "e22", "field": "people_at_risk", "original": false, "proposed": true, "rule": "E1",
+     "rationale": "'compound wall next to our house ... widening crack' places an occupied home directly beside an active landslide precursor."},
+    {"id": "e04", "field": "ongoing", "original": true, "proposed": false, "rule": "O2",
+     "rationale": "'has collapsed' describes a completed failure; the item is otherwise parallel to e25 ('collapsed yesterday'), which is labelled false."},
+    {"id": "e10", "field": "ongoing", "original": true, "proposed": false, "rule": "O2",
+     "rationale": "'is broken ... has washed away' describes completed damage with no active process."},
+    {"id": "e04", "field": "hazard_type", "original": "erosion", "proposed": "unknown", "rule": "H2",
+     "rationale": "Retaining-wall collapse with no stated cause; erosion is not stated."},
+    {"id": "e15", "field": "hazard_type", "original": "erosion", "proposed": "unknown", "rule": "H2",
+     "rationale": "'damaged after yesterday's rain' names the trigger, not the process (erosion, scour or flood damage)."}
+  ],
+  "retained": [
+    {"id": "e08", "field": "people_at_risk", "original": false, "rule": "E2", "rationale": "Road partly blocked; no people or traffic said to be endangered."},
+    {"id": "e18", "field": "people_at_risk", "original": false, "rule": "E2", "rationale": "River overflowed onto the main road only."},
+    {"id": "e25", "field": "people_at_risk", "original": false, "rule": "E2", "rationale": "Culvert collapse; traffic diverted, not endangered."},
+    {"id": "e26", "field": "people_at_risk", "original": false, "rule": "E2", "rationale": "Rockfall blocking a road only."},
+    {"id": "e28", "field": "people_at_risk", "original": false, "rule": "E2", "rationale": "Landslide blocking a road only."},
+    {"id": "e11", "field": "people_at_risk", "original": false, "rule": "E2", "rationale": "Slope crack and moving soil; no people or buildings mentioned."},
+    {"id": "e21", "field": "people_at_risk", "original": false, "rule": "E2", "rationale": "Excavation at a riverbank; no people or buildings mentioned."},
+    {"id": "e20", "field": "people_at_risk", "original": false, "rule": "E3", "rationale": "Reporter states 'no immediate danger'."},
+    {"id": "e20", "field": "ongoing", "original": false, "rule": "O2", "rationale": "Static blockage 'for days', no active process."},
+    {"id": "e05", "field": "report_domain", "original": "regulatory", "rule": "D3", "rationale": "Digging into a hillside for a new building."},
+    {"id": "e17", "field": "report_domain", "original": "regulatory", "rule": "D3", "rationale": "Construction cutting into a slope without barriers."},
+    {"id": "e21", "field": "report_domain", "original": "regulatory", "rule": "D3", "rationale": "Excavation next to a riverbank, 'looks illegal'."},
+    {"id": "e05", "field": "hazard_type", "original": "unknown", "rule": "H3", "rationale": "Regulatory report; no hazard process occurring yet."},
+    {"id": "e17", "field": "hazard_type", "original": "unknown", "rule": "H3", "rationale": "Regulatory report; no hazard process occurring yet."},
+    {"id": "e06", "field": "report_domain", "original": "hazard", "rule": "D1", "rationale": "Tilted pole and wall crack are landslide precursor signs."},
+    {"id": "e06", "field": "hazard_type", "original": "landslide", "rule": "D1", "rationale": "Precursor signs map to landslide."},
+    {"id": "e22", "field": "report_domain", "original": "hazard", "rule": "D1", "rationale": "Fresh, widening wall crack is a landslide precursor sign."},
+    {"id": "e22", "field": "hazard_type", "original": "landslide", "rule": "D1", "rationale": "Precursor signs map to landslide."},
+    {"id": "e09", "field": "report_domain", "original": "unknown", "rule": "D5", "rationale": "Uses the word 'hazard' but describes no observation."},
+    {"id": "e04", "field": "report_domain", "original": "infrastructure", "rule": "D2", "rationale": "Retaining wall and road damage."},
+    {"id": "e15", "field": "report_domain", "original": "infrastructure", "rule": "D2", "rationale": "Bridge damage."}
+  ]
+}
