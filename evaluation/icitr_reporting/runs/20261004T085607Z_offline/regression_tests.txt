@@ -1,7 +1,7 @@
 # command: python -m unittest discover -s tests -v
-# commit: e91cca2f4f9297c8f376c5eff28e1d9ea560401c  (working tree: 2 changed paths)
-# date: 2026-10-04T08:56:29Z
-test_human_reference_review_metrics (test_icitr_analysis.TestAnalysisArithmetic.test_human_reference_review_metrics) ... /Users/sachin/Documents/personal/projects/azure-whatsapp-rag-agent/evaluation/icitr_reporting/analyze_image_eval.py:295: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/d6/ftw2mrz10_v_y69mn9dbttxh0000gn/T/tmpedkjb_nv/labels.csv' mode='r' encoding='utf-8'>
+# commit: 3b29fcc9f62110826acdff6ce228299370194a1e  (working tree clean: no)
+# date: 2026-10-04T09:04:32Z
+test_human_reference_review_metrics (test_icitr_analysis.TestAnalysisArithmetic.test_human_reference_review_metrics) ... /Users/sachin/Documents/personal/projects/azure-whatsapp-rag-agent/evaluation/icitr_reporting/analyze_image_eval.py:295: ResourceWarning: unclosed file <_io.TextIOWrapper name='<tmp> mode='r' encoding='utf-8'>
 test_known_counts (test_icitr_analysis.TestAnalysisArithmetic.test_known_counts) ... ok
 test_empty_single_clipped_mixed (test_reporting.TestAggregation.test_empty_single_clipped_mixed) ... ok
 test_large_sets_are_stable (test_reporting.TestAggregation.test_large_sets_are_stable) ... ok
@@ -56,5 +56,5 @@ test_failure_contradiction_no_hazard_unusable_never_support (test_reporting.Test
 test_legacy_mode_documents_old_positive_fallback (test_reporting.TestVisualPolicy.test_legacy_mode_documents_old_positive_fallback) ... ok
 test_low_consistency_scores_but_does_not_backfill (test_reporting.TestVisualPolicy.test_low_consistency_scores_but_does_not_backfill) ... ok
 test_supporting_image_backfills_only_unknown_text_fields (test_reporting.TestVisualPolicy.test_supporting_image_backfills_only_unknown_text_fields) ... ok
-Ran 55 tests in 1.212s
+Ran 55 tests in 1.179s
 OK
