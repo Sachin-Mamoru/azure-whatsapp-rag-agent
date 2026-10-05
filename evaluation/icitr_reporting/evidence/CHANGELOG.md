@@ -89,6 +89,15 @@ Each item lists what changed for a report, not only for the code.
 - Rotated the bot admin secret and stored it as an Azure secret (revision `--0000033`); `deploy.sh` now refuses a missing or placeholder `ADMIN_SECRET`.
 - `admin.html`: secrets typed in and kept in session storage (optionally "Remember on this device", 30-day expiry), Content-Security-Policy, HTML escaping of report text, 401 shown as failure; `pages.yml` no longer injects `ADMIN_PAT`. Verified in a browser test with mocked network (no secret in the source, no requests before sign-in, injected markup rendered as text, other origins blocked) and on the live page.
 
+## Admin sign-in without any pasted secret (2026-10-05)
+
+- The admin panel is now served by the bot at `/admin/ui` (`webui/admin.html`); the GitHub Pages `admin.html` is a pointer page with no logic.
+- Sign-in: an authorised number (`ADMIN_PHONE_NUMBERS`) messages `admin` to the bot, which replies with a single-use link valid 10 minutes. Opening it and pressing "Sign in" sets an HttpOnly, Secure, SameSite=Lax, path-scoped cookie valid 12 hours. No one types or pastes a secret.
+- Because the link is delivered by WhatsApp to the authorised number and never in the HTTP response, a forged webhook request (the webhook has no signature check) can only cause a link to be sent to the real admin.
+- State-changing requests need an `X-Requested-With` header (CSRF). Review actions record a keyed per-admin pseudonym. `X-Admin-Token` with `ADMIN_SECRET` still works for scripts.
+- The warnings file is edited by the bot with a server-held fine-grained token (`WARNINGS_GITHUB_TOKEN`), with a sha precondition and a fixed key set; no browser holds a GitHub token.
+- Verified by 25 automated tests (every admin route rejects anonymous callers, single-use and expiry, cookie tampering, CSRF) and a real-browser run against a local server with a fake GitHub (sign-in, save, stale-save 409, injected markup shown as text, alerts, review audit subject, link replay 400, sign-out). Not verified: a real WhatsApp delivery, which only the owner can do.
+
 ## Not changed
 
 - The extraction and vision prompts, as of `19c2eb4`.

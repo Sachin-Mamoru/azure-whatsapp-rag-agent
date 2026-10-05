@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Early Warning Admin</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f0f4f8; display: flex; justify-content: center; padding: 40px 16px; min-height: 100vh; }
+    .card { background: #fff; border-radius: 12px; padding: 36px; width: 100%; max-width: 520px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: fit-content; }
+    h1 { font-size: 1.3rem; margin-bottom: 6px; color: #1a252f; }
+    .subtitle { font-size: 0.85rem; color: #888; margin-bottom: 24px; }
+    .district-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .district-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid #e0e0e0; border-radius: 7px; cursor: pointer; transition: background 0.15s; }
+    .district-item:hover { background: #fef9f0; }
+    .district-item.active { background: #fdecea; border-color: #e74c3c; }
+    .district-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: #e74c3c; cursor: pointer; flex-shrink: 0; }
+    .district-item label { font-size: 0.88rem; color: #333; cursor: pointer; user-select: none; }
+    .district-item.active label { color: #c0392b; font-weight: 600; }
+    .actions { display: flex; gap: 10px; margin-bottom: 16px; }
+    .btn { flex: 1; padding: 12px; border: none; border-radius: 7px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-green { background: #27ae60; color: #fff; }
+    .btn-gray  { background: #95a5a6; color: #fff; }
+    .btn-red   { background: #e74c3c; color: #fff; }
+    .btn-blue  { background: #2980b9; color: #fff; }
+    .btn-orange{ background: #e67e22; color: #fff; }
+    .alert-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
+    .alert-section h2 { font-size: 0.95rem; color: #555; margin-bottom: 10px; }
+    .alert-result { margin-top: 10px; font-size: 0.82rem; padding: 10px 12px; border-radius: 7px; display: none; }
+    .msg { padding: 12px; border-radius: 7px; font-size: 0.88rem; display: none; margin-bottom: 12px; }
+    .ok  { background: #d5f5e3; color: #1e8449; }
+    .err { background: #fdecea; color: #c0392b; }
+    .loading { text-align: center; color: #888; font-size: 0.9rem; padding: 20px 0; grid-column: 1/-1; }
+    hr { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+    a { color: #2980b9; font-size: 0.82rem; }
+    .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .header-row span { font-size: 0.82rem; color: #888; }
+    .select-links a { color: #2980b9; cursor: pointer; font-size: 0.78rem; margin-left: 8px; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="header-row" style="margin-bottom:0">
+    <h1>Early Warning Admin</h1>
+    <button class="btn btn-gray" style="flex:none;padding:6px 12px;font-size:0.8rem" onclick="logout()">Sign out</button>
+  </div>
+  <p class="subtitle">Check districts to activate warnings, then click Save.</p>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="header-row">
+    <span id="status-label">Loading...</span>
+    <div>
+      <a onclick="selectAll(true)">Select all</a>
+      <a onclick="selectAll(false)">Clear all</a>
+    </div>
+  </div>
+
+  <div id="district-grid" class="district-grid">
+    <div class="loading">Fetching current warnings...</div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-green" id="save-btn" onclick="saveChanges()" disabled>Save Changes</button>
+    <button class="btn btn-gray" onclick="loadData()">Reload</button>
+  </div>
+
+  <div class="alert-section">
+    <h2>🔔 Alert Controls</h2>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="btn btn-red" onclick="triggerAlerts()" id="alert-btn">🚨 Send Alerts Now</button>
+      <button class="btn btn-blue" onclick="syncSheets()" id="sync-btn">🔄 Sync Registrations</button>
+      <button class="btn btn-orange" onclick="checkToken()" id="token-btn">🔑 Check Token</button>
+    </div>
+    <div id="alert-result" class="alert-result"></div>
+  </div>
+
+  <hr />
+  <a href="https://sachin-mamoru.github.io/azure-whatsapp-rag-agent/">Back to Public Site</a>
+
+  <div class="alert-section" style="margin-top:24px">
+    <h2>📋 Community Reports</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      <button class="btn btn-blue"   style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('new')">New</button>
+      <button class="btn btn-orange" style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('escalate')">Escalated</button>
+      <button class="btn btn-gray"   style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('flag_review')">Needs Review</button>
+      <button class="btn btn-green"  style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReports('verified')">Verified</button>
+      <button class="btn btn-gray"   style="flex:none;padding:8px 14px;font-size:0.82rem" onclick="loadReportStats()">Stats</button>
+    </div>
+    <div id="stats-line" style="font-size:0.8rem;margin-bottom:8px"></div>
+    <div id="reports-result" style="font-size:0.8rem;margin-top:8px;max-height:420px;overflow-y:auto"></div>
+  </div>
+</div>
+
+<script>
+  var sha = null;
+  var currentData = null;
+  var CSRF = { "X-Requested-With": "admin-ui" };
+
+  function esc(x) {
+    return String(x == null ? "" : x).replace(/[&<>"']/g, function(c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function expired() {
+    document.querySelector(".card").innerHTML =
+      "<h1>Session ended</h1><p class='subtitle' style='margin-top:10px'>Message <b>admin</b> to the WhatsApp bot to get a new sign-in link.</p>";
+  }
+
+  async function api(path, opts) {
+    var r = await fetch(path, opts || {});
+    if (r.status === 401) { expired(); throw new Error("Session ended"); }
+    if (!r.ok) {
+      var detail = "";
+      try { detail = (await r.json()).detail; } catch (e) {}
+      throw new Error(detail || ("HTTP " + r.status));
+    }
+    return r.json();
+  }
+
+  function post(path, body) {
+    var headers = Object.assign({}, CSRF);
+    var opts = { method: "POST", headers: headers };
+    if (body !== undefined) { headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+    return api(path, opts);
+  }
+
+  async function logout() {
+    try { await post("/admin/logout"); } catch (e) {}
+    expired();
+  }
+
+  async function loadData() {
+    var grid = document.getElementById("district-grid");
+    grid.innerHTML = '<div class="loading">Fetching current warnings...</div>';
+    document.getElementById("status-label").textContent = "Loading...";
+    document.getElementById("save-btn").disabled = true;
+    showMsg("", false, true);
+    try {
+      var d = await api("/admin/warnings");
+      sha = d.sha;
+      currentData = { warnings: d.warnings };
+      renderGrid(d.warnings);
+      var active = Object.values(d.warnings).filter(Boolean).length;
+      document.getElementById("status-label").textContent =
+        Object.keys(d.warnings).length + " districts, " + active + " active";
+      document.getElementById("save-btn").disabled = false;
+    } catch (e) {
+      grid.innerHTML = '<div class="loading" style="color:#c0392b">Failed to load: ' + esc(e.message) + "</div>";
+    }
+  }
+
+  function cbId(d) { return "cb-" + d.replace(/\s+/g, "-"); }
+  function itemId(d) { return "item-" + cbId(d); }
+
+  function renderGrid(warnings) {
+    var grid = document.getElementById("district-grid");
+    grid.innerHTML = Object.entries(warnings).map(function(entry) {
+      var d = entry[0], active = entry[1];
+      var cid = cbId(d), iid = itemId(d), name = esc(d);
+      return '<div class="district-item ' + (active ? "active" : "") + '" id="' + iid + '" onclick="toggleItem(\'' + name + '\')">' +
+        '<input type="checkbox" id="' + cid + '" ' + (active ? "checked" : "") +
+        ' onchange="onCheck(\'' + name + '\', this.checked)" onclick="event.stopPropagation()" />' +
+        '<label for="' + cid + '">' + name + "</label></div>";
+    }).join("");
+  }
+
+  function toggleItem(d) {
+    var cb = document.getElementById(cbId(d));
+    cb.checked = !cb.checked;
+    onCheck(d, cb.checked);
+  }
+
+  function onCheck(d, checked) {
+    var item = document.getElementById(itemId(d));
+    if (!item) return;
+    item.classList.toggle("active", checked);
+    var label = item.querySelector("label");
+    label.style.fontWeight = checked ? "600" : "";
+    label.style.color = checked ? "#c0392b" : "#333";
+  }
+
+  function selectAll(state) {
+    if (!currentData) return;
+    Object.keys(currentData.warnings).forEach(function(d) {
+      var cb = document.getElementById(cbId(d));
+      if (cb) { cb.checked = state; onCheck(d, state); }
+    });
+  }
+
+  async function saveChanges() {
+    if (!currentData) return;
+    var btn = document.getElementById("save-btn");
+    btn.disabled = true;
+    btn.textContent = "Saving...";
+    var newWarnings = {};
+    Object.keys(currentData.warnings).forEach(function(d) {
+      var cb = document.getElementById(cbId(d));
+      newWarnings[d] = cb ? cb.checked : false;
+    });
+    try {
+      var result = await post("/admin/warnings", { warnings: newWarnings, sha: sha });
+      sha = result.sha;
+      currentData.warnings = newWarnings;
+      showMsg("Saved! " + result.active + " district" + (result.active !== 1 ? "s" : "") + " active. Public site updates in ~1 min.", false);
+      document.getElementById("status-label").textContent =
+        Object.keys(newWarnings).length + " districts, " + result.active + " active";
+    } catch (e) {
+      showMsg("Save failed: " + e.message, true);
+    }
+    btn.disabled = false;
+    btn.textContent = "Save Changes";
+  }
+
+  function showMsg(text, isErr, hide) {
+    var el = document.getElementById("msg");
+    if (hide || !text) { el.style.display = "none"; return; }
+    el.textContent = text;
+    el.className = "msg " + (isErr ? "err" : "ok");
+    el.style.display = "block";
+    if (!isErr) setTimeout(function() { el.style.display = "none"; }, 6000);
+  }
+
+  function showResult(res, ok, text) {
+    res.textContent = text;
+    res.style.background = ok ? "#d5f5e3" : "#fdecea";
+    res.style.color = ok ? "#1e8449" : "#c0392b";
+    res.style.display = "block";
+  }
+
+  async function checkToken() {
+    var btn = document.getElementById("token-btn");
+    var res = document.getElementById("alert-result");
+    btn.disabled = true; btn.textContent = "Checking...";
+    res.style.display = "none";
+    try {
+      var data = await (await fetch("/health/token")).json();
+      if (data.token_valid) {
+        showResult(res, true, "✅ Token is valid. Phone ID: " + data.phone_number_id);
+      } else {
+        showResult(res, false, "❌ Token EXPIRED or invalid: " + (data.error || "unknown") + " (code " + data.code + "). Update WHATSAPP_TOKEN on Azure.");
+      }
+    } catch (e) {
+      showResult(res, false, "❌ Check failed: " + e.message);
+    }
+    btn.disabled = false; btn.textContent = "🔑 Check Token";
+  }
+
+  async function triggerAlerts() {
+    var btn = document.getElementById("alert-btn");
+    var res = document.getElementById("alert-result");
+    btn.disabled = true; btn.textContent = "Sending...";
+    res.style.display = "none";
+    try {
+      var data = await post("/admin/trigger-alerts");
+      var s = data.stats || {};
+      showResult(res, true, "✅ Done — " + (s.warnings||0) + " warning(s), " + (s.notified||0) + " notified, " + (s.skipped||0) + " skipped, " + (s.errors||0) + " errors.");
+    } catch (e) {
+      showResult(res, false, "❌ Failed: " + e.message);
+    }
+    btn.disabled = false; btn.textContent = "🚨 Send Alerts Now";
+  }
+
+  async function syncSheets() {
+    var btn = document.getElementById("sync-btn");
+    var res = document.getElementById("alert-result");
+    btn.disabled = true; btn.textContent = "Syncing...";
+    res.style.display = "none";
+    try {
+      var data = await post("/admin/sync-registrations");
+      showResult(res, true, "✅ Sync done — " + JSON.stringify(data));
+    } catch (e) {
+      showResult(res, false, "❌ Sync failed: " + e.message);
+    }
+    btn.disabled = false; btn.textContent = "🔄 Sync Registrations";
+  }
+
+  async function loadReportStats() {
+    var el = document.getElementById("stats-line");
+    el.textContent = "Loading...";
+    try {
+      var d = await api("/admin/reports/stats");
+      el.innerHTML =
+        "<strong>Total:</strong> " + esc(d.total) +
+        " &nbsp;|&nbsp; <strong>New:</strong> " + esc(d.new) +
+        " &nbsp;|&nbsp; <strong>Needs review:</strong> " + esc(d.needs_review) +
+        " &nbsp;|&nbsp; <strong>Escalated:</strong> " + esc(d.escalated) +
+        " &nbsp;|&nbsp; <strong>Tracked users:</strong> " + esc(d.tracked_users);
+    } catch (e) {
+      el.textContent = "Failed to load: " + e.message;
+    }
+  }
+
+  async function loadReports(status) {
+    var el = document.getElementById("reports-result");
+    el.textContent = "Loading " + status + " reports...";
+    try {
+      var d = await api("/admin/reports?status=" + encodeURIComponent(status));
+      if (!d.reports || d.reports.length === 0) {
+        el.textContent = "No " + status + " reports.";
+        return;
+      }
+      el.innerHTML = d.reports.map(function(rp) {
+        var conf = (rp.confidence_score * 100).toFixed(0);
+        var sev  = (rp.severity_score  * 100).toFixed(0);
+        var confColor = conf >= 70 ? "#1e8449" : conf >= 40 ? "#e67e22" : "#888";
+        var sevColor  = sev  >= 70 ? "#c0392b" : sev  >= 30 ? "#e67e22" : "#888";
+        var id = esc(rp.report_id);
+        return '<div data-report-id="' + id + '" style="border:1px solid #e0e0e0;border-radius:8px;padding:10px;margin-bottom:8px;background:#fafafa">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<strong style="font-size:0.83rem">' + id + '</strong>' +
+            '<span style="font-size:0.75rem;color:#888">' + esc((rp.timestamp || "").slice(0,16).replace("T"," ")) + ' UTC</span>' +
+          '</div>' +
+          '<div style="margin:4px 0;font-size:0.8rem">' +
+            '<span style="background:#eaf2ff;padding:2px 6px;border-radius:4px;margin-right:4px">' + esc(rp.report_domain||"?") + '</span>' +
+            '<span style="background:#fff3e0;padding:2px 6px;border-radius:4px;margin-right:4px">' + esc(rp.hazard_type||"?") + '</span>' +
+            '<span style="color:' + confColor + ';margin-right:8px">conf ' + conf + '%</span>' +
+            '<span style="color:' + sevColor  + '">sev '  + sev  + '%</span>' +
+          '</div>' +
+          '<div style="font-size:0.79rem;color:#444;margin:3px 0">&#x1F4CD; ' + esc(rp.location_text||"—") + '</div>' +
+          '<div style="font-size:0.79rem;color:#555;margin:3px 0">' + esc((rp.description||"").slice(0,120)) + '</div>' +
+          '<div class="report-actions" style="display:flex;gap:8px;margin-top:8px">' +
+            (rp.status === 'verified'
+              ? '<span style="font-size:0.78rem;font-weight:bold;color:#1e8449">✔ Verified</span>'
+              : rp.status === 'closed'
+              ? '<span style="font-size:0.78rem;font-weight:bold;color:#c0392b">✘ Rejected</span>'
+              : '<button onclick="reviewReport(\'' + id + '\',true)"  style="padding:5px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Verify</button>' +
+                '<button onclick="reviewReport(\'' + id + '\',false)" style="padding:5px 12px;background:#e74c3c;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Reject</button>'
+            ) +
+          '</div>' +
+        '</div>';
+      }).join("");
+    } catch (e) {
+      el.textContent = "Failed to load: " + e.message;
+    }
+  }
+
+  async function reviewReport(reportId, verify) {
+    var card = document.querySelector('[data-report-id="' + reportId + '"]');
+    var btnRow = card && card.querySelector(".report-actions");
+    if (btnRow) btnRow.innerHTML = '<span style="font-size:0.78rem;color:#888">Sending...</span>';
+    try {
+      var d = await post("/admin/reports/" + encodeURIComponent(reportId) + "/" + (verify ? "verify" : "reject"));
+      if (card) {
+        card.style.opacity = "0.6";
+        var label = verify ? "✔ Verified — status: " + esc(d.new_status) : "✘ Rejected — status: " + esc(d.new_status);
+        btnRow.innerHTML = '<span style="font-size:0.78rem;font-weight:bold;color:' + (verify ? "#1e8449" : "#c0392b") + '">' + label + '</span>';
+      }
+      loadReportStats();
+    } catch (e) {
+      if (btnRow) btnRow.innerHTML = '<span style="font-size:0.78rem;color:#c0392b">Failed: ' + esc(e.message) + '</span>';
+    }
+  }
+
+  loadData();
+  loadReportStats();
+</script>
+</body>
+</html>

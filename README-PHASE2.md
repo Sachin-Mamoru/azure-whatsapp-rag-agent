@@ -398,7 +398,7 @@ Community observations are kept in a separate SQLite store from the authoritativ
 
 ## 3. Admin Governance Panel
 
-Available at `https://sachin-mamoru.github.io/azure-whatsapp-rag-agent/admin.html`
+Served by the bot at `/admin/ui`. Message `admin` to the WhatsApp bot from an authorised number to receive a single-use sign-in link (no token to type or paste). The Pages `admin.html` only points here.
 
 | Tab | Filter | Shows |
 |---|---|---|

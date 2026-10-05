@@ -43,6 +43,19 @@ class Config:
     RAINFALL_CACHE_TTL_MINUTES = int(os.getenv("RAINFALL_CACHE_TTL_MINUTES", "180"))
     IMAGE_RETENTION_DAYS = int(os.getenv("IMAGE_RETENTION_DAYS", "30"))
 
+    # ── Admin access ───────────────────────────────────────────────────────
+    # Scripts may send ADMIN_SECRET in X-Admin-Token; people sign in with a WhatsApp login link.
+    ADMIN_SECRET = os.getenv("ADMIN_SECRET", "")
+    ADMIN_PHONE_NUMBERS = os.getenv("ADMIN_PHONE_NUMBERS", "")  # comma-separated, digits with country code
+    ADMIN_SESSION_KEY = os.getenv("ADMIN_SESSION_KEY", "")
+    ADMIN_PUBLIC_URL = os.getenv(
+        "ADMIN_PUBLIC_URL", "https://whatsapp-agent.wittysand-7a29c211.eastus.azurecontainerapps.io")
+    # Held server-side so no browser ever needs a GitHub token to edit the warnings file.
+    WARNINGS_GITHUB_TOKEN = os.getenv("WARNINGS_GITHUB_TOKEN", "")
+    WARNINGS_REPO = os.getenv("WARNINGS_REPO", "Sachin-Mamoru/azure-whatsapp-rag-agent")
+    WARNINGS_PATH = os.getenv("WARNINGS_PATH", "early-warning-site/data.json")
+    WARNINGS_BRANCH = os.getenv("WARNINGS_BRANCH", "main")
+
     # Google Sheets (linked to Google Form responses)
     GOOGLE_SHEETS_CREDENTIALS_FILE = os.getenv("GOOGLE_SHEETS_CREDENTIALS_FILE", "./credentials.json")
     GOOGLE_SHEETS_SPREADSHEET_ID   = os.getenv("GOOGLE_SHEETS_SPREADSHEET_ID", "")

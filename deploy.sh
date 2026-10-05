@@ -66,6 +66,14 @@ fi
 az containerapp secret set --name $APP --resource-group $RG \
   --secrets "admin-secret=${ADMIN_SECRET_RAW}" 2>/dev/null || true
 
+ADMIN_SESSION_KEY_RAW=$(grep '^ADMIN_SESSION_KEY=' .env | cut -d'=' -f2- | tr -d '"' | tr -d "'")
+if [ -z "$ADMIN_SESSION_KEY_RAW" ]; then
+  echo "❌ Error: ADMIN_SESSION_KEY missing from .env (generate with: openssl rand -hex 32; changing it signs everyone out)."
+  exit 1
+fi
+az containerapp secret set --name $APP --resource-group $RG \
+  --secrets "admin-session-key=${ADMIN_SESSION_KEY_RAW}" 2>/dev/null || true
+
 echo "🔄 Deploying container app..."
 # Check if app already exists
 if az containerapp show --name $APP --resource-group $RG &>/dev/null; then
@@ -88,7 +96,8 @@ if az containerapp show --name $APP --resource-group $RG &>/dev/null; then
       SHEETS_SYNC_INTERVAL_MINUTES="${SHEETS_SYNC_INTERVAL_MINUTES:-30}" \
       ALERT_CHECK_INTERVAL_MINUTES="${ALERT_CHECK_INTERVAL_MINUTES:-60}" \
       COMMUNITY_REPORTS_DB="${COMMUNITY_REPORTS_DB:-/tmp/community_reports.db}" \
-      ADMIN_SECRET=secretref:admin-secret
+      ADMIN_SECRET=secretref:admin-secret \
+      ADMIN_SESSION_KEY=secretref:admin-session-key
 else
   az containerapp create --name $APP --resource-group $RG \
     --environment env-whatsapp-agent \
@@ -99,7 +108,7 @@ else
     --ingress external --target-port 8000 \
     --min-replicas 1 --max-replicas 3 \
     --cpu 0.5 --memory 1.0Gi \
-    --secrets "google-credentials-json=$GOOGLE_CREDS_B64" "redis-url=${REDIS_URL_RAW}" "reporter-id-key=${REPORTER_ID_KEY_RAW}" "admin-secret=${ADMIN_SECRET_RAW}" \
+    --secrets "google-credentials-json=$GOOGLE_CREDS_B64" "redis-url=${REDIS_URL_RAW}" "reporter-id-key=${REPORTER_ID_KEY_RAW}" "admin-secret=${ADMIN_SECRET_RAW}" "admin-session-key=${ADMIN_SESSION_KEY_RAW}" \
     --env-vars \
       GOOGLE_SHEETS_CREDENTIALS_JSON=secretref:google-credentials-json \
       REDIS_URL=secretref:redis-url \
@@ -117,7 +126,8 @@ else
       SHEETS_SYNC_INTERVAL_MINUTES="${SHEETS_SYNC_INTERVAL_MINUTES:-30}" \
       ALERT_CHECK_INTERVAL_MINUTES="${ALERT_CHECK_INTERVAL_MINUTES:-60}" \
       COMMUNITY_REPORTS_DB="${COMMUNITY_REPORTS_DB:-/tmp/community_reports.db}" \
-      ADMIN_SECRET=secretref:admin-secret
+      ADMIN_SECRET=secretref:admin-secret \
+      ADMIN_SESSION_KEY=secretref:admin-session-key
 fi
 
 

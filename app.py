@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 import requests
 from agent.orchestrator import WhatsAppOrchestrator
-from agent.scheduler import start_scheduler, stop_scheduler, trigger_alert_now, trigger_sheets_sync_now
+from agent.admin_routes import router as admin_router, configure as configure_admin
+from agent.scheduler import start_scheduler, stop_scheduler
 from config import Config
 
 
@@ -45,6 +46,8 @@ app.add_middleware(
 
 # Initialize the orchestrator
 orchestrator = WhatsAppOrchestrator()
+configure_admin(orchestrator.reporter)
+app.include_router(admin_router)
 
 def _mask(phone: str) -> str:
     """Keep logs free of full phone numbers."""
@@ -209,151 +212,6 @@ async def send_whatsapp_message(phone_number: str, message: str, phone_number_id
         detail = body.text if body is not None else ""
         print(f"Error sending WhatsApp message via {sender_id}: {e} {detail}")
         return None
-
-
-# ── Admin / internal endpoints ─────────────────────────────────────────────
-@app.post("/admin/trigger-alerts")
-async def admin_trigger_alerts(request: Request):
-    """
-    Manually trigger one alert cycle (crawl + send).
-    Requires the internal admin token via X-Admin-Token header.
-    """
-    _require_admin_token(request)
-    stats = await trigger_alert_now()
-    return {"status": "ok", "stats": stats}
-
-
-@app.post("/admin/sync-registrations")
-async def admin_sync_registrations(request: Request):
-    """Manually pull the latest registrations from Google Sheets."""
-    _require_admin_token(request)
-    count = await trigger_sheets_sync_now()
-    return {"status": "ok", "synced": count}
-
-
-@app.get("/admin/registrations/count")
-async def admin_registration_count(request: Request):
-    """Return the number of registered subscribers."""
-    _require_admin_token(request)
-    from agent.registration import count_registrations
-    return {"count": count_registrations()}
-
-
-def _require_admin_token(request: Request):
-    """Simple admin auth guard using ADMIN_SECRET env var."""
-    import os
-    secret = os.getenv("ADMIN_SECRET", "")
-    if not secret:
-        return  # if not set, allow freely (dev mode)
-    token = request.headers.get("X-Admin-Token", "")
-    if token != secret:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
-
-# ── Community report admin endpoints ──────────────────────────────────────
-
-@app.get("/admin/reports")
-async def admin_list_reports(
-    request: Request,
-    status: str = "new",
-    limit: int = 50,
-):
-    """
-    List community reports.
-    status: new | monitored | under_review | verified | closed | archived
-            OR an action value: escalate | flag_review | monitor | store_only
-    When the value matches a known action it filters by action instead of status.
-    """
-    _require_admin_token(request)
-    import sqlite3 as _sq
-    db_path = Config.COMMUNITY_REPORTS_DB
-    _action_values = {"escalate", "flag_review", "monitor", "store_only"}
-    try:
-        with _sq.connect(db_path) as conn:
-            conn.row_factory = _sq.Row
-            if status in _action_values:
-                # Only show reports not yet reviewed — exclude verified/closed/archived
-                rows = conn.execute("""
-                    SELECT report_id, timestamp, language, report_domain,
-                           hazard_type, category, location_text, description,
-                           confidence_score, severity_score, action, status,
-                           people_at_risk, ongoing, image_path, image_evidence_score,
-                           image_hazard_category
-                    FROM community_reports
-                    WHERE action = ?
-                      AND status NOT IN ('verified', 'closed', 'archived')
-                    ORDER BY severity_score DESC, timestamp DESC
-                    LIMIT ?
-                """, (status, limit)).fetchall()
-            else:
-                rows = conn.execute("""
-                    SELECT report_id, timestamp, language, report_domain,
-                           hazard_type, category, location_text, description,
-                           confidence_score, severity_score, action, status,
-                           people_at_risk, ongoing, image_path, image_evidence_score,
-                           image_hazard_category
-                    FROM community_reports
-                    WHERE status = ?
-                    ORDER BY severity_score DESC, timestamp DESC
-                    LIMIT ?
-                """, (status, limit)).fetchall()
-        return {"reports": [dict(r) for r in rows]}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-def _review(report_id: str, request: Request, decision: str):
-    _require_admin_token(request)
-    try:
-        result = orchestrator.reporter.review_report(report_id, decision, reviewer="admin")
-    except KeyError:
-        raise HTTPException(status_code=404, detail="Report not found")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    return {"status": "ok", "report_id": report_id, "new_status": result["status"],
-            "review_outcome": result["review_outcome"], "changed": result["changed"]}
-
-
-@app.post("/admin/reports/{report_id}/verify")
-async def admin_verify_report(report_id: str, request: Request):
-    """Review a report as verified. Repeating it is a no-op (idempotent)."""
-    return _review(report_id, request, "verified")
-
-
-@app.post("/admin/reports/{report_id}/reject")
-async def admin_reject_report(report_id: str, request: Request):
-    """Review a report as a verified false report (status 'closed')."""
-    return _review(report_id, request, "false")
-
-
-@app.post("/admin/reports/{report_id}/retract")
-async def admin_retract_review(report_id: str, request: Request):
-    """Withdraw a mistaken review; the contributor's reliability is replayed without it."""
-    return _review(report_id, request, "retracted")
-
-
-@app.get("/admin/reports/stats")
-async def admin_report_stats(request: Request):
-    """Summary stats for the community reports dashboard."""
-    _require_admin_token(request)
-    import sqlite3 as _sq
-    db_path = Config.COMMUNITY_REPORTS_DB
-    try:
-        with _sq.connect(db_path) as conn:
-            total     = conn.execute("SELECT COUNT(*) FROM community_reports").fetchone()[0]
-            new_ct    = conn.execute("SELECT COUNT(*) FROM community_reports WHERE status='new'").fetchone()[0]
-            escalated = conn.execute("SELECT COUNT(*) FROM community_reports WHERE status='escalated'").fetchone()[0]
-            review    = conn.execute("SELECT COUNT(*) FROM community_reports WHERE action='flag_review' AND status='new'").fetchone()[0]
-            users     = conn.execute("SELECT COUNT(*) FROM user_reliability").fetchone()[0]
-        return {
-            "total": total,
-            "new": new_ct,
-            "escalated": escalated,
-            "needs_review": review,
-            "tracked_users": users,
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":
