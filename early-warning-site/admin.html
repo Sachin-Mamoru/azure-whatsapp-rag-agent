@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Early Warning Admin</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://api.github.com https://whatsapp-agent.wittysand-7a29c211.eastus.azurecontainerapps.io; base-uri 'none'; form-action 'none'" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #f0f4f8; display: flex; justify-content: center; padding: 40px 16px; min-height: 100vh; }
@@ -37,6 +38,8 @@
     a { color: #2980b9; font-size: 0.82rem; }
     .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
     .header-row span { font-size: 0.82rem; color: #888; }
+    .field { width: 100%; padding: 10px 12px; border: 1px solid #ccd3da; border-radius: 7px; font-size: 0.88rem; margin-bottom: 8px; }
+    .auth-status { font-size: 0.8rem; color: #666; margin-top: 6px; }
     .select-links a { color: #2980b9; cursor: pointer; font-size: 0.78rem; margin-left: 8px; }
   </style>
 </head>
@@ -44,6 +47,17 @@
 <div class="card">
   <h1>Early Warning Admin</h1>
   <p class="subtitle">Check districts to activate warnings, then click Save.</p>
+
+  <div class="alert-section" style="margin-top:0;padding-top:0;border-top:none;margin-bottom:18px">
+    <h2>🔐 Access (kept in this browser tab only)</h2>
+    <input type="password" id="gh-token-input" class="field" autocomplete="off" placeholder="GitHub token (Contents: read/write on this repo)" />
+    <input type="password" id="bot-secret-input" class="field" autocomplete="off" placeholder="Bot admin secret" />
+    <div class="actions" style="margin-bottom:0">
+      <button class="btn btn-green" onclick="saveAccess()">Use for this tab</button>
+      <button class="btn btn-gray" onclick="clearAccess()">Clear</button>
+    </div>
+    <div id="auth-status" class="auth-status"></div>
+  </div>
 
   <div id="msg" class="msg"></div>
 
@@ -96,12 +110,22 @@
   var sha = null;
   var currentData = null;
 
+  // Secrets are typed in by the admin and kept only in this tab's sessionStorage;
+  // nothing secret is stored in this file or injected at build time.
+  function readSecret(k) { try { return sessionStorage.getItem(k) || ""; } catch (e) { return ""; } }
+  function writeSecret(k, v) { try { if (v) sessionStorage.setItem(k, v); else sessionStorage.removeItem(k); } catch (e) {} }
+  function esc(x) {
+    return String(x == null ? "" : x).replace(/[&<>"']/g, function(c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
   var CFG = {
     owner:  "Sachin-Mamoru",
     repo:   "azure-whatsapp-rag-agent",
     branch: "main",
     path:   "early-warning-site/data.json",
-    token:  "__ADMIN_PAT__"
+    get token() { return readSecret("ewas_gh_token"); }
   };
 
   function apiUrl() {
@@ -118,6 +142,12 @@
 
   async function loadData() {
     var grid = document.getElementById("district-grid");
+    if (!CFG.token) {
+      grid.innerHTML = '<div class="loading">Enter your GitHub token above to load warnings.</div>';
+      document.getElementById("status-label").textContent = "Not signed in";
+      document.getElementById("save-btn").disabled = true;
+      return;
+    }
     grid.innerHTML = '<div class="loading">Fetching current warnings...</div>';
     document.getElementById("status-label").textContent = "Loading...";
     document.getElementById("save-btn").disabled = true;
@@ -230,8 +260,46 @@
 
   var BOT = {
     url: "https://whatsapp-agent.wittysand-7a29c211.eastus.azurecontainerapps.io",
-    token: "admin_secret_change_me"
+    get token() { return readSecret("ewas_bot_secret"); }
   };
+
+  function authStatus() {
+    document.getElementById("auth-status").textContent =
+      "GitHub token: " + (CFG.token ? "set" : "not set") + "  |  Bot admin secret: " + (BOT.token ? "set" : "not set") +
+      "  (cleared when this tab closes)";
+  }
+
+  function saveAccess() {
+    var g = document.getElementById("gh-token-input"), b = document.getElementById("bot-secret-input");
+    if (g.value.trim()) writeSecret("ewas_gh_token", g.value.trim());
+    if (b.value.trim()) writeSecret("ewas_bot_secret", b.value.trim());
+    var gotG = !!g.value.trim(), gotB = !!b.value.trim();
+    g.value = ""; b.value = "";
+    authStatus();
+    if ((gotG && !CFG.token) || (gotB && !BOT.token)) {
+      showMsg("This browser blocks session storage, so the secret could not be kept for this tab.", true);
+      return;
+    }
+    if (gotG) loadData();
+    if (gotB) loadReportStats();
+  }
+
+  function clearAccess() {
+    writeSecret("ewas_gh_token", ""); writeSecret("ewas_bot_secret", "");
+    authStatus();
+  }
+
+  function requireBotSecret(res) {
+    if (BOT.token) return true;
+    res.textContent = "Enter the bot admin secret above first.";
+    res.style.background = "#fdecea"; res.style.color = "#c0392b";
+    res.style.display = "block";
+    return false;
+  }
+
+  function checkAdminResponse(r) {
+    if (!r.ok) throw new Error("HTTP " + r.status + (r.status === 401 ? " (wrong or missing admin secret)" : ""));
+  }
 
   async function checkToken() {
     var btn = document.getElementById("token-btn");
@@ -259,6 +327,7 @@
   async function triggerAlerts() {
     var btn = document.getElementById("alert-btn");
     var res = document.getElementById("alert-result");
+    if (!requireBotSecret(res)) return;
     btn.disabled = true; btn.textContent = "Sending...";
     res.style.display = "none";
     try {
@@ -266,6 +335,7 @@
         method: "POST",
         headers: { "X-Admin-Token": BOT.token }
       });
+      checkAdminResponse(r);
       var data = await r.json();
       var s = data.stats || {};
       res.textContent = "✅ Done — " + (s.warnings||0) + " warning(s), " + (s.notified||0) + " notified, " + (s.skipped||0) + " skipped, " + (s.errors||0) + " errors.";
@@ -281,6 +351,7 @@
   async function syncSheets() {
     var btn = document.getElementById("sync-btn");
     var res = document.getElementById("alert-result");
+    if (!requireBotSecret(res)) return;
     btn.disabled = true; btn.textContent = "Syncing...";
     res.style.display = "none";
     try {
@@ -288,6 +359,7 @@
         method: "POST",
         headers: { "X-Admin-Token": BOT.token }
       });
+      checkAdminResponse(r);
       var data = await r.json();
       res.textContent = "✅ Sync done — " + JSON.stringify(data);
       res.style.background = "#d5f5e3"; res.style.color = "#1e8449";
@@ -301,11 +373,13 @@
 
   async function loadReportStats() {
     var el = document.getElementById("reports-result");
+    if (!BOT.token) { el.textContent = "Enter the bot admin secret above to load reports."; return; }
     el.textContent = "Loading...";
     try {
       var r = await fetch(BOT.url + "/admin/reports/stats", {
         headers: { "X-Admin-Token": BOT.token }
       });
+      checkAdminResponse(r);
       var d = await r.json();
       el.innerHTML =
         "<strong>Total:</strong> " + d.total +
@@ -320,11 +394,13 @@
 
   async function loadReports(status) {
     var el = document.getElementById("reports-result");
-    el.innerHTML = "Loading " + status + " reports...";
+    if (!BOT.token) { el.textContent = "Enter the bot admin secret above to load reports."; return; }
+    el.textContent = "Loading " + status + " reports...";
     try {
-      var r = await fetch(BOT.url + "/admin/reports?status=" + status, {
+      var r = await fetch(BOT.url + "/admin/reports?status=" + encodeURIComponent(status), {
         headers: { "X-Admin-Token": BOT.token }
       });
+      checkAdminResponse(r);
       var d = await r.json();
       if (!d.reports || d.reports.length === 0) {
         el.textContent = "No " + status + " reports.";
@@ -335,26 +411,26 @@
         var sev  = (rp.severity_score  * 100).toFixed(0);
         var confColor = conf >= 70 ? "#1e8449" : conf >= 40 ? "#e67e22" : "#888";
         var sevColor  = sev  >= 70 ? "#c0392b" : sev  >= 30 ? "#e67e22" : "#888";
-        return '<div data-report-id="' + rp.report_id + '" style="border:1px solid #e0e0e0;border-radius:8px;padding:10px;margin-bottom:8px;background:#fafafa">' +
+        return '<div data-report-id="' + esc(rp.report_id) + '" style="border:1px solid #e0e0e0;border-radius:8px;padding:10px;margin-bottom:8px;background:#fafafa">' +
           '<div style="display:flex;justify-content:space-between;align-items:center">' +
-            '<strong style="font-size:0.83rem">' + rp.report_id + '</strong>' +
-            '<span style="font-size:0.75rem;color:#888">' + (rp.timestamp || "").slice(0,16).replace("T"," ") + ' UTC</span>' +
+            '<strong style="font-size:0.83rem">' + esc(rp.report_id) + '</strong>' +
+            '<span style="font-size:0.75rem;color:#888">' + esc((rp.timestamp || "").slice(0,16).replace("T"," ")) + ' UTC</span>' +
           '</div>' +
           '<div style="margin:4px 0;font-size:0.8rem">' +
-            '<span style="background:#eaf2ff;padding:2px 6px;border-radius:4px;margin-right:4px">' + (rp.report_domain||"?") + '</span>' +
-            '<span style="background:#fff3e0;padding:2px 6px;border-radius:4px;margin-right:4px">' + (rp.hazard_type||"?") + '</span>' +
+            '<span style="background:#eaf2ff;padding:2px 6px;border-radius:4px;margin-right:4px">' + esc(rp.report_domain||"?") + '</span>' +
+            '<span style="background:#fff3e0;padding:2px 6px;border-radius:4px;margin-right:4px">' + esc(rp.hazard_type||"?") + '</span>' +
             '<span style="color:' + confColor + ';margin-right:8px">conf ' + conf + '%</span>' +
             '<span style="color:' + sevColor  + '">sev '  + sev  + '%</span>' +
           '</div>' +
-          '<div style="font-size:0.79rem;color:#444;margin:3px 0">&#x1F4CD; ' + (rp.location_text||"—") + '</div>' +
-          '<div style="font-size:0.79rem;color:#555;margin:3px 0">' + (rp.description||"").slice(0,120) + '</div>' +
+          '<div style="font-size:0.79rem;color:#444;margin:3px 0">&#x1F4CD; ' + esc(rp.location_text||"—") + '</div>' +
+          '<div style="font-size:0.79rem;color:#555;margin:3px 0">' + esc((rp.description||"").slice(0,120)) + '</div>' +
           '<div class="report-actions" style="display:flex;gap:8px;margin-top:8px">' +
             (rp.status === 'verified'
               ? '<span style="font-size:0.78rem;font-weight:bold;color:#1e8449">✔ Verified</span>'
               : rp.status === 'closed'
               ? '<span style="font-size:0.78rem;font-weight:bold;color:#c0392b">✘ Rejected</span>'
-              : '<button onclick="reviewReport(\'' + rp.report_id + '\',true)"  style="padding:5px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Verify</button>' +
-                '<button onclick="reviewReport(\'' + rp.report_id + '\',false)" style="padding:5px 12px;background:#e74c3c;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Reject</button>'
+              : '<button onclick="reviewReport(\'' + esc(rp.report_id) + '\',true)"  style="padding:5px 12px;background:#27ae60;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Verify</button>' +
+                '<button onclick="reviewReport(\'' + esc(rp.report_id) + '\',false)" style="padding:5px 12px;background:#e74c3c;color:#fff;border:none;border-radius:5px;font-size:0.78rem;cursor:pointer">Reject</button>'
             ) +
           '</div>' +
         '</div>';
@@ -393,11 +469,12 @@
     } catch(e) {
       if (card) {
         var btnRow = card.querySelector(".report-actions");
-        if (btnRow) btnRow.innerHTML = '<span style="font-size:0.78rem;color:#c0392b">Failed: ' + e.message + '</span>';
+        if (btnRow) btnRow.innerHTML = '<span style="font-size:0.78rem;color:#c0392b">Failed: ' + esc(e.message) + '</span>';
       }
     }
   }
 
+  authStatus();
   loadData();
   loadReportStats();
 </script>
