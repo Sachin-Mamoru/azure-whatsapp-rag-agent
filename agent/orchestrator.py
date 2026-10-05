@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, Any, List
 from agent.memory import ConversationMemory
 from agent.rag import RAGSystem
+from agent.admin_auth import create_login_link, is_admin_phone
 from agent.reporter import CommunityReporter, detect_report_intent
 from agent.disaster_agent import DisasterAgent
 from agent.tools import WebSearchTool
@@ -48,6 +49,17 @@ class WhatsAppOrchestrator:
         # Tamil
         "அறிக்கை", "அறிக்கை செய்", "தெரிவிக்க", "புகார்",
     ]
+
+    _ADMIN_COMMANDS = {"admin", "/admin", "admin login"}
+
+    @staticmethod
+    def _admin_login_reply(phone_number: str) -> str:
+        status, url = create_login_link(phone_number)
+        if status == "ok":
+            return f"🔐 Admin sign-in (single use, valid 10 minutes):\n{url}\n\nIt signs you in for 12 hours."
+        if status == "cooldown":
+            return "A sign-in link was just sent. Wait a minute, then message *admin* again."
+        return "Admin sign-in is not configured."
 
     # Withdraws a report that is waiting for a location answer.
     _CANCEL_COMMANDS = {"cancel", "cancel report", "අවලංගු", "අවලංගු කරන්න", "ரத்து", "ரத்து செய்"}
@@ -130,6 +142,10 @@ class WhatsAppOrchestrator:
             # Get user session data
             session = self.memory.get_session(phone_number)
             message_lower = message.strip().lower()
+
+            # Only authorised admin numbers get a login link; anyone else's "admin" is an ordinary message.
+            if message_lower in self._ADMIN_COMMANDS and is_admin_phone(phone_number):
+                return self._admin_login_reply(phone_number)
 
             # ── 0. WhatsApp redelivery of a message already stored as a report ──
             if message_id and self.reporter.find_report_by_message_id(message_id):
