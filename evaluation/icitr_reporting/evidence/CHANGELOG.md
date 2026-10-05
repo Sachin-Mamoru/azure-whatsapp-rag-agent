@@ -87,7 +87,7 @@ Each item lists what changed for a report, not only for the code.
 
 - Deployed the reporting fixes to production (revision `whatsapp-agent--0000032`, built from `cca45f5`).
 - Rotated the bot admin secret and stored it as an Azure secret (revision `--0000033`); `deploy.sh` now refuses a missing or placeholder `ADMIN_SECRET`.
-- `admin.html`: secrets typed in and kept in session storage, Content-Security-Policy, HTML escaping of report text, 401 shown as failure; `pages.yml` no longer injects `ADMIN_PAT`. Verified in a browser test with mocked network (no secret in the source, no requests before sign-in, injected markup rendered as text, other origins blocked) and on the live page.
+- `admin.html`: secrets typed in and kept in session storage (optionally "Remember on this device", 30-day expiry), Content-Security-Policy, HTML escaping of report text, 401 shown as failure; `pages.yml` no longer injects `ADMIN_PAT`. Verified in a browser test with mocked network (no secret in the source, no requests before sign-in, injected markup rendered as text, other origins blocked) and on the live page.
 
 ## Not changed
 

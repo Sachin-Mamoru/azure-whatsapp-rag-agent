@@ -32,8 +32,9 @@ Everything else in this package is finished. What only the repository owner can 
 
 1. **Keep the new admin secret.** It was generated on 2026-10-05, is in the local
    `.env` as `ADMIN_SECRET` and in Azure as the `admin-secret` secret. Copy it into
-   a password manager (`grep ^ADMIN_SECRET= .env`). `admin.html` asks for it, and
-   for a GitHub token, each time it is opened.
+   a password manager (`grep ^ADMIN_SECRET= .env`). `admin.html` asks for it and for
+   a GitHub token once per device: tick "Remember on this device" and it keeps both
+   for up to 30 days, so no typing after that. Only tick it on a device you trust.
 2. **Confirm the old GitHub token is revoked.** The classic token that was embedded
    in the public admin page must be deleted under GitHub Settings, Developer
    settings, Personal access tokens. The page no longer embeds anything.
