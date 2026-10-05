@@ -1,0 +1,364 @@
+{
+  "reference": "AI-reviewed (single annotator, not human; see ai_review/README.md)",
+  "n_items": 159,
+  "n_real": 133,
+  "n_real_vision_ok": 130,
+  "provisional_vs_ai_label_quality": {
+    "confusion_commons_class_to_ai_class": {
+      "flood->flood": 16,
+      "flood->none": 7,
+      "landslide->landslide": 28,
+      "landslide->none": 16,
+      "landslide->other": 6,
+      "none->none": 57,
+      "none->flood": 2,
+      "none->other": 1
+    },
+    "agreement": {
+      "k": 101,
+      "n": 133,
+      "p": 0.7593984962406015,
+      "ci95_wilson": [
+        0.6801291452794769,
+        0.8241040057267142
+      ]
+    },
+    "note": "Commons category membership over-claims hazards; it is not used as ground truth here"
+  },
+  "visual_category_vs_ai": {
+    "coarse_accuracy": {
+      "k": 102,
+      "n": 130,
+      "p": 0.7846153846153846,
+      "ci95_wilson": [
+        0.7063242630895135,
+        0.846568694134082
+      ],
+      "ci95_cluster_bootstrap": [
+        0.6692913385826772,
+        0.8778625954198473
+      ],
+      "n_clusters": 11
+    },
+    "macro_f1": {
+      "macro_f1": 0.6290741186287108,
+      "per_label": {
+        "flood": {
+          "precision": 0.6,
+          "recall": 0.8333333333333334,
+          "f1": 0.6976744186046512,
+          "support": 18
+        },
+        "landslide": {
+          "precision": 0.7419354838709677,
+          "recall": 0.8214285714285714,
+          "f1": 0.7796610169491526,
+          "support": 28
+        },
+        "other": {
+          "precision": 0.25,
+          "recall": 0.14285714285714285,
+          "f1": 0.18181818181818182,
+          "support": 7
+        },
+        "none": {
+          "precision": 0.9,
+          "recall": 0.8181818181818182,
+          "f1": 0.8571428571428572,
+          "support": 77
+        }
+      }
+    },
+    "confusion": {
+      "flood->flood": 15,
+      "none->none": 63,
+      "none->flood": 7,
+      "flood->none": 3,
+      "landslide->landslide": 23,
+      "none->landslide": 4,
+      "landslide->flood": 2,
+      "other->landslide": 4,
+      "other->none": 1,
+      "landslide->none": 3,
+      "other->flood": 1,
+      "none->other": 3,
+      "other->other": 1
+    },
+    "hazard_detected_agreement": {
+      "k": 107,
+      "n": 130,
+      "p": 0.823076923076923,
+      "ci95_wilson": [
+        0.7484929799934502,
+        0.8791152417198204
+      ],
+      "ci95_cluster_bootstrap": [
+        0.7033898305084746,
+        0.9103448275862069
+      ],
+      "n_clusters": 11
+    }
+  },
+  "contradiction_detection_vs_ai": {
+    "recall": {
+      "k": 0,
+      "n": 50,
+      "p": 0.0,
+      "ci95_wilson": [
+        0.0,
+        0.07134760017861413
+      ]
+    },
+    "precision": {
+      "k": 0,
+      "n": 0,
+      "p": NaN,
+      "ci95_wilson": [
+        NaN,
+        NaN
+      ]
+    }
+  },
+  "evidence_tier_vs_ai": {
+    "mean_abs_error_in_tiers": 1,
+    "exact": {
+      "k": 34,
+      "n": 130,
+      "p": 0.26153846153846155,
+      "ci95_wilson": [
+        0.19361536869148754,
+        0.3431499914725271
+      ]
+    },
+    "within_one_tier": {
+      "k": 100,
+      "n": 130,
+      "p": 0.7692307692307693,
+      "ci95_wilson": [
+        0.6897074397033818,
+        0.8332994117243437
+      ]
+    },
+    "note": "AI convention: tier 0 only for unusable images; usable but non-supporting = 0.05"
+  },
+  "false_support_vs_ai": {
+    "all_non_supporting": {
+      "visual_v2_C": {
+        "k": 23,
+        "n": 96,
+        "p": 0.23958333333333334,
+        "ci95_wilson": [
+          0.16528221166198903,
+          0.33392382398452286
+        ],
+        "ci95_cluster_bootstrap": [
+          0.1328125,
+          0.367816091954023
+        ],
+        "n_clusters": 11
+      },
+      "legacy_L": {
+        "k": 47,
+        "n": 96,
+        "p": 0.4895833333333333,
+        "ci95_wilson": [
+          0.39192861157493286,
+          0.5880396298509275
+        ],
+        "ci95_cluster_bootstrap": [
+          0.4015748031496063,
+          0.6091954022988506
+        ],
+        "n_clusters": 11
+      },
+      "discordant_L_only": 24,
+      "discordant_C_only": 0,
+      "mcnemar_exact_p": 1.1920928955078125e-07
+    },
+    "non_supporting_vision_ok": {
+      "visual_v2_C": {
+        "k": 23,
+        "n": 93,
+        "p": 0.24731182795698925,
+        "ci95_wilson": [
+          0.17082219102325957,
+          0.34384848264337176
+        ],
+        "ci95_cluster_bootstrap": [
+          0.13725490196078433,
+          0.38202247191011235
+        ],
+        "n_clusters": 11
+      },
+      "legacy_L": {
+        "k": 44,
+        "n": 93,
+        "p": 0.4731182795698925,
+        "ci95_wilson": [
+          0.3747394090104935,
+          0.5736298115923395
+        ],
+        "ci95_cluster_bootstrap": [
+          0.38235294117647056,
+          0.5970149253731343
+        ],
+        "n_clusters": 11
+      },
+      "discordant_L_only": 21,
+      "discordant_C_only": 0,
+      "mcnemar_exact_p": 9.5367431640625e-07
+    },
+    "contradiction": {
+      "visual_v2_C": {
+        "k": 11,
+        "n": 53,
+        "p": 0.20754716981132076,
+        "ci95_wilson": [
+          0.12004597973916602,
+          0.3345774481229094
+        ],
+        "ci95_cluster_bootstrap": [
+          0.1111111111111111,
+          0.3191489361702128
+        ],
+        "n_clusters": 11
+      },
+      "legacy_L": {
+        "k": 34,
+        "n": 53,
+        "p": 0.6415094339622641,
+        "ci95_wilson": [
+          0.5069114144879365,
+          0.7569804752562204
+        ],
+        "ci95_cluster_bootstrap": [
+          0.5609756097560976,
+          0.7391304347826086
+        ],
+        "n_clusters": 11
+      },
+      "discordant_L_only": 23,
+      "discordant_C_only": 0,
+      "mcnemar_exact_p": 2.384185791015625e-07
+    },
+    "no_hazard_visible": {
+      "visual_v2_C": {
+        "k": 8,
+        "n": 69,
+        "p": 0.11594202898550725,
+        "ci95_wilson": [
+          0.05993498111442662,
+          0.21245740621584452
+        ],
+        "ci95_cluster_bootstrap": [
+          0.0273972602739726,
+          0.2545454545454545
+        ],
+        "n_clusters": 10
+      },
+      "legacy_L": {
+        "k": 26,
+        "n": 69,
+        "p": 0.37681159420289856,
+        "ci95_wilson": [
+          0.27183528953153546,
+          0.4947811365932685
+        ],
+        "ci95_cluster_bootstrap": [
+          0.2833333333333333,
+          0.5166666666666667
+        ],
+        "n_clusters": 10
+      },
+      "discordant_L_only": 18,
+      "discordant_C_only": 0,
+      "mcnemar_exact_p": 7.62939453125e-06
+    }
+  },
+  "missed_support_vs_ai": {
+    "n_supporting": 37,
+    "visual_v2_C": {
+      "k": 0,
+      "n": 37,
+      "p": 0.0,
+      "ci95_wilson": [
+        0.0,
+        0.09405782718146873
+      ],
+      "ci95_cluster_bootstrap": [
+        0.0,
+        0.0
+      ],
+      "n_clusters": 7
+    },
+    "legacy_L": {
+      "k": 0,
+      "n": 37,
+      "p": 0.0,
+      "ci95_wilson": [
+        0.0,
+        0.09405782718146873
+      ],
+      "ci95_cluster_bootstrap": [
+        0.0,
+        0.0
+      ],
+      "n_clusters": 7
+    }
+  },
+  "backfill_vs_ai": {
+    "C": {
+      "n_backfilled": 29,
+      "correct_vs_ai": {
+        "k": 18,
+        "n": 29,
+        "p": 0.6206896551724138,
+        "ci95_wilson": [
+          0.4400254406948544,
+          0.7731197799636186
+        ]
+      },
+      "backfilled_where_ai_sees_no_hazard": {
+        "k": 8,
+        "n": 29,
+        "p": 0.27586206896551724,
+        "ci95_wilson": [
+          0.14698755027497976,
+          0.45717132564499907
+        ]
+      }
+    },
+    "L": {
+      "n_backfilled": 29,
+      "correct_vs_ai": {
+        "k": 18,
+        "n": 29,
+        "p": 0.6206896551724138,
+        "ci95_wilson": [
+          0.4400254406948544,
+          0.7731197799636186
+        ]
+      },
+      "backfilled_where_ai_sees_no_hazard": {
+        "k": 8,
+        "n": 29,
+        "p": 0.27586206896551724,
+        "ci95_wilson": [
+          0.14698755027497976,
+          0.45717132564499907
+        ]
+      }
+    }
+  },
+  "degraded_images": {
+    "n": 15,
+    "ai_unusable": 13,
+    "model_vision_outcomes": {
+      "supporting": 13,
+      "no_hazard": 1,
+      "unusable": 1
+    },
+    "degraded_adding_support_C": 13,
+    "degraded_adding_support_L": 14
+  }
+}

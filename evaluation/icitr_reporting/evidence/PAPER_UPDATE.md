@@ -6,9 +6,10 @@ review, persistence and retention. RAG question answering, retrieval, outbound
 alerts and whole-system architecture belong to the separate journal paper and
 are not described here.
 
-Every sentence below is supported by an entry in `CLAIMS_MATRIX.md`. Text in
-§4 describes an evaluation that has not yet run; it is written as protocol and
-must not be converted to results until the run and annotation are complete.
+Every sentence below is supported by an entry in `CLAIMS_MATRIX.md`. §4
+reports the single frozen live image run; its reference labels are
+provisional (Commons category) or AI-reviewed, never human, and the text says
+so wherever a figure appears.
 
 ---
 
@@ -160,25 +161,93 @@ they leave every per-field count unchanged and lower all-five agreement to
 13/29. The proposals and a blinded two-reviewer protocol are released; the
 original-label figures above are the reported result.
 
-## 4. Image evaluation protocol (not yet run)
+## 4. Live image evaluation (single frozen run; reference labels are AI-reviewed, not human)
 
-The photographic-evidence policy is to be evaluated on 155 openly licensed
-Wikimedia Commons photographs (80 of the 133 test photos are from Sri Lankan
-events) paired with templated English, Sinhala and Tamil captions. The
-captions are matching, sparse or contradictory, and are supplemented by
-degraded and duplicate copies.
-- **Split:** by event; prompts, policies and the analysis are frozen
-  (commit `5d6f7b8`) before any test-split call.
-- **Primary outcome:** the share of photos that should not support their
-  report (contradiction or no hazard; n = 80) that nevertheless add
-  confidence, under the new policy versus the earlier handling. Compared
-  pairwise on identical model outputs with an exact McNemar test.
-- **Secondary outcomes:** missed support (n = 53), backfill coverage and
-  correctness, visual category agreement, latency and token cost.
-- **Labels:** provisional, from the Commons category, until two blinded
-  annotators have labelled all items. Reference priorities from that
-  annotation will then allow review recall and workload to be compared
-  between the two decision policies.
+**Design.** Prompts, policies and the analysis plan were frozen in git
+(`d7f7fd6`) before any test-split call; the runner refuses to start if a frozen
+file differs. The test split holds 159 items: 133 real openly licensed
+photographs from 11 event groups (80 from Sri Lankan events) paired with
+templated English, Sinhala and Tamil captions, plus 26 derived controls (15
+degraded copies, 8 exact duplicates, 3 re-encodings). GPT-4o-mini (snapshot
+`gpt-4o-mini-2024-07-18`, temperature 0) ran once per item through the
+production extraction and vision code. Two reference sets were used: the
+Commons source category (provisional) and a single-pass AI review of every item
+made before any model output existed (Claude Sonnet 5.5; one annotator, not
+blind to dataset construction, no inter-annotator agreement). Human
+annotation has not been done, so no figure below is a human-referenced result.
+
+**Cost and speed.** All 159 items completed for $0.75 in total (about
+$0.005 per report with a photo; 4.8 M vision input tokens). Measured from the
+evaluation client, mean latency was 1.64 s for extraction (p95 2.04 s), 2.52 s
+for the vision call (p95 3.13 s) and 4.16 s for the sequential model path
+including scoring (p95 5.15 s). Transport, media download and database writes
+are not included. Three vision replies (1.9%) violated the schema (an
+out-of-range consistency value) and were handled as errors that add no support.
+
+**Primary outcome: support given to images that do not support the report.**
+Against the AI reference (96 real photos, 11 events), the earlier handling added
+confidence for 48 (50.0%, Wilson 95% CI 40.2–59.8%) and visual-v2 for 24 (25.0%,
+17.4–34.5%); all 24 discordant pairs favoured visual-v2 (exact McNemar
+p = 1.2 × 10⁻⁷). Against the provisional labels (80 photos) the figures were
+51.2% and 23.8% (p = 4.8 × 10⁻⁷). Because photos from one event are correlated,
+we also resampled whole events (supplementary, not pre-registered): the
+reduction was 25.0 percentage points (95% CI 16.1–32.8) with an improvement in
+9 of 11 events and none worse. Among images the reference says do support their
+report (37), none lost support under either policy.
+
+**Why it improved, and what it does not fix.**
+- The model never labelled a photo as contradicting its caption (consistency
+  labels: high 90, low 38, moderate 3 of 131), so the contradiction rule never
+  fired. The reduction came from not counting evidence on images the model
+  itself judged to show no hazard or to be unusable (22 and 48 of 131).
+- 24 of 96 non-supporting photos still added support because the model
+  rated them as showing a hazard with high consistency: 12 of 53
+  contradictory-caption photos (22.6%) and 8 of 69 photos where the reviewer sees
+  no hazard (11.6%).
+- Blurred, darkened or heavily downscaled copies were not recognised: 13 of 15
+  still added support under visual-v2 (14 of 15 under the earlier handling), and
+  in 12 of those 13 the model's visual outcome equalled that of the undegraded
+  source. The reviewer judged 13 of the 15 unusable.
+- Backfill of hazard type (29 of 57 eligible reports) was identical under both
+  policies, so the stricter backfill gate changed no decision. Against the AI
+  reference 17 of 29 backfills were correct (58.6%, 40.7–74.5%) and 8 of 29
+  (27.6%) were made where the reviewer sees no hazard.
+
+**Model agreement with the AI reference.** Coarse category 103/131 (78.6%,
+70.8–84.8%), hazard presence 109/131 (83.2%, 75.9–88.6%), macro-F1 0.63 over
+flood, landslide, other and none. The evidence tier matched exactly for 26.0%
+and within one tier for 76.3% (mean absolute error 1.02 tiers); exact agreement
+is sensitive to the reviewer's convention for non-supporting photos (0.05)
+versus the model's (often 0.00). Contradiction recall was 0 of 51.
+
+**Controls and reference quality.** Eight exact duplicates produced identical
+category, outcome and tier, and three re-encodings the same category and
+outcome. Against the AI reference, Commons category labels agreed on 75.9% of
+the 133 real test photos (101/133), which is why they were not used as ground
+truth for the headline result. Text hazard-type extraction matched the
+templated caption claim on 133 of 133 items; with templated captions this is a
+sanity check, not an accuracy estimate for real messages.
+
+**Repeatability.** Because the model is not deterministic at temperature 0, the
+test split was run a second time with identical frozen code, prompts and
+inputs (run 1 above is the primary run; the repeat was decided after seeing run
+1 and is reported as a replication). Between the two runs the visual-v2
+support decision was identical for 158 of 159 items (99.4%), the coarse
+category for 152 of 155 (98.1%, kappa 0.97), the visual outcome for 145 of 159
+(91.2%), the consistency label for 147 of 155 (94.8%) and the evidence tier
+for 138 of 155 (89.0%). The replication gave the same picture: support given
+to non-supporting photos 24.0% (23/96) under visual-v2 versus 49.0% (47/96)
+under the earlier handling (all 24 discordant pairs favouring visual-v2); no
+contradiction was ever reported (0 of 50 contradictory-caption photos flagged);
+13 of 15 degraded copies still added support (14 of 15 earlier); 18 of 29
+backfills were correct and 8 were made where the reviewer sees no hazard; no
+supporting photo lost support; 4 of 159 vision replies violated the schema. The
+run-to-run variation is small relative to the effects reported, but
+single-run percentages should be quoted to the nearest percentage point at most.
+
+**Not measured.** Severe-report review recall, false escalation and review
+workload (no independent reference priorities), contributor-weight ablation
+(no histories; none simulated), and any human-referenced metric.
 
 ## 5. Limitations paragraph
 
@@ -187,13 +256,18 @@ probabilities. Corroboration counts distinct accounts, which may belong to one
 person or repeat the same second-hand claim; only byte-identical photos are
 detected as copies. Location matching uses a single place token and no
 geocoding. The archived extraction set is small, constructed, and labelled by
-one author without a written policy. The image set uses templated captions,
-provisional labels, and photos limited by open licensing (flood test photos
-come from two event groups). The candidate decision policy and the
-photographic-evidence policy are implemented and unit-tested but have not
-been validated against reference priorities or human labels. In the current
-deployment the report database is held in container temporary storage, so
-reputation histories do not survive restarts.
+one author without a written policy. The image evaluation used templated
+captions, a single AI-reviewed reference without human agreement, and photos
+limited by open licensing (flood test photos come from two event groups); it
+ran once at temperature 0 on a model whose repeated calls are not identical.
+The photo policy removes support only when the model itself reports no hazard
+or an unusable image: the model never reported a contradiction, rated blurred
+and darkened copies as supporting, and rated a quarter of non-supporting
+photos as supporting with high consistency. The candidate decision policy is
+implemented and unit-tested but has not been validated against reference
+priorities. In the current deployment the report database is held in container
+temporary storage and sessions are held in process memory, so reputation
+histories and pending reports do not survive restarts.
 
 ## 6. Draft passages to remove or revise
 

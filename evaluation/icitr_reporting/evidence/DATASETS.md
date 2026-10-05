@@ -75,17 +75,24 @@ This reproduces the audit's figures exactly. Location presence means "some locat
 
 The primary outcome (false support on non-supporting images, 80 items) can separate rates about 0.15 apart. Per-language and flood-specific estimates are too wide for strong claims, and cluster-bootstrap intervals with two to six event groups are unstable.
 
-**Image annotation:** `image_annotation/IMAGE_ANNOTATION_GUIDE.md`.
+**Human image annotation:** `image_annotation/IMAGE_ANNOTATION_GUIDE.md`.
 - Two blinded sheets (`annotator_1.csv`, `annotator_2.csv`) cover 181 items in different random orders: image file and caption only, with no provisional labels or model output.
 - `annotation_tools.py image-agreement` reports kappa.
 - `adjudicated_image_labels.csv` takes the final labels. `analyze_image_eval.py` uses them automatically (pre-registered in the frozen analysis).
 - **Status: not started.**
+
+**AI-reviewed reference (interim, not human):** `ai_review/ai_review_labels.csv`, with conventions and limits in `ai_review/README.md`.
+- One AI annotator (Claude Sonnet 5.5), single pass over all 181 items on 2026-10-05, made before any live model output existed, from the blinded sheet.
+- Not blind to dataset construction; no inter-annotator agreement exists or is claimed; it never feeds the human pipeline.
+- Fields labelled: hazard visibility, image category, evidence tier, caption consistency, and whether recognisable faces are visible. Severity and reference priorities were not labelled.
+- **Label-quality finding:** the Commons-category labels over-claim. Of 39 real "flood" images only 26 show flooding (10 show no hazard, 3 another hazard); of 56 "landslide" images 34 show a slope failure (16 no hazard, 6 another hazard); of 60 "none" images 57 show no hazard. Commons category agreement with the reviewer: 117/155 (75.5%). The provisional labels are therefore not used as ground truth for any headline result.
+- 13 items (blurred or darkened derived copies and some very dark originals) were judged `unusable`; 11 items show recognisable people and their photo files (12 files incl. derived copies) are withheld from the archive.
 
 ## 3. Outstanding review items
 
 | Item | Owner | Blocks |
 |---|---|---|
 | Blinded review of the 29 text items (two reviewers + adjudication) | human annotators | adjudicated re-score; any revised-label claim |
-| Blinded annotation of the 181 image items (two annotators + adjudication) | human annotators | all human-reference image metrics, evidence-tier error, severe-report review recall |
+| Blinded annotation of the 181 image items (two annotators + adjudication) | human annotators | human-reference image metrics, severe-report review recall (the AI-reviewed reference is an interim substitute only) |
 | Native-speaker check of the Sinhala/Tamil caption templates | Sinhala and Tamil speakers | language-specific claims |
-| OpenAI credit for the live run (estimated < $1 at the recorded prices; cap $5) | repository owner | all live image results |
+| ~~OpenAI credit for the live run~~ | repository owner | done 2026-10-05; the run used about $0.10 (dev) plus about $0.75 (test) |
