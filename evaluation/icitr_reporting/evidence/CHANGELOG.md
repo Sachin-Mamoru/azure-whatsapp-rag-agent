@@ -83,6 +83,12 @@ Each item lists what changed for a report, not only for the code.
 - With `REPORTER_ID_KEY` set, pseudonyms are `k1_` + HMAC-SHA-256. Legacy rows are re-keyed the first time each contributor is seen.
 - Webhook logs mask recipient numbers.
 
+## Operations changes after the audit (2026-10-05)
+
+- Deployed the reporting fixes to production (revision `whatsapp-agent--0000032`, built from `cca45f5`).
+- Rotated the bot admin secret and stored it as an Azure secret (revision `--0000033`); `deploy.sh` now refuses a missing or placeholder `ADMIN_SECRET`.
+- `admin.html`: secrets typed in and kept in session storage, Content-Security-Policy, HTML escaping of report text, 401 shown as failure; `pages.yml` no longer injects `ADMIN_PAT`. Verified in a browser test with mocked network (no secret in the source, no requests before sign-in, injected markup rendered as text, other origins blocked) and on the live page.
+
 ## Not changed
 
 - The extraction and vision prompts, as of `19c2eb4`.

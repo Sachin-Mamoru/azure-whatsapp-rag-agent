@@ -90,6 +90,10 @@ The primary outcome (false support on non-supporting images, 80 items) can separ
 
 ## 3. Outstanding review items
 
+Owner decision 2026-10-05: no human annotation will be done. The items below
+therefore stay open, and results remain referenced to the original labels, the
+Commons categories (provisional) or the single AI review.
+
 | Item | Owner | Blocks |
 |---|---|---|
 | Blinded review of the 29 text items (two reviewers + adjudication) | human annotators | adjudicated re-score; any revised-label claim |

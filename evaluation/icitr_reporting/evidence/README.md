@@ -26,32 +26,19 @@ manuscript, with each claim traceable to code, a test, a run or a source.
 | Simulation | None. Ablation D (contributor weights) was not run, and no simulation was substituted | — |
 | Proposed experiments | Frozen image evaluation; blinded text and image annotation | `../FREEZE_test_split.json`, `REPRODUCE.md` |
 
-## Actions needed from the repository owner
+## Remaining owner actions
 
-1. **Rotate the admin secret.** The live `ADMIN_SECRET` is the public default
-   `admin_secret_change_me` (hardcoded in `early-warning-site/admin.html`).
-   Put a new random `ADMIN_SECRET=` in the local `.env` and run `./deploy.sh`.
-   The admin page then needs to ask for the secret instead of hardcoding it.
-2. **Rotate the GitHub token.** The Pages build injects the `ADMIN_PAT`
-   repository secret into the public admin page. Create a new fine-grained
-   token limited to this repo (Contents read/write), replace the secret under
-   Settings, Secrets and variables, Actions, and revoke the old token.
-3. **Recruit two annotators for each blinded task** (they may be the same two
-   people).
-   - Text: `annotation/blinded_review/reviewer_A.csv` and `reviewer_B.csv` with
-     `annotation/ANNOTATION_POLICY.md`.
-   - Images: `image_annotation/annotator_1.csv` and `annotator_2.csv`, with
-     `image_annotation/IMAGE_ANNOTATION_GUIDE.md` and the `image_data/images/`
-     folder (fetch with `build_image_dataset.py --verify`).
-   - Do not send manifests, key files, `ai_review/` or run outputs.
-   - When they return, run `annotation_tools.py agreement` / `image-agreement`,
-     adjudicate into `adjudicated_labels.csv` / `adjudicated_image_labels.csv`,
-     and rerun `analyze_image_eval.py` on the test run to add human-referenced
-     metrics.
-4. **Ask a Sinhala and a Tamil speaker** to check the caption templates in
-   `build_image_dataset.py` (`TEMPLATES`). Any change needs a new manifest, a new
-   freeze record and a new live run.
-5. **Decide on the six-photo pilot** in draft §5.5.1: supply its images and
-   reference scores, or remove it (recommended in `PAPER_UPDATE.md`).
-6. **Decide on Redis.** The configured Azure Redis no longer exists, so
-   sessions and pending reports live in process memory.
+Everything else in this package is finished. What only the repository owner can do:
+
+1. **Keep the new admin secret.** It was generated on 2026-10-05, is in the local
+   `.env` as `ADMIN_SECRET` and in Azure as the `admin-secret` secret. Copy it into
+   a password manager (`grep ^ADMIN_SECRET= .env`). `admin.html` asks for it, and
+   for a GitHub token, each time it is opened.
+2. **Confirm the old GitHub token is revoked.** The classic token that was embedded
+   in the public admin page must be deleted under GitHub Settings, Developer
+   settings, Personal access tokens. The page no longer embeds anything.
+3. **Optional: delete the `ADMIN_PAT` repository secret.** Nothing reads it any
+   more; the token is now pasted into the admin page when needed.
+
+Not planned (owner decisions, 2026-10-05): human annotation of the text and image
+sets, and a Redis replacement. The six-photo pilot was removed from the draft.
