@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-049",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.6012785830534995,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 111,
+     "prompt_tokens": 399,
+     "total_tokens": 510,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.6005081669427454
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.637507624924183,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 79,
+     "prompt_tokens": 37125,
+     "total_tokens": 37204,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 31488
+     }
+    },
+    "latency_s": 2.6350000416859984
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "landslide",
+  "category": "slope crack",
+  "location_text": "Badulla",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "A part of the hillside near Badulla has slid down, covering the road with soil.",
+  "people_at_risk": true,
+  "ongoing": false,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": true,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 111,
+    "prompt_tokens": 399,
+    "total_tokens": 510,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.6005081669427454
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "08d41bf6cd6cab27bfa93db020f1ab60673544063857c61fdfcdd8b46f96083f",
+  "image_bytes": 297767,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 79,
+   "prompt_tokens": 37125,
+   "total_tokens": 37204,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 31488
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.6350000416859984,
+  "hazard_detected": false,
+  "hazard_category": "none",
+  "possible_condition": "none",
+  "severity_from_image": "none",
+  "report_image_consistency": "low",
+  "evidence_score": 0.0,
+  "summary": "The image does not support the report of a hillside slide."
+ },
+ "completed_at": "2026-10-05T04:06:44.358790+00:00"
+}

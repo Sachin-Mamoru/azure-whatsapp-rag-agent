@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-052",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.346052790991962,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 101,
+     "prompt_tokens": 392,
+     "total_tokens": 493,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.3452526247128844
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.7863154588267207,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 86,
+     "prompt_tokens": 37119,
+     "total_tokens": 37205,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.781752792187035
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "unknown",
+  "hazard_type": "unknown",
+  "category": "unknown",
+  "location_text": "Kalutara",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "The user has referenced a photo related to Kalutara.",
+  "people_at_risk": false,
+  "ongoing": false,
+  "hazard_scale": "unknown",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 101,
+    "prompt_tokens": 392,
+    "total_tokens": 493,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.3452526247128844
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "efe96e1c44421c2a5400b8b795ff33b7ef0f8250b3e181ec4a3be5b8097f86e3",
+  "image_bytes": 539701,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 86,
+   "prompt_tokens": 37119,
+   "total_tokens": 37205,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.781752792187035,
+  "hazard_detected": true,
+  "hazard_category": "slope_instability",
+  "possible_condition": "landslide_or_soil_movement",
+  "severity_from_image": "high",
+  "report_image_consistency": "high",
+  "evidence_score": 0.2,
+  "summary": "The image shows clear evidence of a landslide."
+ },
+ "completed_at": "2026-10-05T03:40:28.330918+00:00"
+}

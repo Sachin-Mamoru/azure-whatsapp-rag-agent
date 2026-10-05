@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-146",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.4398300000466406,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 116,
+     "prompt_tokens": 412,
+     "total_tokens": 528,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.4386387909762561
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.9969801660627127,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 76,
+     "prompt_tokens": 37126,
+     "total_tokens": 37202,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.988306457642466
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "flood",
+  "category": "flooding",
+  "location_text": "இரத்தினபுரி",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "The Ratnapura area is submerged due to heavy rain, and the water is still spreading.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "major",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 116,
+    "prompt_tokens": 412,
+    "total_tokens": 528,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.4386387909762561
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "1c3bbb3d618c4f9a8fce50071888ed725fb1f900ad3e8b7efd8b219b400c0986",
+  "image_bytes": 1148130,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 76,
+   "prompt_tokens": 37126,
+   "total_tokens": 37202,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.988306457642466,
+  "hazard_detected": false,
+  "hazard_category": "none",
+  "possible_condition": "none",
+  "severity_from_image": "none",
+  "report_image_consistency": "low",
+  "evidence_score": 0.05,
+  "summary": "Image does not clearly support the flooding report."
+ },
+ "completed_at": "2026-10-05T03:55:08.806821+00:00"
+}

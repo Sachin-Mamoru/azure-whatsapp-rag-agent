@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-176",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.4978697919286788,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 117,
+     "prompt_tokens": 411,
+     "total_tokens": 528,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.4966718750074506
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.4321733340620995,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 77,
+     "prompt_tokens": 25792,
+     "total_tokens": 25869,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.427670874632895
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "landslide",
+  "category": "landslide blockage",
+  "location_text": "இரத்தினபுரி",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "A part of a landslide has collapsed near Ratnapura, covering the road with soil.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": true,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 117,
+    "prompt_tokens": 411,
+    "total_tokens": 528,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.4966718750074506
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "c254bf9b5e24d88f7245479d515caa34218da512dc4d8af6d29c28a5f73fe183",
+  "image_bytes": 448126,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 77,
+   "prompt_tokens": 25792,
+   "total_tokens": 25869,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.427670874632895,
+  "hazard_detected": false,
+  "hazard_category": "none",
+  "possible_condition": "none",
+  "severity_from_image": "none",
+  "report_image_consistency": "high",
+  "evidence_score": 0.0,
+  "summary": "No evidence of a landslide or hazard present."
+ },
+ "completed_at": "2026-10-05T04:26:54.343414+00:00"
+}

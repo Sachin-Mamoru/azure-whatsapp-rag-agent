@@ -1,0 +1,130 @@
+{
+ "item_id": "IMG-051",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.581461874768138,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 114,
+     "prompt_tokens": 411,
+     "total_tokens": 525,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.5790003328584135
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.8856834159232676,
+   "status": "error",
+   "reason": "invalid core fields: report_image_consistency",
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 76,
+     "prompt_tokens": 37127,
+     "total_tokens": 37203,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.882621292024851
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "landslide",
+  "category": "rockfall",
+  "location_text": "மாத்தறை",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "A landslide has occurred near Matale, with rocks and debris continuing to fall from the slope.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 114,
+    "prompt_tokens": 411,
+    "total_tokens": 525,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.5790003328584135
+  }
+ },
+ "vision": {
+  "status": "error",
+  "error": "invalid core fields: report_image_consistency",
+  "issues": [
+   "invalid:report_image_consistency"
+  ],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "ba1d0cefd2356b44bf0fb214e5036d0b69b0898aea40a329a9def38f5b4e7a6e",
+  "image_bytes": 242421,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 76,
+   "prompt_tokens": 37127,
+   "total_tokens": 37203,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.882621292024851,
+  "hazard_detected": false,
+  "hazard_category": "none",
+  "possible_condition": "none",
+  "severity_from_image": "none",
+  "report_image_consistency": null,
+  "evidence_score": 0.0,
+  "summary": "No relevant evidence of the reported landslide."
+ },
+ "completed_at": "2026-10-05T03:40:18.668172+00:00"
+}

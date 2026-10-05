@@ -1,0 +1,130 @@
+{
+ "item_id": "IMG-090",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.5788222500123084,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 108,
+     "prompt_tokens": 404,
+     "total_tokens": 512,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.5775492922402918
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.6861977498047054,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 91,
+     "prompt_tokens": 25789,
+     "total_tokens": 25880,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.682717707939446
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "unknown",
+  "hazard_type": "unknown",
+  "category": null,
+  "location_text": "இரத்தினபுரி",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "The user is referring to a picture related to an observation in Ratnapura.",
+  "people_at_risk": false,
+  "ongoing": false,
+  "hazard_scale": "unknown",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [
+    "missing:category"
+   ],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 108,
+    "prompt_tokens": 404,
+    "total_tokens": 512,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.5775492922402918
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "0c480e08a0b29cd7ed44c692d9b7a98dc21f62ec083ca399cd568936ed33016f",
+  "image_bytes": 375603,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 91,
+   "prompt_tokens": 25789,
+   "total_tokens": 25880,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.682717707939446,
+  "hazard_detected": true,
+  "hazard_category": "localised_flooding",
+  "possible_condition": "mud_debris_and_water_accumulation",
+  "severity_from_image": "high",
+  "report_image_consistency": "high",
+  "evidence_score": 0.2,
+  "summary": "The image shows clear evidence of localized flooding with mud and debris."
+ },
+ "completed_at": "2026-10-05T03:45:48.526863+00:00"
+}

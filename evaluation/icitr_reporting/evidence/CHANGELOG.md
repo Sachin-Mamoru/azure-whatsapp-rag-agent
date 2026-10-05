@@ -7,8 +7,9 @@
 | Audited snapshot | `29f926fcd2eaa60d4979866f9504e19ecf228075` | Code identical to `0208dac`; the only difference is `early-warning-site/data.json`. |
 | Pre-existing uncommitted work | `19c2eb4` | Greeting menu, reply-from-receiving-number, LLM-judged `location_specific`. Committed unchanged as the baseline for this work. Adds two fields to the extraction prompt, so the archived 29-item run (made before it) used a different prompt. |
 | Reporting fixes | `d863ca7`, `8379d1e` | Described below. |
-| Evaluation tooling | `cddd3cd`, `befea64`, `5d6f7b8` | Annotation, image dataset, runner, analysis. |
-| Frozen for the test split | `5d6f7b8` (record in `e91cca2`) | `FREEZE_test_split.json` (supersedes the `befea64` freeze; no test output existed at either). |
+| Evaluation tooling | `cddd3cd`, `befea64`, `5d6f7b8`, `ed79bdb` | Annotation, image dataset, runner, analysis; AI-reviewed reference, throttled runner. |
+| Frozen for the test split | `ed79bdb` (record in `d7f7fd6`) | `FREEZE_test_split.json`, superseding the `befea64` and `5d6f7b8` freezes; no test output existed at any of them. The live test runs used code at `d7f7fd6`. |
+| Merged to `main` | `166771d` | Merge of the feature branch as of `d7f7fd6`; production runs the same runtime code (deployed from `cca45f5`). |
 
 Archived datasets and results under `evaluation/datasets/` and `evaluation/results/` are unchanged (verified by hash before and after the offline re-runs).
 

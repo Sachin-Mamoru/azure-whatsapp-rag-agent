@@ -1,0 +1,130 @@
+{
+ "item_id": "IMG-119",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.4822949171066284,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 100,
+     "prompt_tokens": 400,
+     "total_tokens": 500,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.4820749587379396
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.4392667086794972,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 86,
+     "prompt_tokens": 37119,
+     "total_tokens": 37205,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.4355149171315134
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "unknown",
+  "hazard_type": "unknown",
+  "category": null,
+  "location_text": "கண்டி",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "The user is referring to a picture related to Kandy.",
+  "people_at_risk": false,
+  "ongoing": false,
+  "hazard_scale": "unknown",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [
+    "missing:category"
+   ],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 100,
+    "prompt_tokens": 400,
+    "total_tokens": 500,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.4820749587379396
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "2da9080f21bc557f1895d371a0394a7e95712735c3db4fc419581297a70edac2",
+  "image_bytes": 325400,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 86,
+   "prompt_tokens": 37119,
+   "total_tokens": 37205,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.4355149171315134,
+  "hazard_detected": true,
+  "hazard_category": "localised_flooding",
+  "possible_condition": "water_overflow_or_stagnation",
+  "severity_from_image": "moderate",
+  "report_image_consistency": "high",
+  "evidence_score": 0.15,
+  "summary": "The image shows signs of localized flooding."
+ },
+ "completed_at": "2026-10-05T04:17:24.177735+00:00"
+}

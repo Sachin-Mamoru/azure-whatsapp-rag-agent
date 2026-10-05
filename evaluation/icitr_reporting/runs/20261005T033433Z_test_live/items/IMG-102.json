@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-102",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.8890367499552667,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 114,
+     "prompt_tokens": 398,
+     "total_tokens": 512,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.888901166152209
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.7613184158690274,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 81,
+     "prompt_tokens": 37127,
+     "total_tokens": 37208,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.757681292016059
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "flood",
+  "category": "flooding",
+  "location_text": "Kegalle",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "Heavy rain has caused flooding in the area near Kegalle, and the water is still spreading.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 114,
+    "prompt_tokens": 398,
+    "total_tokens": 512,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.888901166152209
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "303077cdbb3b1ba28c126ae85e763bb40b728c824d5343cbdae31182b13a3191",
+  "image_bytes": 412778,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 81,
+   "prompt_tokens": 37127,
+   "total_tokens": 37208,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.757681292016059,
+  "hazard_detected": false,
+  "hazard_category": "none",
+  "possible_condition": "clear_road_conditions",
+  "severity_from_image": "none",
+  "report_image_consistency": "high",
+  "evidence_score": 0.0,
+  "summary": "The image shows clear road conditions with no visible flooding."
+ },
+ "completed_at": "2026-10-05T03:47:48.945351+00:00"
+}

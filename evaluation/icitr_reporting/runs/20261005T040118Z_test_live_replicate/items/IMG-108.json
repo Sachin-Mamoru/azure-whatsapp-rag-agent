@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-108",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.5175198749639094,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 109,
+     "prompt_tokens": 401,
+     "total_tokens": 510,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.5172302918508649
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.1150133330374956,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 79,
+     "prompt_tokens": 20122,
+     "total_tokens": 20201,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.113313250243664
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "flood",
+  "category": "road flooding",
+  "location_text": "Kalutara",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "Flood water is rising on the road near Kalutara, reaching the houses.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": true,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 109,
+    "prompt_tokens": 401,
+    "total_tokens": 510,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.5172302918508649
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "7cc07cdc6ce7d2fc89eb0b27209bbe82d77b94cfd4130d7bad2b3435a6dc7697",
+  "image_bytes": 80438,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 79,
+   "prompt_tokens": 20122,
+   "total_tokens": 20201,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.113313250243664,
+  "hazard_detected": false,
+  "hazard_category": "none",
+  "possible_condition": "none",
+  "severity_from_image": "none",
+  "report_image_consistency": "low",
+  "evidence_score": 0.05,
+  "summary": "Image does not clearly support the report of rising flood water."
+ },
+ "completed_at": "2026-10-05T04:15:33.851567+00:00"
+}

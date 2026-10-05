@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-126",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.6609962498769164,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 110,
+     "prompt_tokens": 398,
+     "total_tokens": 508,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.6607116251252592
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 3.2071742499247193,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 84,
+     "prompt_tokens": 37124,
+     "total_tokens": 37208,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 3.203034124802798
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "flood",
+  "category": "flooding",
+  "location_text": "Ratnapura",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "Heavy rain has caused flooding in Ratnapura, and the water is still spreading.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "major",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 110,
+    "prompt_tokens": 398,
+    "total_tokens": 508,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.6607116251252592
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "5d2044620cfd19a46f1b08f15d94a224557560b230734987dc65a892ec19ac6a",
+  "image_bytes": 224270,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 84,
+   "prompt_tokens": 37124,
+   "total_tokens": 37208,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 3.203034124802798,
+  "hazard_detected": false,
+  "hazard_category": "none",
+  "possible_condition": "clear_sky_and_no_flooding",
+  "severity_from_image": "none",
+  "report_image_consistency": "high",
+  "evidence_score": 0.0,
+  "summary": "The image does not show any evidence of flooding."
+ },
+ "completed_at": "2026-10-05T03:51:49.201627+00:00"
+}

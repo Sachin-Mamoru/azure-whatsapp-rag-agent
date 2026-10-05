@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-158",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.4829605002887547,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 113,
+     "prompt_tokens": 410,
+     "total_tokens": 523,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.4818395422771573
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.073003000114113,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 87,
+     "prompt_tokens": 25792,
+     "total_tokens": 25879,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.0697445827536285
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "flood",
+  "category": "flooding",
+  "location_text": "களுத்துறை",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "The Kalutara area is submerged due to heavy rain, and the water is still spreading.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "major",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 113,
+    "prompt_tokens": 410,
+    "total_tokens": 523,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.4818395422771573
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "590ec33821f145baf45f7812d42d320b123cf34e50bc43b0418e9e9177170b95",
+  "image_bytes": 60716,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 87,
+   "prompt_tokens": 25792,
+   "total_tokens": 25879,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.0697445827536285,
+  "hazard_detected": true,
+  "hazard_category": "localised_flooding",
+  "possible_condition": "heavy_rain_and_submersion",
+  "severity_from_image": "high",
+  "report_image_consistency": "high",
+  "evidence_score": 0.2,
+  "summary": "The image shows significant flooding consistent with the report."
+ },
+ "completed_at": "2026-10-05T03:57:07.950028+00:00"
+}

@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-062",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.7595406668260694,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 102,
+     "prompt_tokens": 402,
+     "total_tokens": 504,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.7493023751303554
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.747787000145763,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 87,
+     "prompt_tokens": 25786,
+     "total_tokens": 25873,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.7449008747935295
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "unknown",
+  "hazard_type": "unknown",
+  "category": "unknown",
+  "location_text": "කළුතර",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "The user is referring to a photograph related to Kalutara.",
+  "people_at_risk": false,
+  "ongoing": false,
+  "hazard_scale": "unknown",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 102,
+    "prompt_tokens": 402,
+    "total_tokens": 504,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.7493023751303554
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "d8c06a07c2c43cf89ad18931f952c1b631fdbe20fa5541b776bad85d14412297",
+  "image_bytes": 412372,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 87,
+   "prompt_tokens": 25786,
+   "total_tokens": 25873,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.7449008747935295,
+  "hazard_detected": true,
+  "hazard_category": "slope_instability",
+  "possible_condition": "structural_damage_due_to_instability",
+  "severity_from_image": "high",
+  "report_image_consistency": "high",
+  "evidence_score": 0.2,
+  "summary": "The image shows significant structural damage indicative of slope instability."
+ },
+ "completed_at": "2026-10-05T04:08:34.660253+00:00"
+}

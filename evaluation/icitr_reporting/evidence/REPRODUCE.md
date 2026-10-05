@@ -33,17 +33,23 @@ categories and will not reproduce the committed manifest exactly; use `--verify`
 
 ```bash
 RUN=evaluation/icitr_reporting/runs/$(date -u +%Y%m%dT%H%M%SZ)_dev
-python evaluation/icitr_reporting/run_image_eval.py --split dev --run-dir $RUN --max-cost-usd 5
+python evaluation/icitr_reporting/run_image_eval.py --split dev --run-dir $RUN --max-cost-usd 2 \
+    --concurrency 1 --min-interval-s 10          # 10 s keeps a 200k tokens/minute account under its limit
 python evaluation/icitr_reporting/analyze_image_eval.py --run-dir $RUN
+python evaluation/icitr_reporting/analyze_ai_reference.py --run-dir $RUN
 
 RUN=evaluation/icitr_reporting/runs/$(date -u +%Y%m%dT%H%M%SZ)_test
-python evaluation/icitr_reporting/run_image_eval.py --split test --run-dir $RUN --max-cost-usd 5 \
-    --frozen evaluation/icitr_reporting/FREEZE_test_split.json
+python evaluation/icitr_reporting/run_image_eval.py --split test --run-dir $RUN --max-cost-usd 2 \
+    --concurrency 1 --min-interval-s 10 --frozen evaluation/icitr_reporting/FREEZE_test_split.json
 python evaluation/icitr_reporting/analyze_image_eval.py --run-dir $RUN
+python evaluation/icitr_reporting/analyze_ai_reference.py --run-dir $RUN
+# repeatability of two runs with identical frozen code:
+python evaluation/icitr_reporting/compare_runs.py --run-a <run A> --run-b <run B> --out compare.json
 ```
 
 The test-split command refuses to run if any frozen file differs from commit
-`5d6f7b8`. Re-running the same `--run-dir` resumes. Each run directory records
+`d7f7fd6` (the freeze record names its own commit). `--redo-failed` moves items
+that ended in an API error aside to `failed_attempts/` and runs them again. Re-running the same `--run-dir` resumes. Each run directory records
 the source commit, working-tree status and diff digest, `pip freeze`, model
 alias, per-call model snapshot, prompts and their digests, timeouts, pricing
 assumption, manifest hash and the exact command.

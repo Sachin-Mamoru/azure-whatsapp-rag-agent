@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-165",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.9430230832658708,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 113,
+     "prompt_tokens": 402,
+     "total_tokens": 515,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.94253783300519
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 1.827418833039701,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 84,
+     "prompt_tokens": 14458,
+     "total_tokens": 14542,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.8262095842510462
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "landslide",
+  "category": "slope movement",
+  "location_text": "Gampaha",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "There is a landslide near Gampaha with rocks and mud still coming down the slope.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 113,
+    "prompt_tokens": 402,
+    "total_tokens": 515,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.94253783300519
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "67888397330b2062d1a8bd75fdc690a25def189feb20fe9261d2859238f59b55",
+  "image_bytes": 13248,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 84,
+   "prompt_tokens": 14458,
+   "total_tokens": 14542,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 1.8262095842510462,
+  "hazard_detected": true,
+  "hazard_category": "slope_instability",
+  "possible_condition": "ongoing_landslide_activity",
+  "severity_from_image": "high",
+  "report_image_consistency": "moderate",
+  "evidence_score": 0.15,
+  "summary": "Image shows evidence of a landslide."
+ },
+ "completed_at": "2026-10-05T03:58:18.596805+00:00"
+}

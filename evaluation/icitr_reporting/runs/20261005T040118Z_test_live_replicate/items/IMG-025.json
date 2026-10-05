@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-025",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.5094442497938871,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 113,
+     "prompt_tokens": 400,
+     "total_tokens": 513,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.5081935422495008
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.647380624897778,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 95,
+     "prompt_tokens": 37126,
+     "total_tokens": 37221,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.644168875180185
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "landslide",
+  "category": "slope crack",
+  "location_text": "Gampaha",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "A part of the hillside near Gampaha has slid down, covering the road with soil.",
+  "people_at_risk": true,
+  "ongoing": false,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": true,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 113,
+    "prompt_tokens": 400,
+    "total_tokens": 513,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.5081935422495008
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "45b11bcee9361979201a34e816e02f99e6d8447300870209d0ebb1e6d1f3e317",
+  "image_bytes": 225652,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 95,
+   "prompt_tokens": 37126,
+   "total_tokens": 37221,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.644168875180185,
+  "hazard_detected": true,
+  "hazard_category": "localised_flooding",
+  "possible_condition": "heavy_rain_or_inadequate_drainage",
+  "severity_from_image": "moderate",
+  "report_image_consistency": "moderate",
+  "evidence_score": 0.15,
+  "summary": "The image shows flooding, which may relate to the reported hazard."
+ },
+ "completed_at": "2026-10-05T04:04:44.034721+00:00"
+}

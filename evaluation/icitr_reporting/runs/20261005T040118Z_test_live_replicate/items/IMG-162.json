@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-162",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.867047999985516,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 112,
+     "prompt_tokens": 400,
+     "total_tokens": 512,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.8659178330563009
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.1711884168908,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 84,
+     "prompt_tokens": 37126,
+     "total_tokens": 37210,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.1696171248331666
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "landslide",
+  "category": "soil slide",
+  "location_text": "Ratnapura",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "A part of the hillside near Ratnapura has slid down, covering the road with soil.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": true,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 112,
+    "prompt_tokens": 400,
+    "total_tokens": 512,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.8659178330563009
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "71f4df5e88e30e7374354d2ba229e20f681347a06399792bd6bf3962d81a88e9",
+  "image_bytes": 51382,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 84,
+   "prompt_tokens": 37126,
+   "total_tokens": 37210,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.1696171248331666,
+  "hazard_detected": true,
+  "hazard_category": "slope_instability",
+  "possible_condition": "landslide",
+  "severity_from_image": "moderate",
+  "report_image_consistency": "moderate",
+  "evidence_score": 0.15,
+  "summary": "Image shows evidence of a hillside slide affecting the road."
+ },
+ "completed_at": "2026-10-05T04:24:34.429180+00:00"
+}

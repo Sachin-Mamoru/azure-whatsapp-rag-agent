@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-161",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.4755503330379725,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 115,
+     "prompt_tokens": 424,
+     "total_tokens": 539,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.475239250343293
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.1688748747110367,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 82,
+     "prompt_tokens": 37126,
+     "total_tokens": 37208,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.166013792157173
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "landslide",
+  "category": "slope movement",
+  "location_text": "රත්නපුර",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "A landslide has occurred near Ratnapura, with stones and mud continuing to come down.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 115,
+    "prompt_tokens": 424,
+    "total_tokens": 539,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.475239250343293
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "a64cb2ecb3020505c908131b4a3f2ee60c197ea63f2392d5946b77ebc6ffa867",
+  "image_bytes": 61710,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 82,
+   "prompt_tokens": 37126,
+   "total_tokens": 37208,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.166013792157173,
+  "hazard_detected": true,
+  "hazard_category": "slope_instability",
+  "possible_condition": "landslide_activity",
+  "severity_from_image": "high",
+  "report_image_consistency": "high",
+  "evidence_score": 0.2,
+  "summary": "The image shows clear evidence of a landslide."
+ },
+ "completed_at": "2026-10-05T04:24:24.030815+00:00"
+}

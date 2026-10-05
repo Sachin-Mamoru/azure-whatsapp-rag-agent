@@ -1,0 +1,130 @@
+{
+ "item_id": "IMG-128",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.8016266669146717,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 109,
+     "prompt_tokens": 405,
+     "total_tokens": 514,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.8006315832026303
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.940080124884844,
+   "status": "error",
+   "reason": "invalid core fields: report_image_consistency",
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 73,
+     "prompt_tokens": 37122,
+     "total_tokens": 37195,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.933998624794185
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "flood",
+  "category": "road flooding",
+  "location_text": "களுத்துறை",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "Flood water has risen on the road near Kalutara, approaching houses.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 109,
+    "prompt_tokens": 405,
+    "total_tokens": 514,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.8006315832026303
+  }
+ },
+ "vision": {
+  "status": "error",
+  "error": "invalid core fields: report_image_consistency",
+  "issues": [
+   "invalid:report_image_consistency"
+  ],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "323d48e3951e5837281460bb553924d41adc4e90b6016d9047c6652d88a84f3a",
+  "image_bytes": 701491,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 73,
+   "prompt_tokens": 37122,
+   "total_tokens": 37195,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.933998624794185,
+  "hazard_detected": false,
+  "hazard_category": "none",
+  "possible_condition": "none",
+  "severity_from_image": "none",
+  "report_image_consistency": null,
+  "evidence_score": 0.0,
+  "summary": "No evidence of flooding detected."
+ },
+ "completed_at": "2026-10-05T04:18:55.060019+00:00"
+}

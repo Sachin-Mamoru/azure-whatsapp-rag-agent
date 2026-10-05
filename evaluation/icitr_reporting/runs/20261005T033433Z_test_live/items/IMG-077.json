@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-077",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.4327272502705455,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 110,
+     "prompt_tokens": 417,
+     "total_tokens": 527,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.432443750090897
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.3261055001057684,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 88,
+     "prompt_tokens": 37121,
+     "total_tokens": 37209,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.3231121245771646
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "landslide",
+  "category": "slope failure",
+  "location_text": "කැලණිය",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "A section of a hill near Kelaniya has collapsed onto the road.",
+  "people_at_risk": true,
+  "ongoing": false,
+  "hazard_scale": "moderate",
+  "infrastructure_damage": true,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 110,
+    "prompt_tokens": 417,
+    "total_tokens": 527,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.432443750090897
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "56d65cf5887c1fe1837dad72bd40040cbfe92c922a5242d7d3338773e77c7513",
+  "image_bytes": 91852,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 88,
+   "prompt_tokens": 37121,
+   "total_tokens": 37209,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.3231121245771646,
+  "hazard_detected": true,
+  "hazard_category": "slope_instability",
+  "possible_condition": "recent_hill_collapsing",
+  "severity_from_image": "moderate",
+  "report_image_consistency": "high",
+  "evidence_score": 0.15,
+  "summary": "The image shows evidence of slope instability consistent with the report."
+ },
+ "completed_at": "2026-10-05T03:44:17.998814+00:00"
+}

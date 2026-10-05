@@ -1,0 +1,128 @@
+{
+ "item_id": "IMG-179",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 2.6939342920668423,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 115,
+     "prompt_tokens": 418,
+     "total_tokens": 533,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.6935124578885734
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.659577916841954,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 88,
+     "prompt_tokens": 25791,
+     "total_tokens": 25879,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.656974040903151
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "hazard",
+  "hazard_type": "flood",
+  "category": "flooding",
+  "location_text": "බදුල්ල ප්‍රදේශය",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "Heavy rain has caused flooding in the Badulla area, and the water is still spreading.",
+  "people_at_risk": true,
+  "ongoing": true,
+  "hazard_scale": "major",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 115,
+    "prompt_tokens": 418,
+    "total_tokens": 533,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 2.6935124578885734
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "50b72d65bbc8cfe71160a4db28f44ab455678e65bbade86502fadaf08e19f2d0",
+  "image_bytes": 257945,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 88,
+   "prompt_tokens": 25791,
+   "total_tokens": 25879,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.656974040903151,
+  "hazard_detected": true,
+  "hazard_category": "localised_flooding",
+  "possible_condition": "heavy_rain_and_flooding",
+  "severity_from_image": "high",
+  "report_image_consistency": "high",
+  "evidence_score": 0.2,
+  "summary": "The image clearly shows significant flooding consistent with the report."
+ },
+ "completed_at": "2026-10-05T04:27:25.771795+00:00"
+}

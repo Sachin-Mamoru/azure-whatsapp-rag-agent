@@ -1,0 +1,130 @@
+{
+ "item_id": "IMG-136",
+ "attempts": [
+  {
+   "stage": "extraction",
+   "n": 0,
+   "wall_s": 1.538580167107284,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 106,
+     "prompt_tokens": 404,
+     "total_tokens": 510,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 1.5383220417425036
+   }
+  },
+  {
+   "stage": "vision",
+   "n": 0,
+   "wall_s": 2.135935166850686,
+   "status": "ok",
+   "reason": null,
+   "meta": {
+    "model_snapshot": "gpt-4o-mini-2024-07-18",
+    "token_usage": {
+     "completion_tokens": 86,
+     "prompt_tokens": 25789,
+     "total_tokens": 25875,
+     "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+     },
+     "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+     }
+    },
+    "latency_s": 2.1327390410006046
+   }
+  }
+ ],
+ "failures": [],
+ "extraction": {
+  "report_domain": "unknown",
+  "hazard_type": "unknown",
+  "category": null,
+  "location_text": "රත්නපුර",
+  "location_specific": true,
+  "clarification_question": null,
+  "description": "The user is referring to a photograph related to an observation in Ratnapura.",
+  "people_at_risk": false,
+  "ongoing": false,
+  "hazard_scale": "unknown",
+  "infrastructure_damage": false,
+  "_extraction_meta": {
+   "status": "ok",
+   "issues": [
+    "missing:category"
+   ],
+   "model_snapshot": "gpt-4o-mini-2024-07-18",
+   "token_usage": {
+    "completion_tokens": 106,
+    "prompt_tokens": 404,
+    "total_tokens": 510,
+    "completion_tokens_details": {
+     "accepted_prediction_tokens": 0,
+     "audio_tokens": 0,
+     "reasoning_tokens": 0,
+     "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens_details": {
+     "audio_tokens": 0,
+     "cached_tokens": 0
+    }
+   },
+   "finish_reason": "stop",
+   "latency_s": 1.5383220417425036
+  }
+ },
+ "vision": {
+  "status": "ok",
+  "error": null,
+  "issues": [],
+  "declared_mime": "image/jpeg",
+  "mime": "image/jpeg",
+  "image_sha256": "4bb68ae3c395594a27775fc6a26c69ca715f8fe3a4c3366712d739fbc2cff100",
+  "image_bytes": 320681,
+  "model_snapshot": "gpt-4o-mini-2024-07-18",
+  "token_usage": {
+   "completion_tokens": 86,
+   "prompt_tokens": 25789,
+   "total_tokens": 25875,
+   "completion_tokens_details": {
+    "accepted_prediction_tokens": 0,
+    "audio_tokens": 0,
+    "reasoning_tokens": 0,
+    "rejected_prediction_tokens": 0
+   },
+   "prompt_tokens_details": {
+    "audio_tokens": 0,
+    "cached_tokens": 0
+   }
+  },
+  "finish_reason": "stop",
+  "latency_s": 2.1327390410006046,
+  "hazard_detected": true,
+  "hazard_category": "localised_flooding",
+  "possible_condition": "standing_water_in_fields",
+  "severity_from_image": "moderate",
+  "report_image_consistency": "high",
+  "evidence_score": 0.15,
+  "summary": "The image shows evidence of localized flooding in agricultural land."
+ },
+ "completed_at": "2026-10-05T03:53:28.024640+00:00"
+}

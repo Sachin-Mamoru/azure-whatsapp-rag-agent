@@ -21,31 +21,37 @@ manuscript, with each claim traceable to code, a test, a run or a source.
 | Kind | What it is | Where |
 |---|---|---|
 | Historical model run | The archived 29-message extraction run (model snapshot and prompt not recorded), re-scored offline | `evaluation/results/04_reporting_pipeline.json` (unchanged), `../annotation/rescore_*.json` |
-| New live inference | **None completed.** The dev smoke run failed on every call (`insufficient_quota`); it is kept, not hidden | `../runs/20261004T084723Z_dev/` |
+| New live inference | Frozen test split, 159 items, one model snapshot, $0.75 per run (primary run plus a labelled replication, $1.49 together); a dev smoke run (22 items); an earlier dev attempt that failed on every call (`insufficient_quota`) is kept, not hidden | `../runs/20261005T033433Z_test_live/` (primary), `../runs/20261005T040118Z_test_live_replicate/` (replication), `../runs/20261005T033020Z_dev_live/`, `../runs/20261004T084723Z_dev/` |
 | Deterministic tests | 55 unit/regression tests; probes of the audited code; aggregation and policy analysis; bench 05 re-run | `tests/`, `../runs/20261004T085607Z_offline/` |
 | Simulation | None. Ablation D (contributor weights) was not run, and no simulation was substituted | — |
 | Proposed experiments | Frozen image evaluation; blinded text and image annotation | `../FREEZE_test_split.json`, `REPRODUCE.md` |
 
 ## Actions needed from the repository owner
 
-1. **Add OpenAI credit.** The API returns `429 insufficient_quota` (credit
-   balance exhausted). This blocks the live image run, and the production bot,
-   which uses the same key and cannot answer messages either. Estimated cost for dev plus test: under
-   $1 at the recorded gpt-4o-mini prices; the runner enforces a $5 cap. Then run
-   the two "Live evaluation" commands in `REPRODUCE.md`.
-2. **Recruit two annotators for each blinded task** (they may be the same two
+1. **Rotate the admin secret.** The live `ADMIN_SECRET` is the public default
+   `admin_secret_change_me` (hardcoded in `early-warning-site/admin.html`).
+   Put a new random `ADMIN_SECRET=` in the local `.env` and run `./deploy.sh`.
+   The admin page then needs to ask for the secret instead of hardcoding it.
+2. **Rotate the GitHub token.** The Pages build injects the `ADMIN_PAT`
+   repository secret into the public admin page. Create a new fine-grained
+   token limited to this repo (Contents read/write), replace the secret under
+   Settings, Secrets and variables, Actions, and revoke the old token.
+3. **Recruit two annotators for each blinded task** (they may be the same two
    people).
-   - Text: send `annotation/blinded_review/reviewer_A.csv` and
-     `reviewer_B.csv` with `annotation/ANNOTATION_POLICY.md`.
-   - Images: send `image_annotation/annotator_1.csv` and `annotator_2.csv`,
-     with `image_annotation/IMAGE_ANNOTATION_GUIDE.md` and the
-     `image_data/images/` folder.
-   - Do not send manifests, key files or run outputs.
-   - When they return, run `annotation_tools.py agreement` /
-     `image-agreement`, adjudicate into `adjudicated_labels.csv` /
-     `adjudicated_image_labels.csv`, and rerun `analyze_image_eval.py`.
-3. **Ask a Sinhala and a Tamil speaker** to check the caption templates in
-   `build_image_dataset.py` (`TEMPLATES`) before the test run if possible. Any
-   change to them requires a new manifest and a new freeze record.
-4. **Decide on the 6-photo pilot** in draft §5.5.1: supply its images and
+   - Text: `annotation/blinded_review/reviewer_A.csv` and `reviewer_B.csv` with
+     `annotation/ANNOTATION_POLICY.md`.
+   - Images: `image_annotation/annotator_1.csv` and `annotator_2.csv`, with
+     `image_annotation/IMAGE_ANNOTATION_GUIDE.md` and the `image_data/images/`
+     folder (fetch with `build_image_dataset.py --verify`).
+   - Do not send manifests, key files, `ai_review/` or run outputs.
+   - When they return, run `annotation_tools.py agreement` / `image-agreement`,
+     adjudicate into `adjudicated_labels.csv` / `adjudicated_image_labels.csv`,
+     and rerun `analyze_image_eval.py` on the test run to add human-referenced
+     metrics.
+4. **Ask a Sinhala and a Tamil speaker** to check the caption templates in
+   `build_image_dataset.py` (`TEMPLATES`). Any change needs a new manifest, a new
+   freeze record and a new live run.
+5. **Decide on the six-photo pilot** in draft §5.5.1: supply its images and
    reference scores, or remove it (recommended in `PAPER_UPDATE.md`).
+6. **Decide on Redis.** The configured Azure Redis no longer exists, so
+   sessions and pending reports live in process memory.
