@@ -1,6 +1,6 @@
 {
   "frozen_at": "2026-10-04",
-  "source_commit": "5d6f7b8b7431c286244de9cdce6a19ac8be578d2",
+  "source_commit": "ed79bdbd1cabe7d99b870cf73b381420e7d73fad",
   "prompt_digests": {
     "extraction": "14a232334a5a",
     "vision": "42a65476404e"
@@ -16,13 +16,17 @@
   "frozen_files_sha256": {
     "agent/reporter.py": "42a8c17e607b7d1609e30192af6fcf6b5aa8867c519603f95eab513d11944f8b",
     "config.py": "01fb89558aeec884817739bdbe28922c03f8d048eadbbc32252e59232c40d3ba",
-    "evaluation/icitr_reporting/run_image_eval.py": "0504974e70c3542468fbce334638dd5d86b2a58e9d65de91d2c358ad11f3ef56",
+    "evaluation/icitr_reporting/run_image_eval.py": "225b87291616812a81489d9562887b2c7111f2d9dd30722fc1c047fd1accb86c",
     "evaluation/icitr_reporting/analyze_image_eval.py": "becc4547692f56a4a2c3d50fd6a13e5bda2638612eb39ca369bb8812bc5cd669",
+    "evaluation/icitr_reporting/analyze_ai_reference.py": "d4b04efe218a91b06698f5868a674d99830f31fea3c4932390485ea7ca73c04f",
+    "evaluation/icitr_reporting/ai_review/ai_review_labels.csv": "503fd88391a2835c33515a4070715ba1050444015453d11adf17d48d8127c1ce",
     "evaluation/icitr_reporting/image_data/manifest.jsonl": "4d6765378cc18cd304543064b0fe6ea0bbbeccb22b2f377087ea00ea4404f87d"
   },
   "test_split": "159 items (manifest split == 'test'), event-grouped; dev split used only for runner smoke tests",
-  "analysis_plan": "analyze_image_eval.py at this commit; primary outcome = false-support rate on non-supporting real images, visual-v2 vs legacy, paired exact McNemar; secondary = missed support, backfill coverage/correctness vs provisional class, visual coarse accuracy/macro-F1, text hazard-type agreement vs constructed claim, latency, tokens, cost. Reference labels are provisional/constructed until human annotation is complete. When adjudicated human labels exist, human_reference() in analyze_image_eval.py reports the same outcomes against them, plus evidence-tier error and severe-report review recall/false escalation/workload for both decision policies.",
+  "analysis_plan": "analyze_image_eval.py at this commit; primary outcome = false-support rate on non-supporting real images, visual-v2 vs legacy, paired exact McNemar; secondary = missed support, backfill coverage/correctness vs provisional class, visual coarse accuracy/macro-F1, text hazard-type agreement vs constructed claim, latency, tokens, cost. Reference labels are provisional/constructed until human annotation is complete. When adjudicated human labels exist, human_reference() in analyze_image_eval.py reports the same outcomes against them, plus evidence-tier error and severe-report review recall/false escalation/workload for both decision policies. Also pre-registered: analyze_ai_reference.py reports the same outcomes against ai_review/ai_review_labels.csv (one AI annotator; not human; no inter-annotator agreement), with the label-quality comparison of Commons categories against it.",
   "no_tuning_statement": "No prompt, policy or threshold may change between this record and the test-split run; run_image_eval.py refuses to run the test split if any frozen file differs.",
   "supersedes_source_commit": "befea642b0d0f3f897a4ad54db1d0c06f50c7e61",
-  "supersede_reason": "Human-reference metrics (evidence-tier error, contradiction detection, review recall/workload) were added to the analysis before any test-split call was made; no test-split output existed at either freeze."
+  "supersede_reason": "Human-reference metrics (evidence-tier error, contradiction detection, review recall/workload) were added to the analysis before any test-split call was made; no test-split output existed at either freeze.",
+  "supersedes_source_commit_2": "5d6f7b8b7431c286244de9cdce6a19ac8be578d2",
+  "supersede_reason_2": "AI-reviewed reference labels and their analysis script were added, and the runner gained throttling and a redo-failed option, before any live call. The only live attempt (dev split) failed entirely on insufficient_quota, so no model output existed at either freeze; the AI labels were made before any model output existed."
 }
