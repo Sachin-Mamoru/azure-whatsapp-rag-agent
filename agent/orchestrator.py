@@ -1,5 +1,6 @@
 import redis
 import json
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, Any, List
 from agent.memory import ConversationMemory
 from agent.rag import RAGSystem
@@ -47,6 +48,37 @@ class WhatsAppOrchestrator:
         # Tamil
         "அறிக்கை", "அறிக்கை செய்", "தெரிவிக்க", "புகார்",
     ]
+
+    # Withdraws a report that is waiting for a location answer.
+    _CANCEL_COMMANDS = {"cancel", "cancel report", "අවලංගු", "අවලංගු කරන්න", "ரத்து", "ரத்து செய்"}
+    _CANCELLED_MSGS = {
+        "en": "✅ Your unfinished report has been cancelled. Nothing was saved.",
+        "si": "✅ ඔබේ නොනිම් වාර්තාව අවලංගු කරන ලදී. කිසිවක් සුරැකී නැත.",
+        "ta": "✅ உங்கள் முடிக்கப்படாத அறிக்கை ரத்து செய்யப்பட்டது. எதுவும் சேமிக்கப்படவில்லை.",
+    }
+
+    @staticmethod
+    def _clear_pending_report(session: Dict[str, Any]) -> None:
+        for key in ("report_state", "pending_report", "pending_report_at"):
+            session.pop(key, None)
+
+    @staticmethod
+    def _pending_report_expired(session: Dict[str, Any]) -> bool:
+        started = session.get("pending_report_at")
+        if not started:
+            return True
+        age = datetime.now(timezone.utc) - datetime.fromisoformat(started)
+        return age > timedelta(minutes=Config.PENDING_REPORT_TTL_MINUTES)
+
+    def _apply_report_result(self, session: Dict[str, Any], result: Dict[str, Any]) -> None:
+        """Keep or clear the pending report in the session based on a reporter result."""
+        if result.get("needs_clarification"):
+            if session.get("report_state") != "awaiting_clarification":
+                session["pending_report_at"] = datetime.now(timezone.utc).isoformat()
+            session["report_state"] = "awaiting_clarification"
+            session["pending_report"] = result["pending_report"]
+        else:
+            self._clear_pending_report(session)
 
     # Interrogative markers — a message matching these is a question, never a
     # short standalone command, even if it happens to contain a command word
@@ -98,6 +130,10 @@ class WhatsAppOrchestrator:
             # Get user session data
             session = self.memory.get_session(phone_number)
             message_lower = message.strip().lower()
+
+            # ── 0. WhatsApp redelivery of a message already stored as a report ──
+            if message_id and self.reporter.find_report_by_message_id(message_id):
+                return None
 
             # ── 1. Script-based language detection (highest priority) ──────
             # Detect Sinhala/Tamil from the actual Unicode characters in the message.
@@ -163,10 +199,17 @@ class WhatsAppOrchestrator:
                 self.memory.update_session(phone_number, session)
                 return get_response_text("language_selected", selected_language)
 
-            # ── 6. First-time users: show menu for greetings ──────────────
+            # ── 6. Greetings always show the welcome + language menu ───────
+            # This applies even to returning users (session already has a
+            # language) so a plain "hi" never falls through to the LLM agent,
+            # and it also nudges the user to register for alerts.
+            greetings = {"hi", "hello", "hey", "start", "help", "menu"}
+            if message_lower.strip() in greetings:
+                lang = session.get("language", "en")
+                return get_menu_text() + get_response_text("greeting_register_note", lang)
+
             if not session.get("language"):
-                greetings = {"hi", "hello", "hey", "start", "help", "menu", "1", "2", "3"}
-                if message_lower.strip() in greetings or len(message_lower.strip()) <= 3:
+                if len(message_lower.strip()) <= 3:
                     return get_menu_text()
                 # For a real first question with no script detected, default to English
                 session["language"] = "en"
@@ -181,19 +224,24 @@ class WhatsAppOrchestrator:
             # A photo attachment is treated the same way: it is evidence for
             # a (new or in-progress) community report, so it also bypasses
             # the LLM agent and goes straight to the reporting pipeline.
-            if session.get("report_state") == "awaiting_clarification" or image_bytes:
+            awaiting = session.get("report_state") == "awaiting_clarification"
+            if awaiting and self._pending_report_expired(session):
+                self._clear_pending_report(session)
+                self.memory.update_session(phone_number, session)
+                awaiting = False
+            if awaiting and not image_bytes and message_lower.strip() in self._CANCEL_COMMANDS:
+                self._clear_pending_report(session)
+                self.memory.update_session(phone_number, session)
+                return self._CANCELLED_MSGS.get(user_language, self._CANCELLED_MSGS["en"])
+            if awaiting or image_bytes:
                 self.memory.add_message(phone_number, "user", message)
                 result = await self.reporter.process_report(
                     phone_number, message, user_language,
-                    pending_report=session.get("pending_report"),
+                    pending_report=session.get("pending_report") if awaiting else None,
                     image_bytes=image_bytes, image_mime=image_mime,
+                    message_id=message_id,
                 )
-                if result["needs_clarification"]:
-                    session["report_state"] = "awaiting_clarification"
-                    session["pending_report"] = result["pending_report"]
-                else:
-                    session.pop("report_state", None)
-                    session.pop("pending_report", None)
+                self._apply_report_result(session, result)
                 self.memory.update_session(phone_number, session)
                 self.memory.add_message(phone_number, "assistant", result["response"])
                 return result["response"]
@@ -211,13 +259,18 @@ class WhatsAppOrchestrator:
             # search_web, submit_community_report, or get_community_observations.
             # Every tool-call decision is logged in agent_tool_calls for
             # research evaluation.
+            report_sink: Dict[str, Any] = {}
             response = await self.agent.ainvoke(
-                message, user_language, phone_number, conversation_history
+                message, user_language, phone_number, conversation_history,
+                report_sink=report_sink, message_id=message_id,
             )
 
-            # If the agent reported a pending clarification, capture state
-            # (the submit_community_report tool surfaces this in its response text;
-            # we also check the reporter's last pending state for session tracking)
+            # A report submitted through the agent tool may need a location
+            # follow-up; keep it in the session so the reply completes it.
+            if "result" in report_sink:
+                self._apply_report_result(session, report_sink["result"])
+                self.memory.update_session(phone_number, session)
+
             if not response:
                 response = get_response_text("no_answer", user_language)
 

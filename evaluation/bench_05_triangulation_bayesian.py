@@ -29,7 +29,7 @@ os.environ["COMMUNITY_REPORTS_DB"] = os.path.join(
 )
 
 from evaluation.common import save_json, summarize
-from agent.reporter import CommunityReporter
+from agent.reporter import CommunityReporter, reliability_update
 
 
 def seed_corroborators(reporter: CommunityReporter, n: int, reliability: float,
@@ -111,30 +111,13 @@ def main():
     reporter.db_path = traj_db
     reporter._init_db()
 
-    uh = "trajectory_test_user"
-    with sqlite3.connect(reporter.db_path) as conn:
-        conn.execute("""
-            INSERT OR REPLACE INTO user_reliability (user_hash, reliability, n_reports, n_verified, n_rejected, updated_at)
-            VALUES (?, 0.5, 0, 0, 0, ?)
-        """, (uh, datetime.now(timezone.utc).isoformat()))
-        conn.commit()
-
+    # Reliability is replayed from review events (CommunityReporter.review_report);
+    # its update step is the pure bounded-EMA function below.
     trajectory_verified = [0.5]
-    for _ in range(15):
-        reporter.update_user_reliability(uh, verified=True)
-        trajectory_verified.append(reporter._get_user_reliability(uh))
-
-    uh2 = "trajectory_test_user_rejected"
-    with sqlite3.connect(reporter.db_path) as conn:
-        conn.execute("""
-            INSERT OR REPLACE INTO user_reliability (user_hash, reliability, n_reports, n_verified, n_rejected, updated_at)
-            VALUES (?, 0.5, 0, 0, 0, ?)
-        """, (uh2, datetime.now(timezone.utc).isoformat()))
-        conn.commit()
     trajectory_rejected = [0.5]
     for _ in range(15):
-        reporter.update_user_reliability(uh2, verified=False)
-        trajectory_rejected.append(reporter._get_user_reliability(uh2))
+        trajectory_verified.append(reliability_update(trajectory_verified[-1], True))
+        trajectory_rejected.append(reliability_update(trajectory_rejected[-1], False))
 
     max_abs_error = max(s["abs_error"] for s in scenarios)
     print(f"Max abs error vs reference TruthFinder formula: {max_abs_error:.6f}")

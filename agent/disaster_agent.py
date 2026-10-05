@@ -95,6 +95,8 @@ class DisasterAgent:
         language: str,
         phone_number: str,
         conversation_history: Optional[List[Dict]] = None,
+        report_sink: Optional[Dict] = None,
+        message_id: Optional[str] = None,
     ) -> str:
         """
         Run the agent for a single message and return the final text response.
@@ -106,6 +108,8 @@ class DisasterAgent:
         phone_number:         Raw phone number — passed through to tools for
                               logging; never stored in plaintext by tools.
         conversation_history: Last N turns from ConversationMemory.
+        report_sink:          Filled with the reporter result if a report is submitted.
+        message_id:           WhatsApp message id, used to deduplicate stored reports.
         """
         lang_name = _LANG_NAMES.get(language, "English")
 
@@ -117,7 +121,8 @@ class DisasterAgent:
         ])
 
         tools = build_tools(
-            self.rag_system, self.reporter, self.web_search, language, phone_number
+            self.rag_system, self.reporter, self.web_search, language, phone_number,
+            report_sink=report_sink, message_id=message_id,
         )
 
         agent = create_tool_calling_agent(self.llm, tools, prompt)

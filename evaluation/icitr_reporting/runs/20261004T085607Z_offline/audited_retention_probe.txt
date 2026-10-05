@@ -1,0 +1,5 @@
+# audited code: git archive 29f926fcd2eaa60d4979866f9504e19ecf228075 agent config.py; python probe_old_retention.py
+[reporter] update_user_reliability error: database is locked
+[scheduler] retention_job: archived=1 deleted=0
+elapsed_s 5.38
+status [('archived',)] reliability [(0.5, 0)]

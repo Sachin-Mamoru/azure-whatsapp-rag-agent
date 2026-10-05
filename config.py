@@ -30,6 +30,19 @@ class Config:
     # Local disk folder where photos attached to community reports are saved
     REPORT_IMAGES_DIR = os.getenv("REPORT_IMAGES_DIR", "./data/report_images")
 
+    # ── Community reporting policy / retention ─────────────────────────────
+    # Decision policy that drives the stored action; the other policy is still
+    # computed and persisted in the report's scoring provenance (shadow mode).
+    ACTIVE_DECISION_POLICY = os.getenv("ACTIVE_DECISION_POLICY", "baseline-v1")
+    # Keyed pseudonyms for contributors. Unset = legacy unkeyed SHA-256 prefix.
+    REPORTER_ID_KEY = os.getenv("REPORTER_ID_KEY", "")
+    VISION_TIMEOUT_S = float(os.getenv("VISION_TIMEOUT_S", "45"))
+    EXTRACTION_TIMEOUT_S = float(os.getenv("EXTRACTION_TIMEOUT_S", "30"))
+    MAX_IMAGE_BYTES = int(os.getenv("MAX_IMAGE_BYTES", str(10 * 1024 * 1024)))
+    PENDING_REPORT_TTL_MINUTES = int(os.getenv("PENDING_REPORT_TTL_MINUTES", "60"))
+    RAINFALL_CACHE_TTL_MINUTES = int(os.getenv("RAINFALL_CACHE_TTL_MINUTES", "180"))
+    IMAGE_RETENTION_DAYS = int(os.getenv("IMAGE_RETENTION_DAYS", "30"))
+
     # Google Sheets (linked to Google Form responses)
     GOOGLE_SHEETS_CREDENTIALS_FILE = os.getenv("GOOGLE_SHEETS_CREDENTIALS_FILE", "./credentials.json")
     GOOGLE_SHEETS_SPREADSHEET_ID   = os.getenv("GOOGLE_SHEETS_SPREADSHEET_ID", "")

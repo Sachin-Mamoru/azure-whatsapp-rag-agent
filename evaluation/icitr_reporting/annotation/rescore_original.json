@@ -1,0 +1,69 @@
+{
+  "label_set": "original",
+  "label_set_note": "archived hand labels (unchanged)",
+  "predictions": "archived run evaluation/results/04_reporting_pipeline.json (model/prompt not recorded in that file)",
+  "n": 29,
+  "per_field": {
+    "report_domain": {
+      "k": 23,
+      "n": 29,
+      "p": 0.7931034482758621,
+      "ci95_wilson": [
+        0.6160990944322833,
+        0.9015392985954367
+      ]
+    },
+    "hazard_type": {
+      "k": 23,
+      "n": 29,
+      "p": 0.7931034482758621,
+      "ci95_wilson": [
+        0.6160990944322833,
+        0.9015392985954367
+      ]
+    },
+    "has_location": {
+      "k": 29,
+      "n": 29,
+      "p": 1.0,
+      "ci95_wilson": [
+        0.8830301998708162,
+        0.9999999999999999
+      ]
+    },
+    "people_at_risk": {
+      "k": 20,
+      "n": 29,
+      "p": 0.6896551724137931,
+      "ci95_wilson": [
+        0.5076986562257293,
+        0.8272438333804424
+      ]
+    },
+    "ongoing": {
+      "k": 27,
+      "n": 29,
+      "p": 0.9310344827586207,
+      "ci95_wilson": [
+        0.7803541969199559,
+        0.9808787340031615
+      ]
+    }
+  },
+  "all_five_fields": {
+    "k": 14,
+    "n": 29,
+    "p": 0.4827586206896552,
+    "ci95_wilson": [
+      0.3138609003643046,
+      0.6556897823987706
+    ]
+  },
+  "exposure_confusion": {
+    "tp": 10,
+    "tn": 10,
+    "fp": 9,
+    "fn": 0
+  },
+  "caveat": "has_location is presence of any location text, not geolocation accuracy; the 29 items are not a held-out set for any re-labelled variant."
+}

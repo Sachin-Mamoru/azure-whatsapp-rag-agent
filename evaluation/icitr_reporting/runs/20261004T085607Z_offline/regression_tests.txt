@@ -1,0 +1,60 @@
+# command: python -m unittest discover -s tests -v
+# commit: 4064697a8688ffec6529a91c4be26c8eff4613cc  (working tree clean: yes)
+# date: 2026-10-04T09:05:08Z
+test_human_reference_review_metrics (test_icitr_analysis.TestAnalysisArithmetic.test_human_reference_review_metrics) ... /Users/sachin/Documents/personal/projects/azure-whatsapp-rag-agent/evaluation/icitr_reporting/analyze_image_eval.py:295: ResourceWarning: unclosed file <_io.TextIOWrapper name='<tmp> mode='r' encoding='utf-8'>
+test_known_counts (test_icitr_analysis.TestAnalysisArithmetic.test_known_counts) ... ok
+test_empty_single_clipped_mixed (test_reporting.TestAggregation.test_empty_single_clipped_mixed) ... ok
+test_large_sets_are_stable (test_reporting.TestAggregation.test_large_sets_are_stable) ... ok
+test_reliability_update_is_bounded_ema (test_reporting.TestAggregation.test_reliability_update_is_bounded_ema) ... ok
+test_cancel_discards_pending_report (test_reporting.TestClarificationFlow.test_cancel_discards_pending_report) ... ok
+test_expired_pending_report_is_dropped (test_reporting.TestClarificationFlow.test_expired_pending_report_is_dropped) ... ok
+test_image_report_then_location_reply_runs_vision_once (test_reporting.TestClarificationFlow.test_image_report_then_location_reply_runs_vision_once) ... ok
+test_pending_report_is_isolated_per_user (test_reporting.TestClarificationFlow.test_pending_report_is_isolated_per_user) ... ok
+test_second_photo_during_clarification_is_not_reanalysed (test_reporting.TestClarificationFlow.test_second_photo_during_clarification_is_not_reanalysed) ... ok
+test_text_report_via_agent_then_location_reply (test_reporting.TestClarificationFlow.test_text_report_via_agent_then_location_reply) ... ok
+test_webhook_redelivery_is_ignored (test_reporting.TestClarificationFlow.test_webhook_redelivery_is_ignored) ... ok
+test_byte_identical_photo_is_not_independent_corroboration (test_reporting.TestCorroboration.test_byte_identical_photo_is_not_independent_corroboration) ... ok
+test_location_token_skips_positional_words (test_reporting.TestCorroboration.test_location_token_skips_positional_words) ... ok
+test_no_corroborators_scores_zero (test_reporting.TestCorroboration.test_no_corroborators_scores_zero) ... ok
+test_self_exclusion_and_contributor_dedup (test_reporting.TestCorroboration.test_self_exclusion_and_contributor_dedup) ... ok
+test_baseline_exact_boundaries (test_reporting.TestDecisionPolicies.test_baseline_exact_boundaries) ... ok
+test_baseline_known_issues_are_preserved (test_reporting.TestDecisionPolicies.test_baseline_known_issues_are_preserved) ... ok
+test_candidate_exact_boundaries (test_reporting.TestDecisionPolicies.test_candidate_exact_boundaries) ... ok
+test_candidate_is_monotone_baseline_is_not (test_reporting.TestDecisionPolicies.test_candidate_is_monotone_baseline_is_not) ... ok
+test_quantization_removes_float_residue (test_reporting.TestDecisionPolicies.test_quantization_removes_float_residue) ... ok
+test_api_exception_is_error (test_reporting.TestImageAnalysis.test_api_exception_is_error) ... ok
+test_malformed_json_is_error (test_reporting.TestImageAnalysis.test_malformed_json_is_error) ... ok
+test_nonnumeric_score_is_error (test_reporting.TestImageAnalysis.test_nonnumeric_score_is_error) ... ok
+test_timeout_is_error (test_reporting.TestImageAnalysis.test_timeout_is_error) ... ok
+test_unsupported_payload_makes_no_model_call (test_reporting.TestImageAnalysis.test_unsupported_payload_makes_no_model_call) ... ok
+test_valid_reply_is_snapped_to_tier (test_reporting.TestImageAnalysis.test_valid_reply_is_snapped_to_tier) ... ok
+test_image_schema_numeric_bounds (test_reporting.TestModelOutputValidation.test_image_schema_numeric_bounds) ... ok
+test_parse_model_json_fenced_and_bare (test_reporting.TestModelOutputValidation.test_parse_model_json_fenced_and_bare) ... ok
+test_parse_model_json_rejects_malformed_and_non_objects (test_reporting.TestModelOutputValidation.test_parse_model_json_rejects_malformed_and_non_objects) ... ok
+test_text_schema_enum_bool_missing (test_reporting.TestModelOutputValidation.test_text_schema_enum_bool_missing) ... ok
+test_keyed_pseudonym_migrates_legacy_history (test_reporting.TestPrivacy.test_keyed_pseudonym_migrates_legacy_history) ... ok
+test_no_raw_phone_number_in_database_or_logs (test_reporting.TestPrivacy.test_no_raw_phone_number_in_database_or_logs) ... ok
+test_concurrent_redelivery_is_stopped_by_unique_index (test_reporting.TestProcessReport.test_concurrent_redelivery_is_stopped_by_unique_index) ... ok
+test_duplicate_message_id_stores_once_without_inference (test_reporting.TestProcessReport.test_duplicate_message_id_stores_once_without_inference) ... ok
+test_malformed_text_reply_uses_keyword_fallback (test_reporting.TestProcessReport.test_malformed_text_reply_uses_keyword_fallback) ... ok
+test_storage_failure_is_not_acknowledged_and_writes_nothing (test_reporting.TestProcessReport.test_storage_failure_is_not_acknowledged_and_writes_nothing) ... ok
+test_stored_report_carries_replayable_provenance (test_reporting.TestProcessReport.test_stored_report_carries_replayable_provenance) ... ok
+test_vision_failure_contributes_nothing (test_reporting.TestProcessReport.test_vision_failure_contributes_nothing) ... ok
+test_fresh_forecast_gives_bonus_stale_does_not (test_reporting.TestRainfallContext.test_fresh_forecast_gives_bonus_stale_does_not) ... ok
+test_low_confidence_unknown_is_deleted_with_its_image (test_reporting.TestRetention.test_low_confidence_unknown_is_deleted_with_its_image) ... ok
+test_old_images_and_orphans_are_removed (test_reporting.TestRetention.test_old_images_and_orphans_are_removed) ... ok
+test_scheduler_job_runs_without_lock_errors (test_reporting.TestRetention.test_scheduler_job_runs_without_lock_errors) ... ok
+test_unreviewed_expiry_archives_without_touching_reliability (test_reporting.TestRetention.test_unreviewed_expiry_archives_without_touching_reliability) ... ok
+test_bad_inputs (test_reporting.TestReview.test_bad_inputs) ... ok
+test_correction_replays_as_if_wrong_review_never_happened (test_reporting.TestReview.test_correction_replays_as_if_wrong_review_never_happened) ... ok
+test_pre_existing_reliability_is_the_replay_base (test_reporting.TestReview.test_pre_existing_reliability_is_the_replay_base) ... ok
+test_retraction_restores_prior_reliability (test_reporting.TestReview.test_retraction_restores_prior_reliability) ... ok
+test_review_is_atomic (test_reporting.TestReview.test_review_is_atomic) ... ok
+test_verification_is_idempotent (test_reporting.TestReview.test_verification_is_idempotent) ... ok
+test_ablation_modes (test_reporting.TestVisualPolicy.test_ablation_modes) ... ok
+test_failure_contradiction_no_hazard_unusable_never_support (test_reporting.TestVisualPolicy.test_failure_contradiction_no_hazard_unusable_never_support) ... ok
+test_legacy_mode_documents_old_positive_fallback (test_reporting.TestVisualPolicy.test_legacy_mode_documents_old_positive_fallback) ... ok
+test_low_consistency_scores_but_does_not_backfill (test_reporting.TestVisualPolicy.test_low_consistency_scores_but_does_not_backfill) ... ok
+test_supporting_image_backfills_only_unknown_text_fields (test_reporting.TestVisualPolicy.test_supporting_image_backfills_only_unknown_text_fields) ... ok
+Ran 55 tests in 1.103s
+OK

@@ -7,7 +7,8 @@ import time
 from contextlib import contextmanager
 from typing import Any, Callable, Dict, List, Tuple
 
-RESULTS_DIR = os.path.join(os.path.dirname(__file__), "results")
+# EVAL_RESULTS_DIR redirects new runs so archived results/ files stay unchanged.
+RESULTS_DIR = os.getenv("EVAL_RESULTS_DIR") or os.path.join(os.path.dirname(__file__), "results")
 FIGURES_DIR = os.path.join(os.path.dirname(__file__), "figures")
 DATASETS_DIR = os.path.join(os.path.dirname(__file__), "datasets")
 os.makedirs(RESULTS_DIR, exist_ok=True)
