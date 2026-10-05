@@ -39,11 +39,11 @@
 | 22 | Contributor identifiers are keyed HMAC pseudonyms; existing histories migrate on first contact. | S\* | `_hash_phone`, `_resolve_user_hash`; `T` `TestPrivacy`. Requires `REPORTER_ID_KEY` in deployment |
 | 23 | On the archived 29-message set, field agreement with the original labels was domain 23/29, hazard type 23/29, exposure 20/29, ongoing 27/29, all five 14/29; location text was present for 29/29. | S | `A/rescore_original.json`, `annotation_tools.py rescore`; archived `evaluation/results/04_reporting_pipeline.json` |
 | 24 | Exposure disagreements are mostly false positives (9 FP, 0 FN), and 5 of the 9 involve road-only mentions that the extraction prompt defines as exposure. | S | `A/discrepancy_report.csv` |
-| 25 | Agreement against adjudicated labels. | P | Blinded packet in `A/blinded_review/`; not reviewed |
+| 25 | Agreement against adjudicated human labels. | X | Not done and not planned (owner decision 2026-10-05); the blinded packet in `A/blinded_review/` is unused. Only the original-label results (claim 23) are reported |
 | 26 | The 29-message set measures location *accuracy*. | X | It measures presence only |
 | 27 | Live image evaluation of visual-v2 vs the earlier handling on 133 real test photos (frozen protocol, single run): results in claims 38-47. Reference labels are provisional or AI-reviewed, never human. | S\* | `runs/20261005T033433Z_test_live/`; `FREEZE_test_split.json` (`d7f7fd6`) |
-| 28 | Image metrics against **human** labels; severe-report review recall/workload. | P | `image_annotation/`; pre-registered in `analyze_image_eval.human_reference`; AI-reviewed interim in claims 39-45 |
-| 29 | The 6-image photographic-evidence pilot (draft §5.5.1, Table 6a). | X | No images, reference scores or outputs exist in the repository; cannot be reproduced |
+| 28 | Image metrics against **human** labels; severe-report review recall/workload. | X (not planned; owner decision 2026-10-05) | `image_annotation/`; pre-registered in `analyze_image_eval.human_reference`; AI-reviewed interim in claims 39-45 |
+| 29 | The 6-image photographic-evidence pilot (draft §5.5.1, Table 6a). | X | No images, reference scores or outputs exist in the repository; cannot be reproduced. Removed from the draft on 2026-10-05 |
 | 30 | Triangulation matches its closed-form reference with max error 1.6×10⁻⁴ (draft §5.6). | S\* | Re-run `R/05_triangulation_bayesian.json`: max error 0.0 after the change. The earlier 1.6×10⁻⁴ came from rounding the score to four decimals |
 | 31 | The system "decays reporter reliability" for stale reports (draft §1). | X | Never executed in the audited code (claim 13); removed by design (claim 12) |
 | 32 | Same-user exclusion gives Sybil resistance (draft §3.5, §5.6). | X | Only self-exclusion; multiple accounts are not detected |

@@ -275,9 +275,11 @@ histories and pending reports do not survive restarts.
   reliability" and "maximum absolute error 1.6×10⁻⁴". The error came from
   four-decimal rounding; after the change, the re-run shows 0.
 - **§3.5:** the heading "Bayesian truth discovery" and "Sybil resistance".
-- **§5.5.1 and Table 6a (six-photo pilot):** remove. No images, reference
-  scores or outputs exist in the repository, so the result cannot be
-  reproduced.
+- **§5.5.1 and Table 6a (six-photo pilot):** removed from `RESEARCH_PAPER_DRAFT.md` on
+  2026-10-05, together with its references in §3.4.1, the disclosure table,
+  limitation 9 and future work (f). No images, reference scores or outputs
+  existed in the repository, so the result could not be reproduced. Limitation 9
+  now points to the separate frozen evaluation, whose labels are AI-reviewed.
 - **§5.6:** "evidence the mechanism resists naive Sybil-style flooding". Not
   shown; repeated accounts are not detected.
 - **§8(e):** keep as future work, but reference the replay-based reputation
