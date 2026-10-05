@@ -57,6 +57,15 @@ fi
 az containerapp secret set --name $APP --resource-group $RG \
   --secrets "reporter-id-key=${REPORTER_ID_KEY_RAW}" 2>/dev/null || true
 
+echo "🔐 Storing admin secret as Azure secret..."
+ADMIN_SECRET_RAW=$(grep '^ADMIN_SECRET=' .env | cut -d'=' -f2- | tr -d '"' | tr -d "'")
+if [ -z "$ADMIN_SECRET_RAW" ] || [ "$ADMIN_SECRET_RAW" = "admin_secret_change_me" ]; then
+  echo "❌ Error: set a real ADMIN_SECRET in .env (generate with: openssl rand -hex 32)."
+  exit 1
+fi
+az containerapp secret set --name $APP --resource-group $RG \
+  --secrets "admin-secret=${ADMIN_SECRET_RAW}" 2>/dev/null || true
+
 echo "🔄 Deploying container app..."
 # Check if app already exists
 if az containerapp show --name $APP --resource-group $RG &>/dev/null; then
@@ -79,7 +88,7 @@ if az containerapp show --name $APP --resource-group $RG &>/dev/null; then
       SHEETS_SYNC_INTERVAL_MINUTES="${SHEETS_SYNC_INTERVAL_MINUTES:-30}" \
       ALERT_CHECK_INTERVAL_MINUTES="${ALERT_CHECK_INTERVAL_MINUTES:-60}" \
       COMMUNITY_REPORTS_DB="${COMMUNITY_REPORTS_DB:-/tmp/community_reports.db}" \
-      ADMIN_SECRET="$ADMIN_SECRET"
+      ADMIN_SECRET=secretref:admin-secret
 else
   az containerapp create --name $APP --resource-group $RG \
     --environment env-whatsapp-agent \
@@ -90,7 +99,7 @@ else
     --ingress external --target-port 8000 \
     --min-replicas 1 --max-replicas 3 \
     --cpu 0.5 --memory 1.0Gi \
-    --secrets "google-credentials-json=$GOOGLE_CREDS_B64" "redis-url=${REDIS_URL_RAW}" "reporter-id-key=${REPORTER_ID_KEY_RAW}" \
+    --secrets "google-credentials-json=$GOOGLE_CREDS_B64" "redis-url=${REDIS_URL_RAW}" "reporter-id-key=${REPORTER_ID_KEY_RAW}" "admin-secret=${ADMIN_SECRET_RAW}" \
     --env-vars \
       GOOGLE_SHEETS_CREDENTIALS_JSON=secretref:google-credentials-json \
       REDIS_URL=secretref:redis-url \
@@ -108,7 +117,7 @@ else
       SHEETS_SYNC_INTERVAL_MINUTES="${SHEETS_SYNC_INTERVAL_MINUTES:-30}" \
       ALERT_CHECK_INTERVAL_MINUTES="${ALERT_CHECK_INTERVAL_MINUTES:-60}" \
       COMMUNITY_REPORTS_DB="${COMMUNITY_REPORTS_DB:-/tmp/community_reports.db}" \
-      ADMIN_SECRET="$ADMIN_SECRET"
+      ADMIN_SECRET=secretref:admin-secret
 fi
 
 
