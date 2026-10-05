@@ -39,7 +39,9 @@ WORST_CASE_CALL_USD = 0.02
 MANIFEST = os.path.join(HERE, "image_data", "manifest.jsonl")
 # Files that must not change between the freeze record and a test-split run.
 FROZEN_PATHS = ["agent/reporter.py", "config.py", "evaluation/icitr_reporting/run_image_eval.py",
-                "evaluation/icitr_reporting/analyze_image_eval.py", "evaluation/icitr_reporting/image_data/manifest.jsonl"]
+                "evaluation/icitr_reporting/analyze_image_eval.py", "evaluation/icitr_reporting/analyze_ai_reference.py",
+                "evaluation/icitr_reporting/ai_review/ai_review_labels.csv",
+                "evaluation/icitr_reporting/image_data/manifest.jsonl"]
 
 
 def git(*args):
@@ -48,6 +50,11 @@ def git(*args):
 
 def sha256_text(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def backoff_s(reason, attempt):
+    """Rate-limit windows are per minute, so wait long; other transient errors back off briefly."""
+    return 20 * (attempt + 1) if "RateLimit" in (reason or "") else 2 ** attempt
 
 
 def call_cost(meta, model_alias):
@@ -111,7 +118,7 @@ async def run_item(reporter, item, retries):
         if meta.get("status") == "ok" or not (reason.startswith("api_error") or reason == "timeout"):
             break
         record["failures"].append({"stage": "extraction", "reason": reason})
-        await asyncio.sleep(2 ** attempt)
+        await asyncio.sleep(backoff_s(reason, attempt))
     record["extraction"] = extracted
 
     description = extracted.get("description") or item["caption_text"]
@@ -125,7 +132,7 @@ async def run_item(reporter, item, retries):
         if analysis["status"] != "error" or not (err.startswith("api_error") or err == "timeout"):
             break
         record["failures"].append({"stage": "vision", "reason": err})
-        await asyncio.sleep(2 ** attempt)
+        await asyncio.sleep(backoff_s(err, attempt))
     analysis.pop("image_path", None)
     record["vision"] = analysis
     record["completed_at"] = datetime.now(timezone.utc).isoformat()
@@ -138,7 +145,11 @@ async def main():
     parser.add_argument("--run-dir", required=True)
     parser.add_argument("--max-cost-usd", type=float, default=5.0)
     parser.add_argument("--concurrency", type=int, default=4)
-    parser.add_argument("--retries", type=int, default=3)
+    parser.add_argument("--retries", type=int, default=4)
+    parser.add_argument("--min-interval-s", type=float, default=0.0,
+                        help="minimum seconds between item starts (keeps tokens/minute under the account limit)")
+    parser.add_argument("--redo-failed", action="store_true",
+                        help="move items that ended in an API error/timeout to failed_attempts/ and run them again")
     parser.add_argument("--frozen", help="freeze record that must match the current prompts/policies (test split)")
     args = parser.parse_args()
 
@@ -169,12 +180,24 @@ async def main():
     if not os.path.exists(meta_path):
         json.dump(run_meta(args, reporter, items), open(meta_path, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
 
+    if args.redo_failed:
+        failed_dir = os.path.join(args.run_dir, "failed_attempts")
+        os.makedirs(failed_dir, exist_ok=True)
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S")
+        for name in os.listdir(items_dir):
+            rec = json.load(open(os.path.join(items_dir, name), encoding="utf-8"))
+            reasons = [(rec.get("extraction", {}).get("_extraction_meta") or {}).get("reason") or "",
+                       rec.get("vision", {}).get("error") or ""]
+            if "runner_error" in rec or any(r.startswith("api_error") or r == "timeout" for r in reasons):
+                os.replace(os.path.join(items_dir, name), os.path.join(failed_dir, f"{name[:-5]}.{stamp}.json"))
+
     done = {n[:-5] for n in os.listdir(items_dir)}
     todo = [i for i in items if i["item_id"] not in done]
     print(f"{len(done)} done, {len(todo)} to run; spent so far ${spent(items_dir, Config.MODEL_NAME):.4f}")
     sem = asyncio.Semaphore(args.concurrency)
     lock = asyncio.Lock()
     stopped = {"cap": False}
+    last_start = [0.0]
 
     async def worker(item):
         async with sem:
@@ -182,6 +205,10 @@ async def main():
                 if spent(items_dir, Config.MODEL_NAME) + 2 * WORST_CASE_CALL_USD * args.concurrency > args.max_cost_usd:
                     stopped["cap"] = True
                     return
+                wait = args.min_interval_s - (time.monotonic() - last_start[0])
+                if wait > 0:
+                    await asyncio.sleep(wait)
+                last_start[0] = time.monotonic()
             if stopped["cap"]:
                 return
             try:

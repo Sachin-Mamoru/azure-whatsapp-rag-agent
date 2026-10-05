@@ -90,6 +90,27 @@ class TestAnalysisArithmetic(unittest.TestCase):
         self.assertEqual(hr["candidate_action"]["severe_review_recall"]["n"], 1)
         self.assertEqual(hr["candidate_action"]["review_workload"]["n"], 2)
 
+    def test_ai_reference_metrics_known_counts(self):
+        import analyze_ai_reference as R
+        manifest = {"A1": item("A1", "flood", "matching", "flood", True),
+                    "A2": item("A2", "none", "hazard_claim", "flood", False),
+                    "A3": item("A3", "landslide", "contradiction", "flood", False)}
+        records = [record("A1", "flood", vision("localised_flooding", "high", 0.20)),
+                   record("A2", "flood", vision("localised_flooding", "low", 0.05)),   # model sees a flood the reviewer does not
+                   record("A3", "landslide", vision("slope_instability", "contradiction", 0.10))]
+        def lab(hv, cat, tier, cons):
+            return {"hazard_visible": hv, "image_category": cat, "evidence_tier": tier, "caption_consistency": cons}
+        labels = {"A1": lab("yes", "flooding", "0.20", "high"), "A2": lab("no", "no_hazard", "0.05", "contradiction"),
+                  "A3": lab("yes", "slope_failure_or_cracking", "0.05", "contradiction")}
+        m = R.metrics(A.score_items(records, manifest), labels)
+        self.assertEqual(m["visual_category_vs_ai"]["coarse_accuracy"]["k"], 2)            # A2 wrong
+        fs = m["false_support_vs_ai"]["all_non_supporting"]
+        self.assertEqual((fs["visual_v2_C"]["k"], fs["legacy_L"]["k"], fs["visual_v2_C"]["n"]), (1, 2, 2))
+        self.assertEqual(m["contradiction_detection_vs_ai"]["recall"]["k"], 1)             # only A3 flagged, A2 not
+        self.assertEqual(m["contradiction_detection_vs_ai"]["recall"]["n"], 2)
+        self.assertEqual(m["evidence_tier_vs_ai"]["mean_abs_error_in_tiers"], (0 + 0 + 1) / 3)
+        self.assertEqual(m["backfill_vs_ai"]["C"]["n_backfilled"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

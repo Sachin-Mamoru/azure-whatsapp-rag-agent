@@ -44,9 +44,32 @@ def files():
                     yield rel
 
 
+def people_excluded_images():
+    """Image files showing recognisable people (per the AI review), closed over exact copies,
+    re-encodings and degraded copies of the same source photo."""
+    import csv
+    manifest = {i["item_id"]: i for i in map(json.loads, open(os.path.join(ROOT, "evaluation/icitr_reporting/image_data/manifest.jsonl"), encoding="utf-8"))}
+    flagged = {r["item_id"] for r in csv.DictReader(open(os.path.join(ROOT, "evaluation/icitr_reporting/ai_review/ai_review_labels.csv"), encoding="utf-8"))
+               if r["faces_visible"] == "yes"}
+    grown = True
+    while grown:
+        grown = False
+        for iid, item in manifest.items():
+            related = {item["duplicate_of"]} if item["duplicate_of"] else set()
+            related |= {j for j, o in manifest.items() if o["duplicate_of"] == iid}
+            if iid in flagged and not related <= flagged:
+                flagged |= related
+                grown = True
+            elif iid not in flagged and related & flagged:
+                flagged.add(iid)
+                grown = True
+    return {manifest[i]["image_file"] for i in flagged}
+
+
 def attribution():
     lines = ["# Image attribution", "", "Images are 1024-px renditions from Wikimedia Commons, redistributed under "
-             "their original licences. Derived (degraded/re-encoded) copies are adaptations of the listed source and carry its licence.", "",
+             "their original licences. Derived (degraded/re-encoded) copies are adaptations of the listed source and carry its licence. "
+             "Photos showing recognisable people are withheld from the archive; their rows remain so they can be re-fetched and verified by hash.", "",
              "| item | file | title | author | licence | source |", "|---|---|---|---|---|---|"]
     for line in open(os.path.join(ROOT, "evaluation/icitr_reporting/image_data/manifest.jsonl"), encoding="utf-8"):
         i = json.loads(line)
@@ -62,8 +85,11 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     out = os.path.join(out_dir, f"icitr_reporting_evidence_{commit}.tar.gz")
     problems, count = [], 0
+    skip = {os.path.join("evaluation/icitr_reporting/image_data", f) for f in people_excluded_images()}
     with tarfile.open(out, "w:gz") as tar:
         for rel in sorted(set(files())):
+            if rel in skip:
+                continue
             full = os.path.join(ROOT, rel)
             if not rel.endswith((".jpg", ".png")):
                 text = open(full, encoding="utf-8", errors="ignore").read()
@@ -78,7 +104,8 @@ def main():
     if problems:
         os.remove(out)
         sys.exit(f"refusing to build: secret- or phone-like strings in {problems}")
-    print(f"{out} ({count + 1} files, {os.path.getsize(out) / 1e6:.1f} MB)")
+    print(f"{out} ({count + 1} files, {os.path.getsize(out) / 1e6:.1f} MB); "
+          f"{len(skip)} image files withheld because they show recognisable people (re-fetch via manifest URLs)")
 
 
 if __name__ == "__main__":
