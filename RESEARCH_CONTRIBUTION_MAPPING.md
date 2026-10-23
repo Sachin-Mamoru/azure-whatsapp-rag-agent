@@ -26,6 +26,66 @@ All numbers come from files in this repository. Section 9 lists the source of ea
 
 The study's position: an LLM alone is not reliable enough to handle disaster information. What makes the system usable is the combination of LLM components with controls (grounding in official documents, output validation, evidence rules, and keeping citizen reports apart from official advice), and each control has a measured effect.
 
+### 2.1 System data flow
+
+Data enters the system through five routes: official documents indexed for retrieval, citizen messages and reports over WhatsApp, live web search, district warnings published by an operator, and user registrations from a Google Sheet. Scheduled jobs crawl the warnings, sync registrations and retire old reports.
+
+**(a) Live flow: a citizen message to a reply**
+
+```mermaid
+flowchart LR
+    CIT["Citizen on WhatsApp<br/>question, report, photo"] --> WA["WhatsApp Cloud API<br/>webhook + media download"]
+    WA --> PRE["Pre-checks<br/>language detection,<br/>registration, STOP"]
+    PRE <--> MEM[("Session memory")]
+    PRE --> AGT["Tool-calling agent<br/>GPT-4o-mini<br/>G1 routing"]
+
+    AGT --> RAG["query_knowledge_base<br/>G5 grounded answer"]
+    AGT --> WS["search_web"]
+    AGT --> REP["submit_community_report<br/>G2 extraction + validation<br/>G3 failure handling<br/>G4 photo evidence policy<br/>G6 corroboration, scoring"]
+    AGT --> OBS["get_community_observations"]
+
+    FAISS[("FAISS index<br/>official documents")] --> RAG
+    WEB["Serper / DuckDuckGo"] --> WS
+    MET["Open-Meteo rainfall"] --> REP
+    REP --> DB[("SQLite<br/>community_reports")]
+    REP --> IMG[("Report photos")]
+    DB --> OBS
+    DB -.->|"labelled unverified"| RAG
+
+    RAG --> OUT["Trilingual<br/>WhatsApp reply"]
+    WS --> OUT
+    REP --> OUT
+    OBS --> OUT
+```
+
+**(b) Background flow: knowledge ingestion, warnings and scheduled jobs**
+
+```mermaid
+flowchart LR
+    PDF["Official documents<br/>DMC guidelines (Sinhala)<br/>NBRO housing manual<br/>NBRO landslide mitigation"] --> IDX["Indexing at startup<br/>parse, chunk 1000/200,<br/>embed"] --> FAISS[("FAISS index<br/>916 chunks")]
+
+    OPR["DM operator<br/>admin panel"] --> GH["GitHub Contents API"] --> FEED[("Early-warning feed<br/>data.json, GitHub Pages")]
+    SHEET["Google Sheet<br/>registrations"] --> J1["Sheets sync<br/>every 30 min"] --> REG[("SQLite<br/>registrations")]
+
+    FEED --> J2["Alert cycle<br/>every 60 min"]
+    REG --> J2
+    J2 --> ALERT["Trilingual WhatsApp alert<br/>to users in warned districts"]
+
+    J3["Retention<br/>every 6 h"] --> OLD["Retire old reports<br/>and photos"]
+```
+
+| Route | How data arrives | Where it goes | Gate or objective |
+|---|---|---|---|
+| Official documents | PDFs placed in `training-files/`, indexed at startup | FAISS index | RQ2 integration; G5 |
+| Citizen questions | WhatsApp webhook, pre-checks, agent routing | Grounded answer from the index, or web search | RQ1, RQ2; G1, G5 |
+| Citizen reports and photos | WhatsApp webhook and media download, report tool | SQLite and photo storage, after extraction, validation, evidence policy, rainfall check and scoring | G1 to G4, G6 |
+| Live web information | `search_web` tool (Serper, DuckDuckGo fallback) | Reply only, not stored | RQ2 |
+| District warnings | Operator edits warnings in the admin panel, written to `data.json` through the GitHub API; the alert job reads it every 60 minutes | Trilingual alerts to registered users in warned districts | RQ2 delivery |
+| Registrations | Google Sheet synced every 30 minutes (also on startup and on demand from the admin panel) | SQLite `registrations` | RQ1 location relevance |
+| Retention | Job every 6 hours | Retires old reports and photos | Data minimisation |
+
+Citizen reports never enter the FAISS index. They reach other users only as labelled, unverified context or through `get_community_observations`.
+
 ---
 
 ## 3. Evaluation framework: gate-wise paired evaluation
