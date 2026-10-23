@@ -30,6 +30,76 @@ The study's position: an LLM alone is not reliable enough to handle disaster inf
 
 Data enters the system through five routes: official documents indexed for retrieval, citizen messages and reports over WhatsApp, live web search, district warnings published by an operator, and user registrations from a Google Sheet. Scheduled jobs crawl the warnings, sync registrations and retire old reports.
 
+Diagram (0) shows Objective 1 end to end: which institutional knowledge is fed to the chatbot, how it is integrated (RQ2), how it is retrieved and delivered (RQ2), and how delivery is made accessible to different user groups (RQ1). Solid boxes are implemented; dashed boxes are not yet integrated (see Section 4.3). Diagrams (a) and (b) show the full system.
+
+**(0) Objective 1: how institutional knowledge reaches users**
+
+```mermaid
+flowchart LR
+    subgraph INST["Institutions"]
+        NBRO["NBRO"]
+        DMC["DMC"]
+        PLAN["Planning and<br/>flood authorities"]
+    end
+
+    subgraph KNOW["Knowledge fed to the chatbot"]
+        K1["Landslide risk mitigation<br/>NBRO nature-based solutions guide"]
+        K2["Building requirements in hazard areas<br/>NBRO Hazard Resilient Housing Manual"]
+        K3["Preparedness and response<br/>DMC guidelines (Sinhala)"]
+        K4["Landslide and flood<br/>susceptibility maps"]
+        K5["Planning regulations for<br/>flood-risk areas"]
+        K6["District warnings"]
+    end
+
+    subgraph INT["RQ2: integration"]
+        IDX["Parse, chunk, embed<br/>355 pages to 916 chunks"]
+        GEO["District / location<br/>susceptibility lookup"]
+        ADM["Operator enters warning<br/>in admin panel"]
+        FEEDAPI["Official warning feed"]
+    end
+
+    subgraph STO["Stores"]
+        FAISS[("FAISS index")]
+        FEED[("Warning feed<br/>data.json")]
+        REG[("Registrations<br/>with district")]
+    end
+
+    subgraph DEL["RQ2: retrieval and delivery"]
+        AGT["Agent routing<br/>38/38 correct"]
+        RAG["Grounded answer<br/>from retrieved passages"]
+        WS["Web search<br/>for current information"]
+        ALR["Alert job<br/>every 60 min"]
+    end
+
+    subgraph ACC["RQ1: accessibility"]
+        LANG["Language detection<br/>Sinhala, Tamil, English"]
+        WA["WhatsApp reply or alert<br/>in the user's language"]
+    end
+
+    NBRO --> K1 & K2 & K4
+    DMC --> K3 & K6
+    PLAN --> K5
+    K1 & K2 & K3 --> IDX --> FAISS
+    K5 -.-> IDX
+    K4 -.-> GEO
+    K6 --> ADM --> FEED
+    K6 -.-> FEEDAPI -.-> FEED
+
+    USER["Community member<br/>asks a question"] --> LANG --> AGT
+    AGT --> RAG
+    AGT --> WS
+    FAISS --> RAG
+    GEO -.-> RAG
+    RAG --> WA
+    WS --> WA
+    FEED --> ALR
+    REG --> ALR
+    ALR --> WA
+
+    classDef planned stroke-dasharray: 5 5,fill:#f6f6f6,color:#666
+    class K4,K5,GEO,FEEDAPI,PLAN planned
+```
+
 **(a) Live flow: a citizen message to a reply**
 
 ```mermaid
